@@ -1,11 +1,15 @@
+package br.udesc.ceavi.cesta.modelo.entidade;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.udesc.ceavi.bau.modelo.entidade;
 
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -18,8 +22,10 @@ public class Cesta {
     private String tema;
     private Date data;
     private double valorMaximo;
+    private List<Produto> produtos;
 
     public Cesta() {
+        produtos = new ArrayList<Produto>();
     }
 
     public Cesta(int id, double peso, String tema, Date data, double valorMaximo) {
@@ -68,6 +74,18 @@ public class Cesta {
 
     public void setValorMaximo(double valorMaximo) {
         this.valorMaximo = valorMaximo;
+    }
+
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
+    }
+    
+    public void addProduto(Produto p){
+        produtos.add(p);
     }
 
 }

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.udesc.ceavi.bau.modelo.DAO.categoria;
+package br.udesc.ceavi.cesta.modelo.dao.categoria;
 
-import br.udesc.ceavi.bau.modelo.entidade.Categoria;
+import br.udesc.ceavi.cesta.modelo.entidade.Categoria;
 import java.util.List;
 
 /**
@@ -13,8 +13,8 @@ import java.util.List;
  * @author ignoi
  */
 public interface CategoriaDAO {
-    
-     public boolean inserir(Categoria c);
+
+    public boolean inserir(Categoria c);
 
     public boolean deletar(int id);
 
@@ -23,5 +23,7 @@ public interface CategoriaDAO {
     public Categoria pesquisar(int id);
 
     public List<Categoria> listar();
-    
+
+    public int getQuantidade();
+
 }

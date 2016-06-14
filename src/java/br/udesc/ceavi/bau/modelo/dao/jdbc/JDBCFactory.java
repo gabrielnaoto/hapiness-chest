@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.udesc.ceavi.bau.modelo.DAO.jdbc;
+package br.udesc.ceavi.bau.modelo.dao.jdbc;
 
-import br.udesc.ceavi.bau.modelo.DAO.categoria.CategoriaDAO;
-import br.udesc.ceavi.bau.modelo.DAO.categoria.JDBCCategoriaDAO;
-import br.udesc.ceavi.bau.modelo.DAO.cesta.CestaDAO;
-import br.udesc.ceavi.bau.modelo.DAO.cesta.JDBCCestaDAO;
-import br.udesc.ceavi.bau.modelo.DAO.core.Persistencia;
-import br.udesc.ceavi.bau.modelo.DAO.produto.JDBCProdutoDAO;
-import br.udesc.ceavi.bau.modelo.DAO.produto.ProdutoDAO;
+import br.udesc.ceavi.bau.modelo.dao.categoria.JDBCCategoriaDAO;
+import br.udesc.ceavi.bau.modelo.dao.core.Persistencia;
+import br.udesc.ceavi.bau.modelo.dao.produto.JDBCProdutoDAO;
+import br.udesc.ceavi.cesta.modelo.dao.categoria.CategoriaDAO;
+import br.udesc.ceavi.cesta.modelo.dao.cesta.CestaDAO;
+import br.udesc.ceavi.cesta.modelo.dao.cesta.JDBCCestaDAO;
+import br.udesc.ceavi.cesta.modelo.dao.produto.ProdutoDAO;
 
 /**
  *
@@ -19,6 +19,9 @@ import br.udesc.ceavi.bau.modelo.DAO.produto.ProdutoDAO;
  */
 public class JDBCFactory extends Persistencia {
 
+    public JDBCFactory() {
+    }
+    
     @Override
     public CestaDAO getCestaDAO() {
         return new JDBCCestaDAO();

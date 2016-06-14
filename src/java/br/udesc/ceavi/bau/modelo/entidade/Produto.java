@@ -1,10 +1,10 @@
+package br.udesc.ceavi.cesta.modelo.entidade;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.udesc.ceavi.bau.modelo.entidade;
-
 /**
  *
  * @author ignoi
@@ -16,17 +16,34 @@ public class Produto {
     private double peso;
     private double valor;
     private double satisfacao;
+    private Categoria categoria;
     //tem uma data no eap? alguém me diz pq?
-    
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
     public Produto() {
     }
 
-    public Produto(int id, String descricao, double peso, double valor, double satisfacao) {
+    public Produto(int id, String descricao, double peso, double valor, double satisfacao, Categoria categoria) {
         this.id = id;
         this.descricao = descricao;
         this.peso = peso;
         this.valor = valor;
         this.satisfacao = satisfacao;
+        this.categoria = categoria;
+    }
+
+    public Produto(int id, double valor, double satisfacao, Categoria categoria) {
+        this.id = id;
+        this.valor = valor;
+        this.satisfacao = satisfacao;
+        this.categoria = categoria;
     }
 
     public int getId() {
@@ -68,5 +85,13 @@ public class Produto {
     public void setSatisfacao(double satisfacao) {
         this.satisfacao = satisfacao;
     }
+
+    @Override
+    public String toString() {
+        return "Produto{" + "id=" + id + ", descricao=" + descricao + ", peso=" + peso + ", valor=" + valor + ", satisfacao=" + satisfacao + ", categoria=" + categoria + '}';
+    }
+
+   
+    
 
 }

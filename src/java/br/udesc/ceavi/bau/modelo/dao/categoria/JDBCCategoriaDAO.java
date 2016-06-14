@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.udesc.ceavi.bau.modelo.DAO.categoria;
+package br.udesc.ceavi.bau.modelo.dao.categoria;
 
-import br.udesc.ceavi.bau.modelo.entidade.Categoria;
 import br.udesc.ceavi.bau.util.Conexao;
+import br.udesc.ceavi.cesta.modelo.dao.categoria.CategoriaDAO;
+import br.udesc.ceavi.cesta.modelo.entidade.Categoria;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,6 +137,23 @@ public class JDBCCategoriaDAO implements CategoriaDAO {
         System.out.println("Categorias listadas com sucesso!");
         return lista;
 
+    }
+
+    @Override
+    public int getQuantidade() {
+        Statement st = null;
+        ResultSet rs = null;
+        int numCol = 0;
+        String sql = "SELECT count(\"categoriaId\")+1 as quantCat FROM \"Categoria\";";
+        try {
+            st = Conexao.getConexao(2).createStatement();
+            rs = st.executeQuery(sql);
+            rs.next();
+            numCol = rs.getInt("quantCat");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return numCol;
     }
 
 }

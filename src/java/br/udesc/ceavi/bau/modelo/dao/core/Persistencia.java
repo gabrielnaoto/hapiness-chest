@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.udesc.ceavi.bau.modelo.DAO.core;
+package br.udesc.ceavi.bau.modelo.dao.core;
 
-import br.udesc.ceavi.bau.modelo.DAO.categoria.CategoriaDAO;
-import br.udesc.ceavi.bau.modelo.DAO.cesta.CestaDAO;
-import br.udesc.ceavi.bau.modelo.DAO.jdbc.JDBCFactory;
-import br.udesc.ceavi.bau.modelo.DAO.produto.ProdutoDAO;
+import br.udesc.ceavi.bau.modelo.dao.jdbc.JDBCFactory;
+import br.udesc.ceavi.cesta.modelo.dao.categoria.CategoriaDAO;
+import br.udesc.ceavi.cesta.modelo.dao.cesta.CestaDAO;
+import br.udesc.ceavi.cesta.modelo.dao.produto.ProdutoDAO;
 
 /**
  *

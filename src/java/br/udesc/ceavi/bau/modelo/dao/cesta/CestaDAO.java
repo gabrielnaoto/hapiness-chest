@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.udesc.ceavi.bau.modelo.DAO.cesta;
+package br.udesc.ceavi.cesta.modelo.dao.cesta;
 
-import br.udesc.ceavi.bau.modelo.entidade.Cesta;
+import br.udesc.ceavi.cesta.modelo.entidade.Cesta;
 import java.util.List;
 
 /**
@@ -23,5 +23,5 @@ public interface CestaDAO {
     public Cesta pesquisar(int id);
 
     public List<Cesta> listar();
-    
+
 }

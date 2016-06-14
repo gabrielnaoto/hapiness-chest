@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.udesc.ceavi.bau.modelo.DAO.cesta;
+package br.udesc.ceavi.cesta.modelo.dao.cesta;
 
-import br.udesc.ceavi.bau.modelo.entidade.Cesta;
+import br.udesc.ceavi.cesta.modelo.entidade.Cesta;
 import java.util.List;
 
 /**
@@ -38,7 +38,5 @@ public class JDBCCestaDAO implements CestaDAO {
     public List<Cesta> listar() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    
 
 }
