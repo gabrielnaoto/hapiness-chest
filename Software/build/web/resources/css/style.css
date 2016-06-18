@@ -1,0 +1,57 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    font-size: 12pt;
+    font-family: sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+#header {
+    background-color: #55A616;
+    height: 150px;
+    width: 100%;
+}
+
+#title-header {
+    padding-top: 10px;
+    font-size: 30pt;
+    font-family: Segoe UI;
+    /*background-color: yellow;*/
+}
+
+#menu{
+
+}
+
+#content{
+    padding: 5px;
+    min-height: calc(100% - 205px - 45px - 30px);
+    max-height: auto;
+}
+
+#footer {
+    padding-top: 20px;
+    border-top: 1px solid #DFD9C3;
+    background-color: #FAFAF4;
+    height: 50px;
+}
+
+#footer-logo{
+    margin-top: 5px;
+    margin-left: 20px;
+    width: 272px;
+    height: 25px;
+    float: left;
+}
+
+#footer-text{
+    text-align: center;
+    width: 300px;
+    margin-left: -150px;
+    left: 50%;
+    position: absolute;
+}
+

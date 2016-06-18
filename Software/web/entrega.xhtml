@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Entrega</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="template.xhtml">
+            <ui:define name="titulo">
+                Entrega
+            </ui:define>
+            <ui:define name="conteudo">
+                <h:form id="frm-entrega">
+                    <p:growl id="formMessage" showDetail="true" autoUpdate="true" />
+                    <p:commandButton value="Inluir" action="#{beanEntrega.insert()}" update="frm-entrega" oncomplete="PF('dlg').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" />
+                    <p:dialog id="dlg" widgetVar="dlg" focus="data" header="Entrega" modal="true" closable="false" showEffect="fade" hideEffect="fade" >
+                        <h:panelGrid columns="2">
+                            <h:outputText value="ID:" />
+                            <p:inputText class="ui-state-disabled" id="id" value="#{beanEntrega.entity.id}" />
+
+                            <h:outputText value="Data:" />
+                            <p:inputText required="true" requiredMessage="Campo Data é Obrigatório!" id="data" value="#{beanEntrega.entity.data}" converterMessage="Data inválida!"/>
+
+                            <h:outputText value="Veículo:" />
+                            <p:autoComplete id="veiculo" forceSelection="true" value="#{beanEntrega.entity.veiculo}" completeMethod="#{beanEntrega.listaVeiculo}"
+                                            var="veic" itemLabel="#{veic.descricao}" itemValue="#{veic}" converter="conversor" >
+                                <p:ajax event="itemSelect" listener="#{beanEntrega.onSelectVeiculo}" update="formMessage"/>
+                            </p:autoComplete>
+
+                            <h:outputText value="Centro de Distribuição:" />
+                            <p:autoComplete id="centro" forceSelection="true" value="#{beanEntrega.entity.centroDistribuicao}" completeMethod="#{beanEntrega.listaCentroDistribuicao}"
+                                            var="cent" itemLabel="#{cent.nome}" itemValue="#{cent}" converter="conversorCentroDistribuicao" >
+                                <p:ajax event="itemSelect" listener="#{beanEntrega.onSelectCentroDistribuicao}" update="formMessage"/>
+                            </p:autoComplete>
+
+                        </h:panelGrid>
+                        <hr />
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Salvar" action="#{beanEntrega.save()}" resetValues="true" update="gridEntrega" oncomplete="handleFormRequest(xhr, status, args)" icon="ui-icon-check" />
+                            <p:commandButton value="Fechar" action="#{beanEntrega.setEntity(null)}" resetValues="true" update="frm-entrega" partialSubmit="true" process="" icon="ui-icon-close" ignoreAutoUpdate="true" />
+                        </h:panelGrid>
+                    </p:dialog>
+                </h:form>
+                <script src="resources/js/core/dialog.js" type="text/javascript"></script>
+                <p:dataTable id="gridEntrega" value="#{beanEntrega.listaEntrega}" var="beanEntrega">
+                    <p:column>
+                        <f:facet name="header">Id</f:facet>
+                        <p:outputLabel value="#{beanEntrega.entity.id}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">Data</f:facet>
+                        <p:outputLabel value="#{beanEntrega.entity.data}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">Ações</f:facet>
+                        <h:form>
+                            <p:commandButton value="Editar" class="btn-editar" action="#{beanEntrega.change()}" update="gridEntrega frm-entrega"/>
+                            <script src="resources/js/core/editar.js" type="text/javascript"></script>
+                            <p:commandButton value="Excluir" action="#{beanEntrega.delete()}" update="gridEntrega"/>
+                        </h:form>
+                    </p:column>
+                </p:dataTable>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

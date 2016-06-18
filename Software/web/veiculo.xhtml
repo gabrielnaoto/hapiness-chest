@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Veículo</title>
+        <h:outputScript library="javax.faces" name="jsf.js"/>
+    </h:head>
+    <h:body>
+        <ui:composition template="template.xhtml">
+            <ui:define name="titulo">
+                Veículo
+            </ui:define>
+            <ui:define name="conteudo">
+                <h:form id="frm-veiculo">
+                    <p:growl id="formMessage" autoUpdate="true" />
+                    <p:commandButton value="Inluir" action="#{beanVeiculo.insert()}" update="frm-veiculo" oncomplete="PF('dlg').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" />
+                    <p:dialog id="dlg" widgetVar="dlg" focus="descricao" header="Veículo" modal="true" closable="false" showEffect="fade" hideEffect="fade" >
+                        <h:panelGrid columns="2">
+                            <h:outputText value="ID:" />
+                            <p:inputText class="ui-state-disabled" id="id" value="#{beanVeiculo.entity.id}" />
+
+                            <h:outputText value="Descrição:" />
+                            <p:inputText required="true" requiredMessage="Campo Descrição é Obrigatório!" id="descricao" value="#{beanVeiculo.entity.descricao}" />
+
+                            <h:outputText value="Capacidade:" />
+                            <p:inputText required="true" requiredMessage="Campo Capacidade é Obrigatório!" validatorMessage="A capacidade deve ser maior do que 0!" id="capacidade" value="#{beanVeiculo.entity.capacidade}" converterMessage="Valor Inválido!">
+                                <f:convertNumber type="number" maxFractionDigits="2" />
+                                <f:validateDoubleRange maximum="99999.99" minimum="1" />
+                            </p:inputText>
+                        </h:panelGrid>
+                        <hr />
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Salvar" action="#{beanVeiculo.save()}" resetValues="true" update="gridVeiculo" oncomplete="handleFormRequest(xhr, status, args)" icon="ui-icon-check" />
+                            <p:commandButton value="Fechar" action="#{beanVeiculo.setEntity(null)}" resetValues="true" update="frm-veiculo" partialSubmit="true" process="" icon="ui-icon-close" ignoreAutoUpdate="true" />
+                        </h:panelGrid>
+                    </p:dialog>
+                </h:form>
+                <script src="resources/js/core/dialog.js" type="text/javascript"></script>
+                <p:dataTable id="gridVeiculo" value="#{beanVeiculo.listaVeiculo}" var="veiculo">
+                    <p:column>
+                        <f:facet name="header">Id</f:facet>
+                        <p:outputLabel value="#{veiculo.id}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">Descrição</f:facet>
+                        <p:outputLabel value="#{veiculo.descricao}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">Capacidade</f:facet>
+                        <p:outputLabel value="#{veiculo.capacidade}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">Ações</f:facet>
+                        <h:form>
+                            <p:commandButton value="Editar" class="btn-editar" action="#{beanVeiculo.change()}" update="gridVeiculo frm-veiculo" oncomplete="PF('dlg').show();"/>
+                            <p:commandButton value="Excluir" action="#{beanVeiculo.delete()}" update="gridVeiculo"/>
+                        </h:form>
+                    </p:column>
+                </p:dataTable>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
