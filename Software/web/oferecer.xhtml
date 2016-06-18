@@ -21,6 +21,8 @@
                     <p:commandButton value="Incluir"  oncomplete="PF('dlg').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" class="padding-bottom-style" />
                     <p:dialog id="dlg" widgetVar="dlg" header="Criar cesta" modal="true" closable="true" showEffect="fade" hideEffect="fade" >
                         <h:panelGrid columns="2">
+                            <!--                            <h:outputText value="ID:" />
+                                                        <p:inputText class="ui-state-disabled" id="id" value="" />-->
                             <p:outputLabel value="Tema:"/>
                             <p:inputText id="input-tema" value="" 	required="true"
                                          requiredMessage="É necessário informar um tema"/>
@@ -41,28 +43,23 @@
                         </h:panelGrid>
                     </p:dialog>
                     <h:form> 
-                        <p:dataScroller value="#{dataScrollerView.cars}" var="car" chunkSize="10" mode="inline" scrollHeight="500">
-                            <f:facet name="header">
-                                Cestas do Baú da Felicidade
-                            </f:facet>
+                        <p:dataTable var="car" value="#{dtBasicView.cars}">
+                            <p:column headerText="Id">
+                                <h:outputText value="#{car.id}" />
+                            </p:column>
 
-                            <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
-                                <p:graphicImage name="demo/images/car/#{car.brand}-big.gif" /> 
+                            <p:column headerText="Year">
+                                <h:outputText value="#{car.year}" />
+                            </p:column>
 
-                                <p:outputPanel>
-                                    <h:panelGrid columns="2" cellpadding="5">
-                                        <h:outputText value="Id:" />
-                                        <h:outputText value="" style="font-weight: bold"/>
+                            <p:column headerText="Brand">
+                                <h:outputText value="#{car.brand}" />
+                            </p:column>
 
-                                        <h:outputText value="Year:" />
-                                        <h:outputText value="" style="font-weight: bold"/>
-
-                                        <h:outputText value="Color:" />
-                                        <h:outputText value="" style="font-weight: bold"/>
-                                    </h:panelGrid>
-                                </p:outputPanel>
-                            </h:panelGrid>
-                        </p:dataScroller>
+                            <p:column headerText="Color">
+                                <h:outputText value="#{car.color}" />
+                            </p:column>
+                        </p:dataTable>
                     </h:form>
                 </h:form>
             </ui:define>

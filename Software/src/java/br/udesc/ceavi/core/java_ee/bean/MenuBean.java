@@ -58,9 +58,9 @@ public class MenuBean {
         conta.addElement(sair);
 
         DefaultMenuItem manterUsuarios = new DefaultMenuItem("Manter usuários", "ui-icon-contact", "#");
-        DefaultMenuItem avaliarProdutos = new DefaultMenuItem("Avaliar produtos", "ui-icon-tag", "#");
-        DefaultMenuItem oferecerProdutos = new DefaultMenuItem("Oferecer produtos", "ui-icon-plusthick", "#");
-        DefaultMenuItem criarCesta = new DefaultMenuItem("Criar cesta", "ui-icon-pencil", "#");
+        DefaultMenuItem avaliarProdutos = new DefaultMenuItem("Avaliar produtos", "ui-icon-tag", "avaliar.jsf");
+        DefaultMenuItem oferecerProdutos = new DefaultMenuItem("Oferecer produtos", "ui-icon-plusthick", "oferecer.jsf");
+        DefaultMenuItem criarCesta = new DefaultMenuItem("Gerenciar cestas", "ui-icon-pencil", "cesta.jsf");
         DefaultMenuItem montarEntrega = new DefaultMenuItem("Montar entrega", "ui-icon-suitcase", "entrega.jsf");
 
         this.menuItens.addElement(conta);
