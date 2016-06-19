@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package beans;
+package br.udesc.ceavi.produto.bean;
 
 import java.util.List;
 import javax.annotation.PostConstruct;

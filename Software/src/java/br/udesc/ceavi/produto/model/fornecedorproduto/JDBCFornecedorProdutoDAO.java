@@ -6,7 +6,7 @@
 package br.udesc.ceavi.produto.model.fornecedorproduto;
 
 import br.udesc.ceavi.produto.model.entidade.FornecedorProduto;
-import br.udesc.ceavi.produto.model.util.Conexao;
+import br.udesc.ceavi.produto.util.Conexao;
 import java.sql.PreparedStatement;
 import java.util.List;
 

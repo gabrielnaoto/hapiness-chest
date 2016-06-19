@@ -6,7 +6,7 @@
 package br.udesc.ceavi.produto.model.dao.cesta;
 
 import br.udesc.ceavi.produto.model.entidade.Cesta;
-import br.udesc.ceavi.produto.model.util.Conexao;
+import br.udesc.ceavi.produto.util.Conexao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;

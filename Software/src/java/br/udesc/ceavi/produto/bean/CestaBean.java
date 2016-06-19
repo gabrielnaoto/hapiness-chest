@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package beans;
+package br.udesc.ceavi.produto.bean;
 
 import br.udesc.ceavi.caixeiro.model.Cesta;
 import java.text.SimpleDateFormat;

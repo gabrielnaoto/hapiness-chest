@@ -7,15 +7,12 @@ package br.udesc.ceavi.produto.model.dao.clienteproduto;
 
 import br.udesc.ceavi.caixeiro.model.Cliente;
 import br.udesc.ceavi.caixeiro.model.dao.iDaoCliente;
-import br.udesc.ceavi.caixeiro.model.dao.iDaoEndereco;
 import br.udesc.ceavi.core.model.dao.JDBC.JDBCFactory;
 import br.udesc.ceavi.core.persistence.Persistence;
-import br.udesc.ceavi.core.persistence.PersistenceType;
-import br.udesc.ceavi.produto.model.dao.core.Persistencia;
-import br.udesc.ceavi.produto.model.entidade.Cesta;
+import static br.udesc.ceavi.core.persistence.PersistenceType.JDBC;
 import br.udesc.ceavi.produto.model.entidade.ClienteProduto;
 import br.udesc.ceavi.produto.model.entidade.Produto;
-import br.udesc.ceavi.produto.model.util.Conexao;
+import br.udesc.ceavi.produto.util.Conexao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -107,7 +104,7 @@ public class JDBCClienteProdutoDAO implements ClienteProdutoDAO {
             Cliente rc = new Cliente();
             rc.setId(id);
             Cliente cliente = dao.findOne(rc);
-            Produto produto = Persistencia.getPersistencia(Persistencia.JDBC).getProdutoDAO().pesquisar(rs.getInt(3));
+            Produto produto = Persistence.getPersistence(JDBC).getProdutoDAO().pesquisar(rs.getInt(3));
             c = new ClienteProduto(rs.getInt(1), cliente, produto, rs.getInt(4));
             stmt.close();
             return c;
@@ -135,7 +132,7 @@ public class JDBCClienteProdutoDAO implements ClienteProdutoDAO {
                 Cliente rc = new Cliente();
                 rc.setId(rs.getInt(2));
                 Cliente cliente = dao.findOne(rc);
-                Produto produto = Persistencia.getPersistencia(Persistencia.JDBC).getProdutoDAO().pesquisar(rs.getInt(3));
+                Produto produto = Persistence.getPersistence(JDBC).getProdutoDAO().pesquisar(rs.getInt(3));
                 cat = new ClienteProduto(rs.getInt(1), cliente, produto, rs.getInt(4));
                 lista.add(cat);
             }

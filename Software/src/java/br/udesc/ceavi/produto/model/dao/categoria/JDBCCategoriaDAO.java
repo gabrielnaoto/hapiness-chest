@@ -5,7 +5,7 @@
  */
 package br.udesc.ceavi.produto.model.dao.categoria;
 
-import br.udesc.ceavi.produto.model.util.Conexao;
+import br.udesc.ceavi.produto.util.Conexao;
 import br.udesc.ceavi.produto.model.entidade.Categoria;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

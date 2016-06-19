@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.udesc.ceavi.produto.model.util;
+package br.udesc.ceavi.produto.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

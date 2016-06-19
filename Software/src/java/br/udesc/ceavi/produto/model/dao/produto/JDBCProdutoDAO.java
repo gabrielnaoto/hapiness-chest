@@ -5,9 +5,10 @@
  */
 package br.udesc.ceavi.produto.model.dao.produto;
 
-import br.udesc.ceavi.produto.model.dao.core.Persistencia;
+import br.udesc.ceavi.core.persistence.Persistence;
+import static br.udesc.ceavi.core.persistence.PersistenceType.JDBC;
 import br.udesc.ceavi.produto.model.entidade.Produto;
-import br.udesc.ceavi.produto.model.util.Conexao;
+import br.udesc.ceavi.produto.util.Conexao;
 import br.udesc.ceavi.produto.model.entidade.Categoria;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -99,7 +100,7 @@ public class JDBCProdutoDAO implements ProdutoDAO {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             rs.next();
-            Categoria c = Persistencia.getPersistencia(Persistencia.JDBC).getCategoriaDAO().pesquisar(rs.getInt(5));
+            Categoria c = Persistence.getPersistence(JDBC).getCategoriaDAO().pesquisar(rs.getInt(5));
             p = new Produto(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getDouble(4), rs.getDouble(5), c);
             stmt.close();
             return p;
@@ -122,7 +123,7 @@ public class JDBCProdutoDAO implements ProdutoDAO {
             stmt = Conexao.getConexao(2).prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Categoria c = Persistencia.getPersistencia(1).getCategoriaDAO().pesquisar(rs.getInt(5));
+                Categoria c = Persistence.getPersistence(JDBC).getCategoriaDAO().pesquisar(rs.getInt(5));
                 p = new Produto(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getDouble(4), rs.getDouble(5), c);
                 lista.add(p);
             }
@@ -166,7 +167,7 @@ public class JDBCProdutoDAO implements ProdutoDAO {
             stmt = Conexao.getConexao(2).prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Categoria c = Persistencia.getPersistencia(1).getCategoriaDAO().pesquisar(rs.getInt(2));
+                Categoria c = Persistence.getPersistence(JDBC).getCategoriaDAO().pesquisar(rs.getInt(2));
                 p = new Produto(rs.getInt(1), rs.getDouble(3), rs.getDouble(4), c);
                 lista.add(p);
             }

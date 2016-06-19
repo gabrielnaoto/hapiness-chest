@@ -1,6 +1,5 @@
 package br.udesc.ceavi.core.model.dao.JDBC;
 
-import br.udesc.ceavi.caixeiro.model.RelacionamentoEndereco;
 import br.udesc.ceavi.caixeiro.model.dao.JDBC.JDBCDAOCentroDistribuicao;
 import br.udesc.ceavi.caixeiro.model.dao.JDBC.JDBCDAOCliente;
 import br.udesc.ceavi.caixeiro.model.dao.JDBC.JDBCDAOEndereco;
@@ -16,6 +15,18 @@ import br.udesc.ceavi.caixeiro.model.dao.iDaoVeiculo;
 import br.udesc.ceavi.core.persistence.Persistence;
 import br.udesc.ceavi.core.persistence.Persistible;
 import br.udesc.ceavi.core.util.ClassUtils;
+import br.udesc.ceavi.produto.model.dao.categoria.CategoriaDAO;
+import br.udesc.ceavi.produto.model.dao.categoria.JDBCCategoriaDAO;
+import br.udesc.ceavi.produto.model.dao.cesta.CestaDAO;
+import br.udesc.ceavi.produto.model.dao.cesta.JDBCCestaDAO;
+import br.udesc.ceavi.produto.model.dao.cestaproduto.CestaProdutoDAO;
+import br.udesc.ceavi.produto.model.dao.cestaproduto.JDBCCestaProdutoDAO;
+import br.udesc.ceavi.produto.model.dao.clienteproduto.ClienteProdutoDAO;
+import br.udesc.ceavi.produto.model.dao.clienteproduto.JDBCClienteProdutoDAO;
+import br.udesc.ceavi.produto.model.dao.produto.JDBCProdutoDAO;
+import br.udesc.ceavi.produto.model.dao.produto.ProdutoDAO;
+import br.udesc.ceavi.produto.model.fornecedorproduto.FornecedorProdutoDAO;
+import br.udesc.ceavi.produto.model.fornecedorproduto.JDBCFornecedorProdutoDAO;
 import java.util.HashMap;
 
 /**
@@ -25,43 +36,74 @@ import java.util.HashMap;
  */
 public class JDBCFactory extends Persistence {
 
-        private static HashMap<String, Persistible> daos = new HashMap<>();
+    private static HashMap<String, Persistible> daos = new HashMap<>();
 
-	public static iDaoCentroDistribuicao getDaoCentroDistribuicao() {
-            return (iDaoCentroDistribuicao) load(JDBCDAOCentroDistribuicao.class);
-	}
+    public static iDaoCentroDistribuicao getDaoCentroDistribuicao() {
+        return (iDaoCentroDistribuicao) load(JDBCDAOCentroDistribuicao.class);
+    }
 
-	public static iDaoCliente getDaoCliente(){
-            return (iDaoCliente) load(JDBCDAOCliente.class);
-	}
+    public static iDaoCliente getDaoCliente() {
+        return (iDaoCliente) load(JDBCDAOCliente.class);
+    }
 
-	public static iDaoEndereco getDaoEndereco() {
-            return (iDaoEndereco) load(JDBCDAOEndereco.class);
-	}
+    public static iDaoEndereco getDaoEndereco() {
+        return (iDaoEndereco) load(JDBCDAOEndereco.class);
+    }
 
-	public static iDaoEntrega getDaoEntrega(){
-            return (iDaoEntrega) load(JDBCDAOEntrega.class);
-	}
+    public static iDaoEntrega getDaoEntrega() {
+        return (iDaoEntrega) load(JDBCDAOEntrega.class);
+    }
 
-	public static iDaoVeiculo getDaoVeiculo(){
-            return (iDaoVeiculo) load(JDBCDAOVeiculo.class);
-	}
+    public static iDaoVeiculo getDaoVeiculo() {
+        return (iDaoVeiculo) load(JDBCDAOVeiculo.class);
+    }
 
-	public static iDaoRelacionamentoEndereco getDaoRelacionamentoEndereco(){
-            return (iDaoRelacionamentoEndereco) load(JDBCDAORelacionamentoEndereco.class);
-	}
+    public static iDaoRelacionamentoEndereco getDaoRelacionamentoEndereco() {
+        return (iDaoRelacionamentoEndereco) load(JDBCDAORelacionamentoEndereco.class);
+    }
 
-        /**
-         * Load an instance of the required class
-         * @param aClass
-         * @return
-         */
-        private static Persistible load(Class<? extends Persistible> aClass) {
-            if(!daos.containsKey(aClass.getName())) {
-                daos.put(aClass.getName(), ClassUtils.getNewPOJO(aClass));
-            }
+    @Override
+    public CestaDAO getCestaDAO() {
+        return new JDBCCestaDAO();
+    }
 
-            return daos.get(aClass.getName());
+    @Override
+    public CategoriaDAO getCategoriaDAO() {
+        return new JDBCCategoriaDAO();
+    }
+
+    @Override
+    public ProdutoDAO getProdutoDAO() {
+        return new JDBCProdutoDAO();
+    }
+
+    @Override
+    public ClienteProdutoDAO getClienteProdutoDAO() {
+        return new JDBCClienteProdutoDAO();
+    }
+
+    @Override
+    public FornecedorProdutoDAO getFornecedorProdutoDAO() {
+        return new JDBCFornecedorProdutoDAO();
+    }
+
+    @Override
+    public CestaProdutoDAO getCestaProdutoDAO() {
+        return new JDBCCestaProdutoDAO();
+    }
+
+    /**
+     * Load an instance of the required class
+     *
+     * @param aClass
+     * @return
+     */
+    private static Persistible load(Class<? extends Persistible> aClass) {
+        if (!daos.containsKey(aClass.getName())) {
+            daos.put(aClass.getName(), ClassUtils.getNewPOJO(aClass));
         }
+
+        return daos.get(aClass.getName());
+    }
 
 }//end JDBCFactory
