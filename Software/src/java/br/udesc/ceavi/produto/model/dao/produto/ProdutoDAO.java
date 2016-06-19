@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.udesc.ceavi.bau.modelo.DAO.produto;
+package br.udesc.ceavi.produto.model.dao.produto;
 
-import br.udesc.ceavi.bau.modelo.entidade.Produto;
+import br.udesc.ceavi.produto.model.entidade.Produto;
 import java.util.List;
 
 /**
@@ -23,5 +23,9 @@ public interface ProdutoDAO {
     public Produto pesquisar(int id);
 
     public List<Produto> listar();
+
+    public int getQuantidade();
+
+    public List<Produto> listarPorCategoria();
 
 }

@@ -5,7 +5,7 @@
  */
 package beans;
 
-import br.udesc.ceavi.bau.modelo.entidade.Cesta;
+import br.udesc.ceavi.caixeiro.model.Cesta;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
