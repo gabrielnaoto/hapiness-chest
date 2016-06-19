@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Veículo</title>
+        <h:outputScript library="javax.faces" name="jsf.js"/>
+    </h:head>
+    <h:body>
+        <ui:composition template="template.xhtml">
+            <ui:define name="titulo">
+                Fornecedor
+            </ui:define>
+            <ui:define name="conteudo">
+                <h:form id="frm-fornecedor">
+                    <p:growl id="formMessage" autoUpdate="true" />
+                    <p:commandButton value="Inluir" action="#{beanFornecedor.insert()}" update="frm-fornecedor" oncomplete="PF('dlg').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" />
+                    <p:dialog id="dlg" widgetVar="dlg" focus="nome" header="Veículo" modal="true" closable="false" showEffect="fade" hideEffect="fade" >
+                        <h:panelGrid columns="2">
+                            <h:outputText value="ID:" />
+                            <p:inputText class="ui-state-disabled" id="id" value="#{beanFornecedor.entity.id}" />
+
+                            <h:outputText value="Nome:" />
+                            <p:inputText required="true" requiredMessage="Campo Nome é Obrigatório!" id="nome" value="#{beanFornecedor.entity.nome}" />
+                            
+                        </h:panelGrid>
+                        <hr />
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Salvar" action="#{beanFornecedor.save()}" resetValues="true" update="gridFornecedor" oncomplete="handleFormRequest(xhr, status, args)" icon="ui-icon-check" />
+                            <p:commandButton value="Fechar" action="#{beanFornecedor.setEntity(null)}" resetValues="true" update="frm-fornecedor" partialSubmit="true" process="" icon="ui-icon-close" ignoreAutoUpdate="true" />
+                        </h:panelGrid>
+                    </p:dialog>
+                </h:form>
+                <script src="resources/js/core/dialog.js" type="text/javascript"></script>
+                <p:dataTable id="gridFornecedor" value="#{beanFornecedor.listaFornecedor}" var="fornecedor">
+                    <p:column>
+                        <f:facet name="header">Id</f:facet>
+                        <p:outputLabel value="#{fornecedor.id}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">Nome</f:facet>
+                        <p:outputLabel value="#{fornecedor.nome}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">Ações</f:facet>
+                        <h:form>
+                            <p:commandButton value="Editar" class="btn-editar" action="#{beanFornecedor.change()}" update="gridFornecedor frm-fornecedor" oncomplete="PF('dlg').show();"/>
+                            <p:commandButton value="Excluir" action="#{beanFornecedor.delete()}" update="gridFornecedor"/>
+                        </h:form>
+                    </p:column>
+                </p:dataTable>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
