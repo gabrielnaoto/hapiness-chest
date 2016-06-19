@@ -21,7 +21,8 @@
 	-webkit-border-radius: 30px;
 	-moz-border-radius: 30px;
 	border-radius: 30px;
-	border: 2px solid #26253a;
+	/*border: 2px solid #26253a; old-theme-color*/
+        /*new-theme-color #390000*/
 	filter: Alpha(Opacity=50);/*IE7 fix*/
 	opacity: 0.5;
 }
@@ -50,14 +51,14 @@
 	-webkit-border-radius: 20px;
 	-moz-border-radius: 20px;
 	border-radius: 20px;
-	border: 2px solid #26253a;
+	border: 2px solid #390000;
 }
 
 .owl-theme .owl-controls .owl-page.active span,
 .owl-theme .owl-controls.clickable .owl-page:hover span{
 	filter: Alpha(Opacity=100);/*IE7 fix*/
 	opacity: 1;
-	background: #26253a;
+	background: #390000;
 }
 
 /* If PaginationNumbers is true */
