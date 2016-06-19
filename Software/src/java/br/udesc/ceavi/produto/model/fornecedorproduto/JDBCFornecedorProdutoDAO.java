@@ -23,7 +23,7 @@ public class JDBCFornecedorProdutoDAO implements FornecedorProdutoDAO {
 //                + "            id, cesta_id, produto_id, data)\n"
 //                + "    VALUES (?, ?, ?, ?);";
 //        try {
-//            stmt = Conexao.getConexao(2).prepareStatement(sql);
+//            stmt = Conexao.getConexao(1).prepareStatement(sql);
 //            stmt.setInt(1, c.getId());
 //            stmt.setInt(2, c.getCesta().getId());
 //            stmt.setInt(3, c.getProduto().getId());

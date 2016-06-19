@@ -29,7 +29,7 @@ public class JDBCCestaProdutoDAO implements CestaProdutoDAO {
                 + "            id, cesta_id, produto_id, data)\n"
                 + "    VALUES (?, ?, ?, ?);";
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setInt(1, c.getId());
             stmt.setInt(2, c.getCesta().getId());
             stmt.setInt(3, c.getProduto().getId());
@@ -51,7 +51,7 @@ public class JDBCCestaProdutoDAO implements CestaProdutoDAO {
         String sql = "DELETE FROM produto.cesta_produto\n"
                 + " WHERE id = ?;";
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setInt(1, id);
             return stmt.executeUpdate() > 0;
         } catch (Exception e) {
@@ -69,7 +69,7 @@ public class JDBCCestaProdutoDAO implements CestaProdutoDAO {
                 + "   SET id=?, cesta_id=?, produto_id=?, data=?\n"
                 + " WHERE id = ?;";
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setInt(1, c.getId());
             stmt.setInt(2, c.getCesta().getId());
             stmt.setInt(3, c.getProduto().getId());
@@ -94,7 +94,7 @@ public class JDBCCestaProdutoDAO implements CestaProdutoDAO {
                 + "WHERE id = ?;";
         CestaProduto c = null;
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             rs.next();
@@ -119,7 +119,7 @@ public class JDBCCestaProdutoDAO implements CestaProdutoDAO {
                 + "  FROM produto.cesta_produto;";
         ArrayList<CestaProduto> lista = new ArrayList<>();
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             CestaProduto cat = null;
             while (rs.next()) {

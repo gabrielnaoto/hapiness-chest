@@ -31,7 +31,7 @@ public class JDBCClienteProdutoDAO implements ClienteProdutoDAO {
                 + "            id, cliente_id, produto_id, satisfacao)\n"
                 + "    VALUES (?, ?, ?, ?);";
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setInt(1, c.getId());
             stmt.setInt(2, c.getCliente().getId());
             stmt.setInt(3, c.getProduto().getId());
@@ -53,7 +53,7 @@ public class JDBCClienteProdutoDAO implements ClienteProdutoDAO {
         String sql = "DELETE FROM produto.cliente_produto\n"
                 + " WHERE id = ?;";
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setInt(1, id);
             return stmt.executeUpdate() > 0;
         } catch (Exception e) {
@@ -71,7 +71,7 @@ public class JDBCClienteProdutoDAO implements ClienteProdutoDAO {
                 + "   SET id=?, cliente_id=?, produto_id=?, satisfacao=?\n"
                 + " WHERE id = ?;";
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setInt(1, c.getId());
             stmt.setInt(2, c.getCliente().getId());
             stmt.setInt(3, c.getProduto().getId());
@@ -96,7 +96,7 @@ public class JDBCClienteProdutoDAO implements ClienteProdutoDAO {
                 + "WHERE id = ?;";
         ClienteProduto c = null;
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             rs.next();
@@ -124,7 +124,7 @@ public class JDBCClienteProdutoDAO implements ClienteProdutoDAO {
                 + "  FROM produto.cesta_produto;";
         ArrayList<ClienteProduto> lista = new ArrayList<>();
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             ClienteProduto cat = null;
             while (rs.next()) {

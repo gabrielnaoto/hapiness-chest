@@ -20,10 +20,18 @@ public class Cesta {
     private String tema;
     private double valorMaximo;
     private int peso;
+    private List<Categoria> categorias;
     private List<Produto> produtos;
 
     public Cesta() {
         produtos = new ArrayList<Produto>();
+        categorias = new ArrayList<Categoria>();
+    }
+
+    public Cesta(Date data, String tema, double valorMaximo) {
+        this.data = data;
+        this.tema = tema;
+        this.valorMaximo = valorMaximo;
     }
 
     public Cesta(int id, Date data, String tema, double valorMaximo, int peso) {
@@ -32,6 +40,18 @@ public class Cesta {
         this.tema = tema;
         this.data = data;
         this.valorMaximo = valorMaximo;
+    }
+
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<Categoria> categorias) {
+        this.categorias = categorias;
+    }
+    
+    public void addCategoria(Categoria c){
+        categorias.add(c);
     }
 
     public int getId() {

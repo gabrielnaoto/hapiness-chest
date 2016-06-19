@@ -30,7 +30,7 @@ public class JDBCProdutoDAO implements ProdutoDAO {
                 + "id, descricao, valor, peso, categoria_id)\n"
                 + "VALUES (?, ?, ?, ?, ?);";
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setInt(1, p.getId());
             stmt.setString(2, p.getDescricao());
             stmt.setDouble(3, p.getValor());
@@ -52,7 +52,7 @@ public class JDBCProdutoDAO implements ProdutoDAO {
         String sql = "DELETE FROM produto.produto\n"
                 + "WHERE id=?";
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setInt(1, id);
             return stmt.executeUpdate() > 0;
         } catch (Exception e) {
@@ -70,7 +70,7 @@ public class JDBCProdutoDAO implements ProdutoDAO {
                 + "   SET id=?, descricao=?, valor=?, peso=?, categoria_id=?\n"
                 + " WHERE where id=?;";
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setInt(1, p.getId());
             stmt.setString(2, p.getDescricao());
             stmt.setDouble(3, p.getValor());
@@ -96,7 +96,7 @@ public class JDBCProdutoDAO implements ProdutoDAO {
                 + "WHERE id=?";
         Produto p = null;
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             rs.next();
@@ -120,7 +120,7 @@ public class JDBCProdutoDAO implements ProdutoDAO {
         ArrayList<Produto> lista = new ArrayList<>();
         Produto p = null;
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Categoria c = Persistence.getPersistence(JDBC).getCategoriaDAO().pesquisar(rs.getInt(5));
@@ -143,7 +143,7 @@ public class JDBCProdutoDAO implements ProdutoDAO {
         int numRow = 0;
         String sql = "SELECT count(id) as q FROM produto.produto;";
         try {
-            st = Conexao.getConexao(2).createStatement();
+            st = Conexao.getConexao(1).createStatement();
             rs = st.executeQuery(sql);
             rs.next();
             numRow = rs.getInt("q");
@@ -164,7 +164,7 @@ public class JDBCProdutoDAO implements ProdutoDAO {
         ArrayList<Produto> lista = new ArrayList<>();
         Produto p = null;
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Categoria c = Persistence.getPersistence(JDBC).getCategoriaDAO().pesquisar(rs.getInt(2));

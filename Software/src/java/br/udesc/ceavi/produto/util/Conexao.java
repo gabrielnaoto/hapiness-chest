@@ -16,6 +16,7 @@ import java.sql.SQLException;
 public class Conexao {
 
     public static class Database {
+
         String protocol;
         String driver;
         int port;
@@ -25,14 +26,14 @@ public class Conexao {
             this.driver = driver;
             this.port = port;
         }
-        
+
     }
-    
+
     public static final int POSTGRES = 1;
     public static final int MYSQL = 2;
 
     private static Database db;
-    private static String mydatabase = "teste";
+    private static String mydatabase = "bau";
     private static String username = "postgres";
     private static String password = "root";
     private static int database = 0;
@@ -41,7 +42,7 @@ public class Conexao {
 
     public static java.sql.Connection getConexao(int banco) {
         database = banco;
-        switch(banco){
+        switch (banco) {
             case 1: {
                 db = new Database("jdbc:mysql://", "com.mysql.jdbc.Driver", 3306);
             }

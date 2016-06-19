@@ -27,7 +27,7 @@ public class JDBCCategoriaDAO implements CategoriaDAO {
                 + "            id, descricao)\n"
                 + "    VALUES (?, ?);";
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setInt(1, c.getId());
             stmt.setString(2, c.getDescricao());
             stmt.executeUpdate();
@@ -47,7 +47,7 @@ public class JDBCCategoriaDAO implements CategoriaDAO {
         String sql = "DELETE FROM produto.categoria\n"
                 + " WHERE id = ?;";
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setInt(1, id);
             return stmt.executeUpdate() > 0;
         } catch (Exception e) {
@@ -65,7 +65,7 @@ public class JDBCCategoriaDAO implements CategoriaDAO {
                 + "   SET id=?, descricao=?\n"
                 + " WHERE id = ?;";
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setInt(1, c.getId());
             stmt.setString(2, c.getDescricao());
             stmt.setInt(3, c.getId());
@@ -86,7 +86,7 @@ public class JDBCCategoriaDAO implements CategoriaDAO {
                 + "WHERE id = ?;";
         Categoria c = null;
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             rs.next();
@@ -110,7 +110,7 @@ public class JDBCCategoriaDAO implements CategoriaDAO {
         ArrayList<Categoria> lista = new ArrayList<>();
         Categoria c = null;
         try {
-            stmt = Conexao.getConexao(2).prepareStatement(sql);
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             Categoria cat = null;
             while (rs.next()) {
@@ -138,7 +138,7 @@ public class JDBCCategoriaDAO implements CategoriaDAO {
         int numCol = 0;
         String sql = "SELECT count(id) as quantCat FROM produto.categoria;";
         try {
-            st = Conexao.getConexao(2).createStatement();
+            st = Conexao.getConexao(1).createStatement();
             rs = st.executeQuery(sql);
             rs.next();
             numCol = rs.getInt("quantCat");
