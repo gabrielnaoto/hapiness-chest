@@ -22,10 +22,12 @@ public interface CategoriaDAO {
 
     public Categoria pesquisar(int id);
 
+    public Categoria pesquisar(String descricao);
+
     public List<Categoria> listar();
 
     public int getQuantidade();
-    
+
     public List<Categoria> getFromCesta(int cestaid);
 
 }

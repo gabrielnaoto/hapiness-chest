@@ -84,17 +84,41 @@ public class JDBCCategoriaDAO implements CategoriaDAO {
             Conexao.fechar();
         }
     }
-
+    
     @Override
     public Categoria pesquisar(int id) {
         PreparedStatement stmt = null;
         String sql = "SELECT id, descricao\n"
                 + "  FROM produto.categoria"
-                + "WHERE id = ?;";
+                + " WHERE descricao = ?;";
         Categoria c = null;
         try {
             stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            c = new Categoria(rs.getInt(1), rs.getString(2));
+            stmt.close();
+            return c;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            Conexao.fechar();
+        }
+
+    }
+
+    @Override
+    public Categoria pesquisar(String descricao) {
+        PreparedStatement stmt = null;
+        String sql = "SELECT id, descricao\n"
+                + "  FROM produto.categoria\n"
+                + "WHERE descricao = ?;";
+        Categoria c = null;
+        try {
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
+            stmt.setString(1, descricao);
             ResultSet rs = stmt.executeQuery();
             rs.next();
             c = new Categoria(rs.getInt(1), rs.getString(2));

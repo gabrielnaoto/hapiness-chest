@@ -42,7 +42,9 @@ public class GerenciarCestaUC {
         try {
             List<Categoria> categorias = c.getCategorias();
             for (Categoria categoria : categorias) {
-                categoriaDAO.inserir(categoria);
+                if (categoriaDAO.pesquisar(categoria.getDescricao()) == null) {
+                    categoriaDAO.inserir(categoria);
+                }
                 CestaCategoria cc = new CestaCategoria();
                 cc.setCesta(c);
                 cc.setCategoria(categoria);
@@ -55,13 +57,37 @@ public class GerenciarCestaUC {
         return inseriu;
     }
 
+    public boolean atualizar(Cesta c) {
+        try {
+            List<Categoria> categorias = c.getCategorias();
+            for (Categoria categoria : categorias) {
+                if (categoriaDAO.pesquisar(categoria.getDescricao()) == null) {
+                    categoriaDAO.inserir(categoria);
+                    CestaCategoria cc = new CestaCategoria();
+                    cc.setCesta(c);
+                    cc.setCategoria(categoria);
+                    ccDAO.inserir(cc);
+                }
+            }
+        } catch (Exception e) {
+
+        }
+        return true;
+    }
+
     public List<Cesta> obterCestas() {
         return cestaDAO.listarFinalizadas();
     }
 
+    public boolean finalizar(Cesta c) {
+        return cestaDAO.atualizar(c);
+    }
+
     public Cesta getAtual() {
         Cesta atual = cestaDAO.getAtual();
-        atual.setCategorias(categoriaDAO.getFromCesta(atual.getId()));
+        if (atual != null) {
+            atual.setCategorias(categoriaDAO.getFromCesta(atual.getId()));
+        }
         return atual;
     }
 

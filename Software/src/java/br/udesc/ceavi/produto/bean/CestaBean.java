@@ -10,6 +10,7 @@ import br.udesc.ceavi.produto.model.entidade.Cesta;
 import br.udesc.ceavi.produto.uc.GerenciarCestaUC;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -100,6 +101,17 @@ public class CestaBean {
         }
     }
 
+    public void atualizarCategoriasCesta() {
+        facesContext = FacesContext.getCurrentInstance();
+        if (gcuc.atualizar(atual)) {
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Cesta adicionada com sucesso!"));
+            atualizar();
+            cesta = new Cesta();
+        } else {
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Houve um problema ao adicionar a cesta."));
+        }
+    }
+
     public boolean podeFinalizarCesta() {
         boolean mckp = true; //verificar se há compra realizada
         boolean tsp = true; //verificar se todas as entregas foram feitas
@@ -111,14 +123,30 @@ public class CestaBean {
         categoria = new Categoria();
     }
 
-    public void adicionar() {
-        cesta.addCategoria(categoria);
+    public void adicionar(Cesta c) {
+        c.addCategoria(categoria);
         categoria = new Categoria();
     }
 
     public void atualizar() {
         cestas = gcuc.obterCestas();
         atual = gcuc.getAtual();
+    }
+
+    public void finalizar() {
+        int peso = 2; //tem q pegar dos produtos na real.
+        if (podeFinalizarCesta()) {
+            Date d = Calendar.getInstance().getTime();
+            atual.setData(d);
+            atual.setPeso(peso);
+            facesContext = FacesContext.getCurrentInstance();
+            if (gcuc.finalizar(atual)) {
+                facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Cesta encerrada!"));
+            } else {
+                facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Houve um problema ao finalizar a cesta."));
+            }
+        }
+        atualizar();
     }
 
     public String getData(Date d) {

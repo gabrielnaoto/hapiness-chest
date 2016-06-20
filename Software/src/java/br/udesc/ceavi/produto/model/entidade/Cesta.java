@@ -49,8 +49,8 @@ public class Cesta {
     public void setCategorias(List<Categoria> categorias) {
         this.categorias = categorias;
     }
-    
-    public void addCategoria(Categoria c){
+
+    public void addCategoria(Categoria c) {
         categorias.add(c);
     }
 
