@@ -84,13 +84,13 @@ public class JDBCCategoriaDAO implements CategoriaDAO {
             Conexao.fechar();
         }
     }
-    
+
     @Override
     public Categoria pesquisar(int id) {
         PreparedStatement stmt = null;
         String sql = "SELECT id, descricao\n"
                 + "  FROM produto.categoria"
-                + " WHERE descricao = ?;";
+                + " WHERE id = ?;";
         Categoria c = null;
         try {
             stmt = Conexao.getConexao(1).prepareStatement(sql);
@@ -114,15 +114,15 @@ public class JDBCCategoriaDAO implements CategoriaDAO {
         PreparedStatement stmt = null;
         String sql = "SELECT id, descricao\n"
                 + "  FROM produto.categoria\n"
-                + "WHERE descricao = ?;";
+                + "WHERE LOWER(descricao) = LOWER(?);";
         Categoria c = null;
         try {
             stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setString(1, descricao);
             ResultSet rs = stmt.executeQuery();
-            rs.next();
-            c = new Categoria(rs.getInt(1), rs.getString(2));
-            stmt.close();
+            if (rs.next()) {
+                c = new Categoria(rs.getInt("id"), rs.getString("descricao"));
+            }
             return c;
         } catch (Exception e) {
             e.printStackTrace();
@@ -208,6 +208,35 @@ public class JDBCCategoriaDAO implements CategoriaDAO {
             e.printStackTrace();
         }
         return numCol;
+    }
+
+    @Override
+    public List<Categoria> pesquisarVarios(String query) {
+        PreparedStatement stmt = null;
+        String sql = "SELECT id, descricao\n"
+                + "  FROM produto.categoria where LOWER(descricao) LIKE LOWER(?);";
+        ArrayList<Categoria> lista = new ArrayList<>();
+        Categoria c = null;
+        try {
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
+            query = "%" + query + "%";
+            stmt.setString(1, query);
+            ResultSet rs = stmt.executeQuery();
+            Categoria cat = null;
+            while (rs.next()) {
+                cat = new Categoria(rs.getInt("id"), rs.getString("descricao"));
+                lista.add(cat);
+
+            }
+            stmt.close();
+            Conexao.fechar();
+
+        } catch (Exception e) {
+            System.out.println(e);
+
+        }
+        System.out.println("Categorias listadas com sucesso!");
+        return lista;
     }
 
 }

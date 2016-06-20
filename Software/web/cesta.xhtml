@@ -16,7 +16,7 @@
                 Gerenciar cestas
             </ui:define>
             <ui:define name="conteudo">
-                <p:growl id="growl" autoUpdate="true"/>
+                <p:growl id="growl" autoUpdate="true" showDetail="true"/>
                 <h:form id="frm-conteudo">
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
                         <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
@@ -25,7 +25,7 @@
                     <p:commandButton value="Criar cesta" rendered="#{cestaBean.atual == null}" oncomplete="PF('dlg').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" class="padding-bottom-style" />
                     <p:commandButton value="Editar cesta" rendered="#{cestaBean.atual != null}" oncomplete="PF('dlg2').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" class="padding-bottom-style"/>
                     <p:commandButton value="Selecionar produtos" rendered="#{cestaBean.atual != null}" icon="ui-icon-extlink"/>
-                    <p:commandButton value="Finalizar" rendered="#{cestaBean.atual != null}" icon="ui-icon-extlink" action="#{cestaBean.finalizar()}" ajax="false" update="@all" oncomplete="location.reload(true);">
+                    <p:commandButton value="Finalizar" rendered="#{cestaBean.atual != null}" icon="ui-icon-extlink" actionListener="#{cestaBean.finalizar()}" ajax="true" update="frm-conteudo growl" >
                         <p:confirm header="Confirmação" message="Tem certeza? Esta operação não pode ser desfeita" icon="ui-icon-alert" />
                     </p:commandButton>
                     <div class="divisior"></div>
@@ -51,7 +51,20 @@
                                 <p:column headerText="Valor Máximo">
                                     <h:outputText value="#{cestaBean.getValor(gar34.valorMaximo)}" />
                                 </p:column>
+                                <p:commandButton update=":form:carDetail" oncomplete="PF('carOP').show('#{component.clientId}')" icon="ui-icon-search" title="View">
+                                    <f:setPropertyActionListener value="#{gar34}" target="#{cestaBean.selectedGar34}" />
+                                </p:commandButton>
                             </p:dataTable>
+                            <p:overlayPanel widgetVar="carOP" showEffect="fade" hideEffect="fade" dismissable="false" showCloseIcon="true">
+                                <p:outputPanel id="carDetail" style="text-align:center;">
+                                    <h:panelGrid  columns="1" rendered="#{not empty cestaBean.selectedGar34}" >
+
+                                        
+                                        <h:outputText value="#{cestaBean.selectedGar34.data}" />
+
+                                    </h:panelGrid>
+                                </p:outputPanel>
+                            </p:overlayPanel>
                         </h:form>
                     </p:fieldset>
                 </h:form>
@@ -82,8 +95,9 @@
                     <h:form id="loco">
                         <p:panel id="categoriasadd">
                             <p:outputLabel value="Categoria: "/>
-                            <p:inputText id="input-categoria" value="#{cestaBean.categoria.descricao}" 	required="true}"
-                                         requiredMessage="É necessário informar uma categoria."/>
+<!--                            <p:inputText id="input-categoria" value="#{cestaBean.categoria.descricao}" 	required="true}"
+                                         requiredMessage="É necessário informar uma categoria."/>-->
+                            <p:autoComplete  value="#{cestaBean.categoria.descricao}" completeMethod="#{cestaBean.completeText}" requiredMessage="É necessário informar uma categoria." required="true"/>
                             <p:commandButton value="Adicionar" id="add"  process="categoriasadd" actionListener="#{cestaBean.adicionar(cestaBean.cesta)}" update=":frm-dlg:datalist categoriasadd"  />
                         </p:panel>
                     </h:form>
@@ -109,9 +123,10 @@
                         </p:dataList>
                         <p:panel id="categoriasadd">
                             <p:outputLabel value="Categoria: "/>
-                            <p:inputText id="input-categoria" value="#{cestaBean.categoria.descricao}" 	required="true"
-                                         requiredMessage="É necessário informar uma categoria."/>
-                            <p:commandButton value="Adicionar" process="categoriasadd" actionListener="#{cestaBean.adicionar(cestaBean.atual)}" update="datalist input-categoria"  />
+<!--                            <p:inputText id="input-categoria" value="#{cestaBean.categoria.descricao}" 	required="true"
+                                         requiredMessage="É necessário informar uma categoria."/>-->
+                            <p:autoComplete id="input-cat" value="#{cestaBean.categoria.descricao}" completeMethod="#{cestaBean.completeText}" requiredMessage="É necessário informar uma categoria." required="true"/>
+                            <p:commandButton value="Adicionar" process="categoriasadd" actionListener="#{cestaBean.adicionar(cestaBean.atual)}" update="datalist input-cat"  />
                         </p:panel>
                         <h:panelGrid columns="2">
                             <p:commandButton value="Atualizar" action="#{cestaBean.atualizarCategoriasCesta()}" ajax="false" immediate="true" icon="ui-icon-check"  update="@all growl" />

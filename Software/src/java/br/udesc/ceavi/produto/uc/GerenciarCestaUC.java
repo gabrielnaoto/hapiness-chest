@@ -13,6 +13,7 @@ import br.udesc.ceavi.produto.model.dao.cestacategoria.CestaCategoriaDAO;
 import br.udesc.ceavi.produto.model.entidade.Categoria;
 import br.udesc.ceavi.produto.model.entidade.Cesta;
 import br.udesc.ceavi.produto.model.entidade.CestaCategoria;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,18 +38,36 @@ public class GerenciarCestaUC {
         categoriaDAO = Persistence.getPersistence(JDBC).getCategoriaDAO();
     }
 
+    public List<String> retornaResultadosAutoComplete(String query) {
+        List<Categoria> cats = categoriaDAO.pesquisarVarios(query);
+        List<String> results = new ArrayList<>();
+        for (Categoria cat : cats) {
+            results.add(cat.getDescricao());
+        }
+
+        return results;
+    }
+
     public boolean criar(Cesta c) {
         boolean inseriu = cestaDAO.inserir(c);
         try {
             List<Categoria> categorias = c.getCategorias();
             for (Categoria categoria : categorias) {
+                Categoria fds = null;
+                CestaCategoria cc = new CestaCategoria();
                 if (categoriaDAO.pesquisar(categoria.getDescricao()) == null) {
                     categoriaDAO.inserir(categoria);
+                    cc.setCategoria(categoria);
+                    
+                } else {
+                    fds = categoriaDAO.pesquisar(categoria.getDescricao());
+                    cc.setCategoria(fds);
                 }
-                CestaCategoria cc = new CestaCategoria();
+                
                 cc.setCesta(c);
-                cc.setCategoria(categoria);
+                
                 ccDAO.inserir(cc);
+                
             }
 
         } catch (Exception e) {
@@ -60,14 +79,18 @@ public class GerenciarCestaUC {
     public boolean atualizar(Cesta c) {
         try {
             List<Categoria> categorias = c.getCategorias();
-            for (Categoria categoria : categorias) {
+           for (Categoria categoria : categorias) {
+                Categoria fds = null;
+                CestaCategoria cc = new CestaCategoria();
                 if (categoriaDAO.pesquisar(categoria.getDescricao()) == null) {
                     categoriaDAO.inserir(categoria);
-                    CestaCategoria cc = new CestaCategoria();
-                    cc.setCesta(c);
                     cc.setCategoria(categoria);
-                    ccDAO.inserir(cc);
+                } else {
+                    fds = categoriaDAO.pesquisar(categoria.getDescricao());
+                    cc.setCategoria(fds);
                 }
+                cc.setCesta(c);
+                ccDAO.inserir(cc);
             }
         } catch (Exception e) {
 

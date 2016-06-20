@@ -5,6 +5,8 @@
  */
 package br.udesc.ceavi.produto.model.entidade;
 
+import java.util.Date;
+
 /**
  *
  * @author ignoi
@@ -14,6 +16,7 @@ public class CestaCategoria {
     private int id;
     private Cesta cesta;
     private Categoria categoria;
+    private Date data;
 
     public CestaCategoria() {
     }
@@ -31,6 +34,15 @@ public class CestaCategoria {
     public void setId(int id) {
         this.id = id;
     }
+
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }
+    
 
     public Cesta getCesta() {
         return cesta;

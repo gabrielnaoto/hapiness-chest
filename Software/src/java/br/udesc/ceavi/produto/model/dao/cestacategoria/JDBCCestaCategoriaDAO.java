@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import br.udesc.ceavi.produto.model.entidade.Cesta;
 import br.udesc.ceavi.produto.model.entidade.CestaCategoria;
-import br.udesc.ceavi.produto.model.entidade.Produto;
+import java.util.Date;
 
 /**
  *
@@ -27,12 +27,14 @@ public class JDBCCestaCategoriaDAO implements CestaCategoriaDAO {
     public boolean inserir(CestaCategoria c) {
         PreparedStatement stmt = null;
         String sql = "INSERT INTO produto.cesta_categoria(\n"
-                + "             cesta_id, categoria_id)\n"
-                + "    VALUES (?, ?);";
+                + "             cesta_id, categoria_id, data)\n"
+                + "    VALUES (?, ?, ?);";
         try {
+            c.setData(new Date());//pega sempre a data atual 
             stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setInt(1, c.getCesta().getId());
             stmt.setInt(2, c.getCategoria().getId());
+            stmt.setDate(3, new java.sql.Date(c.getData().getTime()));
             stmt.executeUpdate();
             stmt.close();
             return true;

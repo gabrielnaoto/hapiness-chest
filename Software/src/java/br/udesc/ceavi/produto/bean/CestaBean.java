@@ -8,6 +8,7 @@ package br.udesc.ceavi.produto.bean;
 import br.udesc.ceavi.produto.model.entidade.Categoria;
 import br.udesc.ceavi.produto.model.entidade.Cesta;
 import br.udesc.ceavi.produto.uc.GerenciarCestaUC;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -27,12 +28,13 @@ import org.primefaces.event.SelectEvent;
  */
 @ManagedBean
 @ViewScoped
-public class CestaBean {
+public class CestaBean implements Serializable {
 
     private FacesContext facesContext;
     private List<Cesta> cestas;
     private GerenciarCestaUC gcuc;
     private Cesta atual;
+    private Cesta SelectedGar34;
 
     private Cesta cesta;
     private Categoria categoria;
@@ -46,6 +48,10 @@ public class CestaBean {
         categoria = new Categoria();
     }
 
+    public List<String> completeText(String query) {
+        return this.gcuc.retornaResultadosAutoComplete(query);
+    }
+
     public void onDateSelect(SelectEvent event) {
         facesContext = FacesContext.getCurrentInstance();
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -56,6 +62,14 @@ public class CestaBean {
         RequestContext requestContext = RequestContext.getCurrentInstance();
         requestContext.update("form:display");
         requestContext.execute("PF('dlg').show()");
+    }
+
+    public Cesta getSelectedGar34() {
+        return SelectedGar34;
+    }
+
+    public void setSelectedGar34(Cesta SelectedGar34) {
+        this.SelectedGar34 = SelectedGar34;
     }
 
     public List<Cesta> getCestas() {
@@ -142,11 +156,12 @@ public class CestaBean {
             facesContext = FacesContext.getCurrentInstance();
             if (gcuc.finalizar(atual)) {
                 facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Cesta encerrada!"));
+                atualizar();
             } else {
                 facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Houve um problema ao finalizar a cesta."));
             }
         }
-        atualizar();
+
     }
 
     public String getData(Date d) {

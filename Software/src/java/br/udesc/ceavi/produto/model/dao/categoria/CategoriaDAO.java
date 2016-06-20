@@ -24,6 +24,8 @@ public interface CategoriaDAO {
 
     public Categoria pesquisar(String descricao);
 
+    public List<Categoria> pesquisarVarios(String query);
+
     public List<Categoria> listar();
 
     public int getQuantidade();
