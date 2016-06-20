@@ -9,6 +9,8 @@ import br.udesc.ceavi.produto.model.entidade.Cesta;
 import br.udesc.ceavi.produto.util.Conexao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,15 +25,23 @@ public class JDBCCestaDAO implements CestaDAO {
     public boolean inserir(Cesta c) {
         PreparedStatement stmt = null;
         String sql = "INSERT INTO produto.cesta(\n"
-                + "            data, tema, valor_max, peso)\n"
-                + "    VALUES (?, ?, ?, ?);";
+                + "            tema, valor_max, peso)\n"
+                + "    VALUES (?, ?, ?);";
         try {
-            stmt = Conexao.getConexao(Conexao.POSTGRES).prepareStatement(sql);
-            stmt.setDate(1, new java.sql.Date(c.getData().getTime()));
-            stmt.setString(2, c.getTema());
-            stmt.setDouble(3, c.getValorMaximo());
-            stmt.setInt(4, c.getPeso());
-            return stmt.executeUpdate() > 0;
+            stmt = Conexao.getConexao(Conexao.POSTGRES).prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setString(1, c.getTema());
+            stmt.setDouble(2, c.getValorMaximo());
+            stmt.setInt(3, c.getPeso());
+            if (stmt.executeUpdate() > 0) {
+                ResultSet result = stmt.getGeneratedKeys();
+                if (result.next()) {
+                    int chave = result.getInt(1);
+                    c.setId(chave);
+                }
+            } else {
+                throw new Exception("Usuário não inserido");
+            }
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -104,7 +114,8 @@ public class JDBCCestaDAO implements CestaDAO {
     public List<Cesta> listar() {
         PreparedStatement stmt = null;
         String sql = "SELECT id, data, tema, valor_max, peso\n"
-                + "  FROM produto.cesta;";
+                + "  FROM produto.cesta"
+                + "WHERE data is not null";
         ArrayList<Cesta> lista = new ArrayList<>();
         Cesta c = null;
         try {
@@ -121,6 +132,49 @@ public class JDBCCestaDAO implements CestaDAO {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public List<Cesta> listarFinalizadas() {
+        PreparedStatement stmt = null;
+        String sql = "SELECT id, data, tema, valor_max, peso FROM produto.cesta WHERE data is not null";
+        ArrayList<Cesta> lista = new ArrayList<>();
+        Cesta c = null;
+        try {
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                c = new Cesta(rs.getInt(1), new Date(rs.getDate(2).getTime()), rs.getString(3), rs.getDouble(4), rs.getInt(5));
+                lista.add(c);
+            }
+            stmt.close();
+            Conexao.fechar();
+            return lista;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public Cesta getAtual() {
+        PreparedStatement stmt = null;
+        String sql = "SELECT id, data, tema, valor_max, peso FROM produto.cesta WHERE data is null";
+        Cesta c = null;
+        try {
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                c = new Cesta(rs.getInt("id"), null, rs.getString("tema"), rs.getDouble("valor_max"), rs.getInt("peso"));
+                return c;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            Conexao.fechar();
+        }
+        return null;
     }
 
 }

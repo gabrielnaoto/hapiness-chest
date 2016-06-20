@@ -16,6 +16,7 @@
                 Bem-vindo!
             </ui:define>
             <ui:define name="conteudo">
+                <p:growl id="messages"/>
                 <h:form id="form">
                     <p:dataGrid var="car" value="#{avaliarBean.cars}" columns="3" layout="grid"
                                 rows="12" paginator="true" id="cars"
@@ -29,12 +30,17 @@
                         <p:panel header="#{car.id}" style="text-align:center">
                             <h:panelGrid columns="1" style="width:100%">
                                 <h:outputText value="#{car.brand}" />
-                                
+
                                 <h:outputText value="#{car.color}" />
-                                
+
                                 <h:outputText value="#{car.year}" />
-                                
+
                                 <h:outputText value="#{car.price}" />
+
+                                <p:rating value="#{car.avaliacao}" stars="10">
+                                    <p:ajax event="rate" listener="#{avaliarBean.onrate}" update="messages" />
+                                    <p:ajax event="cancel" listener="#{avaliarBean.oncancel}" update="messages" />
+                                </p:rating>
 
                                 <p:commandLink update=":form:carDetail" oncomplete="PF('carDialog').show()" title="View Detail">
                                     <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />

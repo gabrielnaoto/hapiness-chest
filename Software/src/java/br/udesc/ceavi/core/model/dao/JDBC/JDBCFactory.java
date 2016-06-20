@@ -21,6 +21,8 @@ import br.udesc.ceavi.produto.model.dao.categoria.CategoriaDAO;
 import br.udesc.ceavi.produto.model.dao.categoria.JDBCCategoriaDAO;
 import br.udesc.ceavi.produto.model.dao.cesta.CestaDAO;
 import br.udesc.ceavi.produto.model.dao.cesta.JDBCCestaDAO;
+import br.udesc.ceavi.produto.model.dao.cestacategoria.CestaCategoriaDAO;
+import br.udesc.ceavi.produto.model.dao.cestacategoria.JDBCCestaCategoriaDAO;
 import br.udesc.ceavi.produto.model.dao.cestaproduto.CestaProdutoDAO;
 import br.udesc.ceavi.produto.model.dao.cestaproduto.JDBCCestaProdutoDAO;
 import br.udesc.ceavi.produto.model.dao.clienteproduto.ClienteProdutoDAO;
@@ -101,6 +103,13 @@ public class JDBCFactory extends Persistence {
     public CestaProdutoDAO getCestaProdutoDAO() {
         return new JDBCCestaProdutoDAO();
     }
+
+    @Override
+    public CestaCategoriaDAO getCestaCategoriaDAO() {
+        return new JDBCCestaCategoriaDAO();
+    }
+    
+    
 
     /**
      * Load an instance of the required class

@@ -16,6 +16,7 @@ public class Car {
     int year;
     String color;
     double price;
+    private int avaliacao;
     boolean soldState;
 
     public Car() {
@@ -29,6 +30,16 @@ public class Car {
         this.price = price;
         this.soldState = soldState;
     }
+
+    public int getAvaliacao() {
+        return avaliacao;
+    }
+
+    public void setAvaliacao(int avaliacao) {
+        this.avaliacao = avaliacao;
+    }
+    
+    
 
     public String getId() {
         return id;

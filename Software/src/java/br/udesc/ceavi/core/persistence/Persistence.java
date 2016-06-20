@@ -2,6 +2,7 @@ package br.udesc.ceavi.core.persistence;
 
 import br.udesc.ceavi.produto.model.dao.categoria.CategoriaDAO;
 import br.udesc.ceavi.produto.model.dao.cesta.CestaDAO;
+import br.udesc.ceavi.produto.model.dao.cestacategoria.CestaCategoriaDAO;
 import br.udesc.ceavi.produto.model.dao.cestaproduto.CestaProdutoDAO;
 import br.udesc.ceavi.produto.model.dao.clienteproduto.ClienteProdutoDAO;
 import br.udesc.ceavi.produto.model.dao.produto.ProdutoDAO;
@@ -43,5 +44,7 @@ public abstract class Persistence {
     public abstract FornecedorProdutoDAO getFornecedorProdutoDAO();
 
     public abstract CestaProdutoDAO getCestaProdutoDAO();
+    
+    public abstract CestaCategoriaDAO getCestaCategoriaDAO();
 
 }

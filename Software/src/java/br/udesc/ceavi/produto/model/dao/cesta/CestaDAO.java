@@ -23,5 +23,9 @@ public interface CestaDAO {
     public Cesta pesquisar(int id);
 
     public List<Cesta> listar();
+    
+    public List<Cesta> listarFinalizadas();
+    
+    public Cesta getAtual();
 
 }

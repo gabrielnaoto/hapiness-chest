@@ -15,7 +15,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -25,12 +25,14 @@ import org.primefaces.event.SelectEvent;
  * @author ignoi
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class CestaBean {
 
     private FacesContext facesContext;
     private List<Cesta> cestas;
     private GerenciarCestaUC gcuc;
+    private Cesta atual;
+
     private Cesta cesta;
     private Categoria categoria;
 
@@ -38,7 +40,7 @@ public class CestaBean {
     public void init() {
         facesContext = FacesContext.getCurrentInstance();
         gcuc = new GerenciarCestaUC();
-        cestas = gcuc.obterCestas();
+        atualizar();
         cesta = new Cesta();
         categoria = new Categoria();
     }
@@ -79,20 +81,44 @@ public class CestaBean {
         this.categoria = categoria;
     }
 
+    public Cesta getAtual() {
+        return atual;
+    }
+
+    public void setAtual(Cesta atual) {
+        this.atual = atual;
+    }
+
     public void salvar() {
         facesContext = FacesContext.getCurrentInstance();
         if (gcuc.criar(cesta)) {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Cesta adicionada com sucesso!"));
-            cestas = gcuc.obterCestas();
+            atualizar();
             cesta = new Cesta();
         } else {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Houve um problema ao adicionar a cesta."));
         }
     }
-    
-    public void adicionar(){
+
+    public boolean podeFinalizarCesta() {
+        boolean mckp = true; //verificar se há compra realizada
+        boolean tsp = true; //verificar se todas as entregas foram feitas
+        return mckp && tsp;
+    }
+
+    public void cancelar() {
+        cesta = new Cesta();
+        categoria = new Categoria();
+    }
+
+    public void adicionar() {
         cesta.addCategoria(categoria);
         categoria = new Categoria();
+    }
+
+    public void atualizar() {
+        cestas = gcuc.obterCestas();
+        atual = gcuc.getAtual();
     }
 
     public String getData(Date d) {

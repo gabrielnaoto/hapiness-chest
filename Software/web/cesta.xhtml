@@ -16,67 +16,126 @@
                 Gerenciar cestas
             </ui:define>
             <ui:define name="conteudo">
-                <h:form id="frm-cesta">
-                    <p:growl id="formMessage" autoUpdate="true" />
-                    <p:fieldset>
-                        <p:commandButton value="Criar cesta"  oncomplete="PF('dlg').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" class="padding-bottom-style" />
-                        <p:commandButton value="Editar cesta" icon="ui-icon-extlink"/>
-                        <p:commandButton value="Selecionar produtos" icon="ui-icon-extlink"/>
-                        <p:commandButton value="Finalizar" icon="ui-icon-extlink"/>
+                <p:growl id="growl" autoUpdate="true"/>
+                <h:form id="frm-conteudo">
+                    <p:commandButton value="Criar cesta" rendered="#{cestaBean.atual == null}" oncomplete="PF('dlg').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" class="padding-bottom-style" />
+                    <p:commandButton value="Editar cesta" rendered="#{cestaBean.atual != null}" icon="ui-icon-extlink"/>
+                    <p:commandButton value="Selecionar produtos" rendered="#{cestaBean.atual != null}" icon="ui-icon-extlink"/>
+                    <p:commandButton value="Finalizar" rendered="#{cestaBean.atual != null}" icon="ui-icon-extlink"/>
+                    <div class="divisior"></div>
+                    <p:panel visible="#{cestaBean.atual != null}" id="basic" header="Cesta em andamento: #{cestaBean.atual.tema}" footer="Custo máximo por cesta: #{cestaBean.getValor(cestaBean.atual.valorMaximo)}" style="margin-bottom:20px">
+                        <p:dataList id="catlist" value="#{cestaBean.atual.categorias}" var="c" type="ordered" emptyMessage="Nenhum registro encontrado.">
+                            <f:facet name="header">
+                                Categorias
+                            </f:facet>
+                            #{c.descricao}
+                        </p:dataList>
+                    </p:panel>
+                    <p:fieldset legend="Cestas anteriores" toggleable="true" toggleSpeed="500">
+                        <h:form> 
+                            <p:dataTable var="cesta" value="#{cestaBean.cestas}">
+                                <p:column headerText="Tema">
+                                    <h:outputText value="#{cesta.tema}" />
+                                </p:column>
+
+                                <p:column headerText="Finalizado em:">
+                                    <h:outputText value="#{cestaBean.getData(cesta.data)}" />
+                                </p:column>
+
+                                <p:column headerText="Valor Máximo">
+                                    <h:outputText value="#{cestaBean.getValor(cesta.valorMaximo)}" />
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
                     </p:fieldset>
-                    <p:dialog id="dlg" widgetVar="dlg" header="Criar cesta" modal="true" closable="true" showEffect="fade" hideEffect="fade" dynamic="true" appendTo="@(body)">
+                </h:form>
+                <p:dialog id="dialog" widgetVar="dlg" header="Criar cesta" modal="true" closable="false" showEffect="fade" hideEffect="fade" dynamic="true" appendTo="@(body)">
+                    <h:form id="frm-dlg">
                         <h:panelGrid columns="2">
                             <p:outputLabel value="Tema:"/>
                             <p:inputText id="input-tema" value="#{cestaBean.cesta.tema}" 	required="true"
                                          requiredMessage="É necessário informar um tema"/>
+
                             <p:outputLabel value="Valor máximo:"/>
                             <p:inputText id="input-valor" value="#{cestaBean.cesta.valorMaximo}" 	required="true"
                                          requiredMessage="É necessário informar um valor"  validatorMessage="Valor inválido">
                                 <f:validateDoubleRange minimum="0" maximum="999999"/>
-                                <f:convertNumber pattern="#,###.00"></f:convertNumber>
-                                <p:ajax update="input-valor" process="input-valor" event="change" />
                             </p:inputText>
                         </h:panelGrid>
-                        <p:outputLabel></p:outputLabel>
-                        <h:form id="form-cad-cat">
-                            <p:panel>
-                                <p:outputLabel value="Categoria: "/>
-                                <p:inputText id="input-categoria" value="#{cestaBean.categoria.descricao}" 	required="true"
-                                             requiredMessage="É necessário informar uma categoria."/>
-                                <p:commandButton value="Adicionar" process="form-cad-cat" action="#{cestaBean.adicionar()}" update="frm-cesta" oncomplete="none" />
-                            </p:panel>
-                        </h:form>
                         <p:dataList id="datalist" value="#{cestaBean.cesta.categorias}" var="c" type="ordered" emptyMessage="Nenhum registro encontrado.">
                             <f:facet name="header">
                                 Categorias
                             </f:facet>
                             #{c.descricao}
                         </p:dataList>
-
-                        <!--<hr />-->
+                        <p:panel id="categoriasadd">
+                            <p:outputLabel value="Categoria: "/>
+                            <p:inputText id="input-categoria" value="#{cestaBean.categoria.descricao}" 	required="true"
+                                         requiredMessage="É necessário informar uma categoria."/>
+                            <p:commandButton value="Adicionar" process="categoriasadd" actionListener="#{cestaBean.adicionar()}" update="datalist"  />
+                        </p:panel>
                         <h:panelGrid columns="2">
-                            <p:commandButton value="Salvar" action="#{cestaBean.salvar()}" icon="ui-icon-check" update="frm-cesta" oncomplete="dlg.hide()"/>
-                            <p:commandButton onclick="dlg.hide()" process="@none" value="Fechar" icon="ui-icon-close" />
+                            <p:commandButton value="Salvar" action="#{cestaBean.salvar()}" ajax="false" icon="ui-icon-check"  update="@all growl" />
+                            <p:commandButton value="Fechar" action="#{cestaBean.cancelar()}" ajax="false" icon="ui-icon-close"  update="@all growl" immediate="true"/>
                         </h:panelGrid>
-                    </p:dialog>
-                    <!--<p:fieldset legend="Cestas anteriores" toggleable="true" toggleSpeed="500">-->
-                    <h:form> 
-                        <p:dataTable var="cesta" value="#{cestaBean.cestas}">
-                            <p:column headerText="Tema">
-                                <h:outputText value="#{cesta.tema}" />
-                            </p:column>
-
-                            <p:column headerText="Data">
-                                <h:outputText value="#{cestaBean.getData(cesta.data)}" />
-                            </p:column>
-
-                            <p:column headerText="Valor Máximo">
-                                <h:outputText value="#{cestaBean.getValor(cesta.valorMaximo)}" />
-                            </p:column>
-                        </p:dataTable>
                     </h:form>
-                    <!--</p:fieldset>-->
-                </h:form>
+                </p:dialog>
+
+
+
+                <!--                <h:form id="frm-cesta">
+                                    <p:growl id="growl" autoUpdate="true" />
+                                    <p:fieldset>
+                                        <p:commandButton value="Criar cesta"  oncomplete="PF('dlg').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" class="padding-bottom-style" />
+                                        <p:commandButton value="Editar cesta" icon="ui-icon-extlink"/>
+                                        <p:commandButton value="Selecionar produtos" icon="ui-icon-extlink"/>
+                                        <p:commandButton value="Finalizar" icon="ui-icon-extlink"/>
+                                    </p:fieldset>
+                                    <div class="divisior"></div>
+                                    <p:panel visible="# {cestaBean.atual != null}" id="basic" header="# {cestaBean.atual.tema}" footer="Custo máximo por cesta: # {cestaBean.getValor(cestaBean.atual.valorMaximo)}" style="margin-bottom:20px">
+                                        <p:dataList id="catlist" value="# {cestaBean.atual.categorias}" var="c" type="ordered" emptyMessage="Nenhum registro encontrado.">
+                                            <f:facet name="header">
+                                                Categorias
+                                            </f:facet>
+                # {c.descricao}
+            </p:dataList>
+        </p:panel>
+        <p:dialog id="dlg" widgetVar="dlg" header="Criar cesta" modal="true" closable="true" showEffect="fade" hideEffect="fade" dynamic="true" appendTo="@(body)">
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Tema:"/>
+                <p:inputText id="input-tema" value="# {cestaBean.cesta.tema}" 	required="true"
+                             requiredMessage="É necessário informar um tema"/>
+                <p:outputLabel value="Valor máximo:"/>
+                <p:inputText id="input-valor" value="# {cestaBean.cesta.valorMaximo}" 	required="true"
+                             requiredMessage="É necessário informar um valor"  validatorMessage="Valor inválido">
+                    <f:validateDoubleRange minimum="0" maximum="999999"/>
+                </p:inputText>
+            </h:panelGrid>
+            <p:outputLabel></p:outputLabel>
+            
+            <h:panelGrid columns="2">
+                <p:commandButton value="Salvar" process="@all" actionListener="# {cestaBean.salvar()}" icon="ui-icon-check" update="frm-cesta" oncomplete="dlg.hide()"/>
+                <p:commandButton onclick="dlg.hide()" process="@none" value="Fechar" icon="ui-icon-close" ajax="false"/>
+            </h:panelGrid>
+        </p:dialog>
+        <p:fieldset legend="Cestas anteriores" toggleable="true" toggleSpeed="500">
+            <h:form> 
+                <p:dataTable var="cesta" value="# {cestaBean.cestas}">
+                    <p:column headerText="Tema">
+                        <h:outputText value="# {cesta.tema}" />
+                    </p:column>
+
+                    <p:column headerText="Finalizado em:">
+                        <h:outputText value="# {cestaBean.getData(cesta.data)}" />
+                    </p:column>
+
+                    <p:column headerText="Valor disponível">
+                        <h:outputText value="# {cestaBean.getValor(cesta.valorMaximo)}" />
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </p:fieldset>
+    </h:form>-->
             </ui:define>
         </ui:composition>
     </h:body>

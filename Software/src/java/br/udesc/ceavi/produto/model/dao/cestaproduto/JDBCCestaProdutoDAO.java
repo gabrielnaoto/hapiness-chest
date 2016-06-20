@@ -133,7 +133,7 @@ public class JDBCCestaProdutoDAO implements CestaProdutoDAO {
 
         } catch (Exception e) {
             System.out.println(e);
-            System.exit(0);
+            ;
 
         }
         System.out.println("CestaProdutos listadas com sucesso!");

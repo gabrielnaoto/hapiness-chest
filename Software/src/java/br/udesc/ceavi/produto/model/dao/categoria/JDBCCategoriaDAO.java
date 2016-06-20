@@ -24,13 +24,20 @@ public class JDBCCategoriaDAO implements CategoriaDAO {
     public boolean inserir(Categoria c) {
         PreparedStatement stmt = null;
         String sql = "INSERT INTO produto.categoria(\n"
-                + "            id, descricao)\n"
-                + "    VALUES (?, ?);";
+                + "            descricao)\n"
+                + "    VALUES (?);";
         try {
-            stmt = Conexao.getConexao(1).prepareStatement(sql);
-            stmt.setInt(1, c.getId());
-            stmt.setString(2, c.getDescricao());
-            stmt.executeUpdate();
+            stmt = Conexao.getConexao(1).prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setString(1, c.getDescricao());
+            if (stmt.executeUpdate() > 0) {
+                ResultSet result = stmt.getGeneratedKeys();
+                if (result.next()) {
+                    int chave = result.getInt(1);
+                    c.setId(chave);
+                }
+            } else {
+                throw new Exception("Usuário não inserido");
+            }
             stmt.close();
             return true;
         } catch (Exception e) {
@@ -114,7 +121,7 @@ public class JDBCCategoriaDAO implements CategoriaDAO {
             ResultSet rs = stmt.executeQuery();
             Categoria cat = null;
             while (rs.next()) {
-                cat = new Categoria(rs.getInt("categoriaId"), rs.getString("descricao"));
+                cat = new Categoria(rs.getInt("categoria_id"), rs.getString("descricao"));
                 lista.add(cat);
 
             }
@@ -123,8 +130,39 @@ public class JDBCCategoriaDAO implements CategoriaDAO {
 
         } catch (Exception e) {
             System.out.println(e);
-            System.exit(0);
+            ;
 
+        }
+        System.out.println("Categorias listadas com sucesso!");
+        return lista;
+
+    }
+
+    @Override
+    public List<Categoria> getFromCesta(int cestaid) {
+        PreparedStatement stmt = null;
+        String sql = "SELECT id, descricao\n"
+                + "FROM produto.categoria\n"
+                + "WHERE id IN (\n"
+                + "SELECT categoria_id\n"
+                + "FROM produto.cesta c JOIN produto.cesta_categoria cc ON c.id = cc.cesta_id\n"
+                + "WHERE c.id = ?)";
+        ArrayList<Categoria> lista = new ArrayList<>();
+        Categoria c = null;
+        try {
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
+            stmt.setInt(1, cestaid);
+            ResultSet rs = stmt.executeQuery();
+            Categoria cat = null;
+            while (rs.next()) {
+                cat = new Categoria(rs.getInt("id"), rs.getString("descricao"));
+                lista.add(cat);
+            }
+            stmt.close();
+            Conexao.fechar();
+
+        } catch (Exception e) {
+            System.out.println(e);
         }
         System.out.println("Categorias listadas com sucesso!");
         return lista;

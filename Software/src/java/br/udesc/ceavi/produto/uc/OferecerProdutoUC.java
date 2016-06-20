@@ -6,7 +6,9 @@
 package br.udesc.ceavi.produto.uc;
 
 /**
- *
+ *- Apenas fornecedores podem oferecer produtos
+
+- Para calculo da cesta, os valores dos produtos lancados devem ser arredondados pra cima e serem tratados como inteiro
  * @author ignoi
  */
 public class OferecerProdutoUC {

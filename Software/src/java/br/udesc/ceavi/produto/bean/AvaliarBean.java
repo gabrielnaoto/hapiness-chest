@@ -5,14 +5,13 @@
  */
 package br.udesc.ceavi.produto.bean;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import org.primefaces.event.RateEvent;
 
 /**
  *
@@ -49,6 +48,14 @@ public class AvaliarBean {
         this.selectedCar = selectedCar;
     }
 
-    
+    public void onrate(RateEvent rateEvent) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Rate Event", "You rated:" + ((Integer) rateEvent.getRating()).intValue());
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public void oncancel() {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cancel Event", "Rate Reset");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 
 }

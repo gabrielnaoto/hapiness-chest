@@ -25,5 +25,7 @@ public interface CategoriaDAO {
     public List<Categoria> listar();
 
     public int getQuantidade();
+    
+    public List<Categoria> getFromCesta(int cestaid);
 
 }
