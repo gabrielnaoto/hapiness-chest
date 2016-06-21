@@ -7,6 +7,8 @@ package br.udesc.ceavi.core.util.connection;
  */
 public class ConnectionPostgreSQL extends Connection {
 
+    private static String database = "bau";
+
     protected static ConnectionPostgreSQL instance = null;
 
 
@@ -19,7 +21,7 @@ public class ConnectionPostgreSQL extends Connection {
     public static Connection getInstance() {
         if(instance == null) {
             User usuario = new User("postgres", "root");
-            instance     = new ConnectionPostgreSQL(usuario, "localhost", "5432", "pintregas");
+            instance     = new ConnectionPostgreSQL(usuario, "localhost", "5432", database);
         }
 
         return instance;

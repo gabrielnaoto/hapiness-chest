@@ -7,12 +7,11 @@ import br.udesc.ceavi.core.util.BeanUtils;
 import br.udesc.ceavi.core.util.StringUtils;
 import br.udesc.ceavi.core.util.connection.Connection;
 import br.udesc.ceavi.core.util.connection.ConnectionPostgreSQL;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -21,35 +20,32 @@ import java.util.logging.Logger;
  */
 public abstract class DAOGeneric<DAOEntity extends br.udesc.ceavi.core.model.Entity> implements Persistible<DAOEntity> {
 
-
     public static final int EXECUTE_UPDATE_SUCCEEDED = 1,
-                            EXECUTE_UPDATE_FAILED    = 2;
+            EXECUTE_UPDATE_FAILED = 2;
 
     public static final String OPERATOR_EQUAL = "=";
+    public PreparedStatement insertStatement;
 
-
-    protected Connection               connection;
-    protected DAOEntity                entity;
+    protected Connection connection;
+    protected DAOEntity entity;
     protected Relationships<DAOEntity> relationships;
 
-
     public DAOGeneric() {
-        this.entity   = getNewEntity();
-        connection    = ConnectionPostgreSQL.getInstance();
+        this.entity = getNewEntity();
+        connection = ConnectionPostgreSQL.getInstance();
         relationships = new Relationships<>();
         setRelations();
     }
 
-
     protected void setRelations() {
-        for(java.lang.reflect.Field field : entity.getClass().getDeclaredFields()) {
-            for(DataBaseInfo dbInfo : field.getDeclaredAnnotationsByType(DataBaseInfo.class)) {
+        for (java.lang.reflect.Field field : entity.getClass().getDeclaredFields()) {
+            for (DataBaseInfo dbInfo : field.getDeclaredAnnotationsByType(DataBaseInfo.class)) {
                 this.relationships.addRelation(dbInfo.key(),
-                                               dbInfo.sequential(),
-                                               dbInfo.columnName(),
-                                               StringUtils.toBeanFormat(dbInfo.columnName()),
-                                               dbInfo.dataType().getPostgresql(),
-                                               dbInfo.dataType().getType());
+                        dbInfo.sequential(),
+                        dbInfo.columnName(),
+                        StringUtils.toBeanFormat(dbInfo.columnName()),
+                        dbInfo.dataType().getPostgresql(),
+                        dbInfo.dataType().getType());
             }
         }
     }
@@ -66,7 +62,7 @@ public abstract class DAOGeneric<DAOEntity extends br.udesc.ceavi.core.model.Ent
 
     public String getTableNameComplete() {
         Table table = entity.getClass().getAnnotation(Table.class);
-        if(table.schema().isEmpty()) {
+        if (table.schema().isEmpty()) {
             return table.name();
         }
 
@@ -79,7 +75,7 @@ public abstract class DAOGeneric<DAOEntity extends br.udesc.ceavi.core.model.Ent
             boolean sucess = runInsert(entity);
             connection.endTransaction(sucess);
             return sucess;
-        } catch(SQLException exception) {
+        } catch (SQLException exception) {
             catchSQLException(exception);
             return false;
         }
@@ -105,26 +101,35 @@ public abstract class DAOGeneric<DAOEntity extends br.udesc.ceavi.core.model.Ent
         }
     }
 
+    public PreparedStatement getInsertStatement() throws SQLException {
+        if (insertStatement == null) {
+            StringBuilder query = new StringBuilder("INSERT INTO ");
+
+            query.append(this.getTableNameComplete()).
+                    append(" (").
+                    append(String.join(", ", this.relationships.getAllNonSequentialsColumnsNames())).
+                    append(") VALUES (").
+                    append(String.join(", ", relationships.getAllNonSequentialsPreparedParameters())).
+                    append(") RETURNING ").
+                    append(String.join(", ", relationships.getAllColumnsNames()));
+
+            insertStatement = connection.getConnection().prepareStatement(query.toString());
+            // prepara sql no banco de dados a partir da segunda execução
+            ((org.postgresql.PGStatement) insertStatement).setPrepareThreshold(2);
+        }
+        return insertStatement;
+    }
+
     protected boolean runInsert(DAOEntity entity) throws SQLException {
-        StringBuilder query = new StringBuilder("INSERT INTO ");
+        PreparedStatement statement = getInsertStatement();
 
-        query.append(this.getTableNameComplete()).
-                      append(" (").
-                      append(String.join(", ", this.relationships.getAllNonSequentialsColumnsNames())).
-                      append(") VALUES (").
-                      append(String.join(", ", relationships.getAllNonSequentialsPreparedParameters())).
-                      append(") RETURNING ").
-                      append(String.join(", ", relationships.getAllColumnsNames()));
-
-        PreparedStatement statement = connection.getConnection().prepareStatement(query.toString());
-
-        for(int i = 0; i < relationships.getAllNonSequentialsTypes().size(); i++) {
+        for (int i = 0; i < relationships.getAllNonSequentialsTypes().size(); i++) {
             setValueFromBeanIntoStatement(entity, statement, relationships.getAllNonSequentialsTypes().get(i), relationships.getAllNonSequentialsColumnsNames().get(i), i);
         }
 
         ResultSet result = statement.executeQuery();
-        if(result.next()) {
-            for(Relation relation : getRelationships().getAllRelations()) {
+        if (result.next()) {
+            for (Relation relation : getRelationships().getAllRelations()) {
                 BeanUtils.callSetter(entity, relation.getModelName(), getValueFromStatement(result, relation));
             }
             return true;
@@ -138,7 +143,7 @@ public abstract class DAOGeneric<DAOEntity extends br.udesc.ceavi.core.model.Ent
             boolean sucess = runDelete(entity);
             connection.endTransaction(sucess);
             return sucess;
-        } catch(SQLException exception) {
+        } catch (SQLException exception) {
             catchSQLException(exception);
             return false;
         }
@@ -146,18 +151,18 @@ public abstract class DAOGeneric<DAOEntity extends br.udesc.ceavi.core.model.Ent
 
     protected boolean runDelete(DAOEntity entity) throws SQLException {
         StringBuilder query = new StringBuilder("DELETE FROM ").
-                      append(this.getTableNameComplete()).
-                      append(" WHERE TRUE ");
+                append(this.getTableNameComplete()).
+                append(" WHERE TRUE ");
 
-        for(int i = 0; i < relationships.getAllKeyColumnsNames().size(); i++) {
+        for (int i = 0; i < relationships.getAllKeyColumnsNames().size(); i++) {
             query.append("AND ").
-                  append(relationships.getAllKeyColumnsNames().get(i)).
-                  append(" " + OPERATOR_EQUAL + " ?");
+                    append(relationships.getAllKeyColumnsNames().get(i)).
+                    append(" " + OPERATOR_EQUAL + " ?");
         }
 
         PreparedStatement statement = connection.getConnection().prepareStatement(query.toString());
 
-        for(int i = 0; i < relationships.getAllKeyTypes().size(); i++) {
+        for (int i = 0; i < relationships.getAllKeyTypes().size(); i++) {
             setValueFromBeanIntoStatement(entity, statement, relationships.getAllKeyTypes().get(i), relationships.getAllKeyColumnsNames().get(i), i);
         }
 
@@ -170,7 +175,7 @@ public abstract class DAOGeneric<DAOEntity extends br.udesc.ceavi.core.model.Ent
             boolean sucess = runUpdate(entity);
             connection.endTransaction(sucess);
             return sucess;
-        } catch(SQLException exception) {
+        } catch (SQLException exception) {
             catchSQLException(exception);
             return false;
         }
@@ -178,28 +183,28 @@ public abstract class DAOGeneric<DAOEntity extends br.udesc.ceavi.core.model.Ent
 
     protected boolean runUpdate(DAOEntity entity) throws SQLException {
         StringBuilder query = new StringBuilder("UPDATE ").
-                      append(this.getTableNameComplete()).
-                      append(" SET (").
-                      append(String.join(", ", relationships.getAllColumnsNames())).
-                      append(") " + OPERATOR_EQUAL + "(").
-                      append(String.join(", ", relationships.getAllPreparedParameters())).
-                      append(")").
-                      append("\nWHERE TRUE ");
+                append(this.getTableNameComplete()).
+                append(" SET (").
+                append(String.join(", ", relationships.getAllColumnsNames())).
+                append(") " + OPERATOR_EQUAL + "(").
+                append(String.join(", ", relationships.getAllPreparedParameters())).
+                append(")").
+                append("\nWHERE TRUE ");
 
-        for(int i = 0; i < relationships.getAllKeyColumnsNames().size(); i++) {
+        for (int i = 0; i < relationships.getAllKeyColumnsNames().size(); i++) {
             query.append("AND ").
-                  append(relationships.getAllKeyColumnsNames().get(i)).
-                  append(" " + OPERATOR_EQUAL + " ?");
+                    append(relationships.getAllKeyColumnsNames().get(i)).
+                    append(" " + OPERATOR_EQUAL + " ?");
         }
 
         PreparedStatement statement = connection.getConnection().prepareStatement(query.toString());
 
         int index = 0;
-        for(int i = 0; i < relationships.getAllTypes().size(); i++) {
+        for (int i = 0; i < relationships.getAllTypes().size(); i++) {
             setValueFromBeanIntoStatement(entity, statement, relationships.getAllTypes().get(i), relationships.getAllColumnsNames().get(i), index);
             index++;
         }
-        for(int i = 0; i < relationships.getAllKeyTypes().size(); i++) {
+        for (int i = 0; i < relationships.getAllKeyTypes().size(); i++) {
             setValueFromBeanIntoStatement(entity, statement, relationships.getAllKeyTypes().get(i), relationships.getAllKeyColumnsNames().get(i), index);
             index++;
         }
@@ -216,8 +221,8 @@ public abstract class DAOGeneric<DAOEntity extends br.udesc.ceavi.core.model.Ent
         });
 
         query.append(String.join(",\n", projection))
-             .append("\nFROM ")
-             .append(this.getTableNameComplete());
+                .append("\nFROM ")
+                .append(this.getTableNameComplete());
 
         PreparedStatement statement;
         try {
@@ -236,36 +241,36 @@ public abstract class DAOGeneric<DAOEntity extends br.udesc.ceavi.core.model.Ent
 
     @Override
     public boolean persists(DAOEntity entity) {
-        if(!exists(entity)) {
+        if (!exists(entity)) {
             return false;
         }
         StringBuilder query = new StringBuilder("SELECT *");
         query.append("\nFROM ")
-             .append(this.getTableNameComplete())
-             .append("\nWHERE TRUE");
+                .append(this.getTableNameComplete())
+                .append("\nWHERE TRUE");
 
-        for(int i = 0; i < relationships.getAllKeyColumnsNames().size(); i++) {
+        for (int i = 0; i < relationships.getAllKeyColumnsNames().size(); i++) {
             query.append("\nAND ").
-                  append(relationships.getAllKeyColumnsNames().get(i)).
-                  append(" " + OPERATOR_EQUAL + " ?");
+                    append(relationships.getAllKeyColumnsNames().get(i)).
+                    append(" " + OPERATOR_EQUAL + " ?");
         }
 
         try {
             PreparedStatement statement = connection.getConnection().prepareStatement(query.toString());
 
-            for(int i = 0; i < relationships.getAllKeyTypes().size(); i++) {
+            for (int i = 0; i < relationships.getAllKeyTypes().size(); i++) {
                 setValueFromBeanIntoStatement(entity, statement, relationships.getAllKeyTypes().get(i), relationships.getAllKeyColumnsNames().get(i), i);
             }
 
             ResultSet result = statement.executeQuery();
-            if(result.next()) {
-                for(Relation relation : getRelationships().getAllRelations()) {
+            if (result.next()) {
+                for (Relation relation : getRelationships().getAllRelations()) {
                     BeanUtils.callSetter(entity, relation.getModelName(), getValueFromStatement(result, relation));
                 }
                 return true;
             }
             return false;
-        } catch(SQLException exception) {
+        } catch (SQLException exception) {
             catchSQLException(exception);
             return false;
         }
@@ -276,28 +281,28 @@ public abstract class DAOGeneric<DAOEntity extends br.udesc.ceavi.core.model.Ent
         try {
             StringBuilder query = new StringBuilder("SELECT EXISTS(SELECT 1");
             query.append("\nFROM ")
-                 .append(this.getTableNameComplete())
-                 .append("\nWHERE TRUE");
+                    .append(this.getTableNameComplete())
+                    .append("\nWHERE TRUE");
 
-            for(int i = 0; i < relationships.getAllKeyColumnsNames().size(); i++) {
+            for (int i = 0; i < relationships.getAllKeyColumnsNames().size(); i++) {
                 query.append("\nAND ").
-                      append(relationships.getAllKeyColumnsNames().get(i)).
-                      append(" " + OPERATOR_EQUAL + " ?");
+                        append(relationships.getAllKeyColumnsNames().get(i)).
+                        append(" " + OPERATOR_EQUAL + " ?");
             }
             query.append(")");
 
             PreparedStatement statement = connection.getConnection().prepareStatement(query.toString());
 
-            for(int i = 0; i < relationships.getAllKeyTypes().size(); i++) {
+            for (int i = 0; i < relationships.getAllKeyTypes().size(); i++) {
                 setValueFromBeanIntoStatement(entity, statement, relationships.getAllKeyTypes().get(i), relationships.getAllKeyColumnsNames().get(i), i);
             }
 
             ResultSet result = statement.executeQuery();
-            if(result.next()) {
+            if (result.next()) {
                 return result.getString(1).equals("t");
             }
             return false;
-        } catch(SQLException exception) {
+        } catch (SQLException exception) {
             catchSQLException(exception);
             return false;
         }
@@ -315,42 +320,43 @@ public abstract class DAOGeneric<DAOEntity extends br.udesc.ceavi.core.model.Ent
 
     protected void setValueFromBeanIntoStatement(DAOEntity entity, PreparedStatement statement, Class<?> type, String propertyName, int index) throws SQLException {
         propertyName = StringUtils.toBeanFormat(propertyName);
-        switch(type.getName()) {
+        switch (type.getName()) {
             case "java.lang.Double":
             case "double":
                 statement.setDouble(index + 1, BeanUtils.callGetter(entity, propertyName, true));
-            break;
+                break;
 
             case "java.lang.Float":
             case "float":
                 statement.setDouble(index + 1, BeanUtils.callGetter(entity, propertyName, true));
-            break;
+                break;
 
             case "java.lang.Long":
             case "long":
                 statement.setLong(index + 1, BeanUtils.callGetter(entity, propertyName, true));
-            break;
+                break;
 
             case "java.lang.Integer":
             case "int":
                 statement.setInt(index + 1, BeanUtils.callGetter(entity, propertyName, true));
-            break;
+                break;
 
             case "java.lang.String":
                 statement.setString(index + 1, BeanUtils.callGetter(entity, propertyName, true));
-            break;
+                break;
 
             case "java.util.Date":
-                statement.setDate(index + 1, BeanUtils.callGetter(entity, propertyName, true));
+                statement.setDate(index + 1, new Date(((java.util.Date) BeanUtils.callGetter(entity, propertyName, true)).getTime()));
+                break;
 
             default:
-                throw new RuntimeException("Type not recognized!");
+                throw new RuntimeException("Type not recognized: " + type.getName());
         }
     }
 
     public Object getValueFromStatement(ResultSet result, Relation relation) throws SQLException {
         String columnName = relation.getColumnName();
-        switch(relation.getType().getName()) {
+        switch (relation.getType().getName()) {
             case "java.lang.Double":
             case "double":
                 return result.getDouble(columnName);
@@ -370,8 +376,11 @@ public abstract class DAOGeneric<DAOEntity extends br.udesc.ceavi.core.model.Ent
             case "java.lang.String":
                 return result.getString(columnName);
 
+            case "java.util.Date":
+                return result.getDate(columnName);
+
             default:
-                throw new RuntimeException("Type not recognized!");
+                throw new RuntimeException("Type not recognized: " + relation.getType().getName());
         }
     }
 
@@ -380,8 +389,8 @@ public abstract class DAOGeneric<DAOEntity extends br.udesc.ceavi.core.model.Ent
         try {
             message = exception.getMessage();
             this.connection.getConnection().rollback();
-        } catch(SQLException rollbackException) {
-            message  = "Error on rollback!:" + rollbackException;
+        } catch (SQLException rollbackException) {
+            message = "Error on rollback!:" + rollbackException;
             message += "\n" + exception.getMessage();
         }
         this.connection.close();

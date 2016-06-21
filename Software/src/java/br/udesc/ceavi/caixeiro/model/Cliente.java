@@ -23,6 +23,10 @@ public class Cliente extends Entity {
     @DataBaseInfo(columnName = "endereco_id", dataType = INT_INTEGER)
     private Endereco Endereco;
 
+    @DataBaseInfo(columnName = "usuario_id", dataType = INT_INTEGER)
+    private Usuario usuario;
+
+
     public int getId() {
         return id;
     }
@@ -50,4 +54,15 @@ public class Cliente extends Entity {
         this.Endereco = Endereco;
     }
 
-}//end Cliente
+    public Usuario getUsuario() {
+        if(usuario == null) {
+            usuario = new Usuario();
+        }
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+}

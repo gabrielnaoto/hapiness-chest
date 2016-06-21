@@ -16,16 +16,17 @@ html, body {
 
 #header {
     margin: 0px;
-    background-color: white;
-    width: calc(100% - 30px);
-    background: #ffffff;
+    /*background-color: #1b6d85;*/
+    width: 100%;
+    /*width: calc(100% - 30px);*/
+    /*background: #ffffff;*/
     height:90px;   
 }
 
 
 #title-header {
     padding-left: 15px;
-    padding-top: 35px;
+    padding-top: 40px;
     width: 500px;
     font-family: Source Sans Pro, Ubuntu, sans-serif;
     font-size: 30px;
@@ -36,6 +37,12 @@ html, body {
 
 #menu{
 
+}
+
+#user-info{
+    float: right;
+    margin-right: 15px;
+    font-family: Segoe UI, Source Sans Pro, Ubuntu, sans-serif;
 }
 
 #content{

@@ -154,15 +154,15 @@
                         <div class="newsletter_detail">
                             <h:form  >
                                 <div class="col-md-6 col-sm-6">
-                                    <p:inputText class="form-control" value="#{loginBean.usuario}" placeholder="Usuario"></p:inputText>
+                                    <p:inputText class="form-control" value="#{beanLogin.login}" placeholder="Usuario"></p:inputText>
 <!--                                    <input name="login" type="text" class="form-control" id="login" placeholder="Login"></input>-->
                                 </div>
                                 <div class="col-md-6 col-sm-6">
-                                    <p:password class="form-control" value="#{loginBean.senha}" placeholder="Senha"/>
+                                    <p:password class="form-control" value="#{beanLogin.password}" placeholder="Senha"/>
 <!--                                    <input name="password" type="password" class="form-control" id="password" placeholder="Senha"></input>-->
                                 </div>
                                 <div class="col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8">
-                                    <p:commandButton action="#{loginBean.logar()}" value="Entrar"  ajax="false"></p:commandButton>
+                                    <p:commandButton action="#{beanLogin.login()}" value="Entrar"  ajax="false"></p:commandButton>
                                     <!--<input name="submit" type="submit" class="form-control" id="submit" value="Entrar"></input>-->
                                 </div>
                             </h:form>

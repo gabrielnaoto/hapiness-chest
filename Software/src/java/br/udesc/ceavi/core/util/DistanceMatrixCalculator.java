@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.udesc.ceavi.core.util;
 
 import java.io.BufferedReader;
@@ -32,9 +27,10 @@ import org.xml.sax.SAXException;
  */
 public class DistanceMatrixCalculator {
 
-    private String baseUrl = "https://maps.googleapis.com/maps/api/distancematrix/xml?";
-    private String lang    = "PT-br";
-    private String key     = "AIzaSyD47B3DSRESznB3S37SmhnqFfNq8xMdEbM"; // favor não alterar
+    private String baseUrl            = "https://maps.googleapis.com/maps/api/distancematrix/xml?";
+    private String lang               = "PT-br";
+    private final String key          = "AIzaSyD47B3DSRESznB3S37SmhnqFfNq8xMdEbM", //Ricardo
+                         assuranceKey = "AIzaSyA-anpZjdAwBjXHZcLrb-eNvh4zPQCCYpA"; // Samuel
 
     private String origin;
     private List<String> destinations = new ArrayList();
@@ -119,4 +115,46 @@ public class DistanceMatrixCalculator {
 
         return ret.toString();
     }
+
+    public String getOriginAddress() {
+        String line, outputString = "";
+
+        try {
+            URL url = new URL(buildUrl());
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("GET");
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream()));
+
+            while ((line = reader.readLine()) != null) {
+                outputString += line;
+            }
+            System.out.println(outputString);
+
+        } catch (IOException ex) {
+            Logger.getLogger(DistanceMatrixCalculator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db;
+        try {
+            db = dbf.newDocumentBuilder();
+            InputSource is = new InputSource();
+            is.setCharacterStream(new StringReader(outputString));
+
+            Document doc;
+
+            doc = db.parse(is);
+            String address = doc.getElementsByTagName("origin_address").item(0).getTextContent();
+
+            return address;
+
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            Logger.getLogger(DistanceMatrixCalculator.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
 }

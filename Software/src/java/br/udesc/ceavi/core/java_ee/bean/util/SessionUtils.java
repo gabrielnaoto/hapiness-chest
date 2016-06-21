@@ -1,23 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package br.udesc.ceavi.produto.bean;
+package br.udesc.ceavi.core.java_ee.bean.util;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author 5105011424
+ * @author Samuel Felício Adriano
  */
-public class SessionUtil {
+public class SessionUtils {
 
     public static HttpSession getSession() {
-        FacesContext contexto = FacesContext.getCurrentInstance();
-        HttpSession sessao = (HttpSession) contexto.getExternalContext().getSession(false);
-        return sessao;
+        return (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
     }
 
     public static void setParam(String key, Object value) {
@@ -35,4 +28,5 @@ public class SessionUtil {
     public static void invalidate() {
         getSession().invalidate();
     }
+
 }

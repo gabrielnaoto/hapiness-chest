@@ -9,4 +9,6 @@ import br.udesc.ceavi.core.persistence.Persistible;
  */
 public interface iDaoEndereco extends Persistible<Endereco> {
 
+    public void limpaEnderecos();
+
 }

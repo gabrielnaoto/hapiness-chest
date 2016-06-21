@@ -13,7 +13,9 @@ import br.udesc.ceavi.caixeiro.model.dao.JDBC.JDBCDAOEndereco;
 import br.udesc.ceavi.caixeiro.model.dao.JDBC.JDBCDAOEntrega;
 import br.udesc.ceavi.caixeiro.model.dao.JDBC.JDBCDAOFornecedor;
 import br.udesc.ceavi.caixeiro.model.dao.JDBC.JDBCDAORelacionamentoEndereco;
+import br.udesc.ceavi.caixeiro.model.dao.JDBC.JDBCDAOUsuario;
 import br.udesc.ceavi.caixeiro.model.dao.JDBC.JDBCDAOVeiculo;
+import br.udesc.ceavi.caixeiro.model.dao.iDaoUsuario;
 import br.udesc.ceavi.core.persistence.Persistence;
 import br.udesc.ceavi.core.persistence.Persistible;
 import br.udesc.ceavi.core.util.ClassUtils;
@@ -49,7 +51,6 @@ public class JDBCFactory extends Persistence {
 //    public static iDaoCesta getDaoCesta() {
 //        return (iDaoCesta) load(JDBCDAOCesta.class);
 //    } não tem daocesta ainda
-
     public static iDaoCliente getDaoCliente() {
         return (iDaoCliente) load(JDBCDAOCliente.class);
     }
@@ -72,6 +73,10 @@ public class JDBCFactory extends Persistence {
 
     public static iDaoFornecedor getDaoFornecedor() {
         return (iDaoFornecedor) load(JDBCDAOFornecedor.class);
+    }
+
+    public static iDaoUsuario getDaoUsuario() {
+        return (iDaoUsuario) load(JDBCDAOUsuario.class);
     }
 
     @Override
@@ -108,8 +113,6 @@ public class JDBCFactory extends Persistence {
     public CestaCategoriaDAO getCestaCategoriaDAO() {
         return new JDBCCestaCategoriaDAO();
     }
-    
-    
 
     /**
      * Load an instance of the required class

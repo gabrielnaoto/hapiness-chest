@@ -9,4 +9,6 @@ import br.udesc.ceavi.core.persistence.Persistible;
  */
 public interface iDaoCliente extends Persistible<Cliente> {
 
+    public boolean isNomeCadastrado(String nome);
+
 }
