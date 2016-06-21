@@ -27,6 +27,8 @@ public interface CategoriaDAO {
     public List<Categoria> pesquisarVarios(String query);
 
     public List<Categoria> listar();
+    
+    public List<Categoria> listarPodemInserir();
 
     public int getQuantidade();
 

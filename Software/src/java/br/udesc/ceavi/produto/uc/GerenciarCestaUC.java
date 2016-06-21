@@ -101,6 +101,10 @@ public class GerenciarCestaUC {
     public List<Cesta> obterCestas() {
         return cestaDAO.listarFinalizadas();
     }
+    
+    public List<Categoria> obterCategoriasInseriveis(){
+        return categoriaDAO.listarPodemInserir();
+    }
 
     public boolean finalizar(Cesta c) {
         return cestaDAO.atualizar(c);

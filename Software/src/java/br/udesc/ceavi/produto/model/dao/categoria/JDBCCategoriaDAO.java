@@ -154,8 +154,6 @@ public class JDBCCategoriaDAO implements CategoriaDAO {
 
         } catch (Exception e) {
             System.out.println(e);
-            ;
-
         }
         System.out.println("Categorias listadas com sucesso!");
         return lista;
@@ -234,6 +232,36 @@ public class JDBCCategoriaDAO implements CategoriaDAO {
         } catch (Exception e) {
             System.out.println(e);
 
+        }
+        System.out.println("Categorias listadas com sucesso!");
+        return lista;
+    }
+
+    @Override
+    public List<Categoria> listarPodemInserir() {
+        PreparedStatement stmt = null;
+        String sql = "select id, descricao\n"
+                + "from produto.categoria \n"
+                + "where id in\n"
+                + "(select categoria_id\n"
+                + "from produto.cesta_categoria\n"
+                + "where data <= (current_date - interval '1 year'))";
+        ArrayList<Categoria> lista = new ArrayList<>();
+        Categoria c = null;
+        try {
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            Categoria cat = null;
+            while (rs.next()) {
+                cat = new Categoria(rs.getInt("categoria_id"), rs.getString("descricao"));
+                lista.add(cat);
+
+            }
+            stmt.close();
+            Conexao.fechar();
+
+        } catch (Exception e) {
+            System.out.println(e);
         }
         System.out.println("Categorias listadas com sucesso!");
         return lista;

@@ -51,11 +51,11 @@
                                 <p:column headerText="Valor Máximo">
                                     <h:outputText value="#{cestaBean.getValor(gar34.valorMaximo)}" />
                                 </p:column>
-                                <p:commandButton update=":form:carDetail" oncomplete="PF('carOP').show('#{component.clientId}')" icon="ui-icon-search" title="View">
+<!--                                <p:commandButton update=":form:carDetail" oncomplete="PF('carOP').show('#{component.clientId}')" icon="ui-icon-search" title="View">
                                     <f:setPropertyActionListener value="#{gar34}" target="#{cestaBean.selectedGar34}" />
-                                </p:commandButton>
+                                </p:commandButton>-->
                             </p:dataTable>
-                            <p:overlayPanel widgetVar="carOP" showEffect="fade" hideEffect="fade" dismissable="false" showCloseIcon="true">
+<!--                            <p:overlayPanel widgetVar="carOP" showEffect="fade" hideEffect="fade" dismissable="false" showCloseIcon="true">
                                 <p:outputPanel id="carDetail" style="text-align:center;">
                                     <h:panelGrid  columns="1" rendered="#{not empty cestaBean.selectedGar34}" >
 
@@ -64,7 +64,7 @@
 
                                     </h:panelGrid>
                                 </p:outputPanel>
-                            </p:overlayPanel>
+                            </p:overlayPanel>-->
                         </h:form>
                     </p:fieldset>
                 </h:form>
