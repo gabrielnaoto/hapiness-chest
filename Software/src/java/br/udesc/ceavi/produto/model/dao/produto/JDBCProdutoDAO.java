@@ -180,4 +180,35 @@ public class JDBCProdutoDAO implements ProdutoDAO {
             Conexao.fechar();
         }
     }
+
+    @Override
+    public List<Produto> listarPorFornecedor(int id) {
+        PreparedStatement stmt = null;
+        String sql = "select p.id, descricao, p.valor, p.peso, p.categoria_id\n"
+                + "from produto.produto p join produto.fornecedor_produto pf on p.id = pf.produto_id join (\n"
+                + "	select id, cesta_id, produto_id, data \n"
+                + "	from produto.cesta_produto) as cesta on cesta.produto_id = p.id\n"
+                + "where cesta_id = (select id \n"
+                + "from produto.cesta\n"
+                + "where data is null)\n"
+                + "and pf.fornecedor_id = ?";
+        ArrayList<Produto> lista = new ArrayList<>();
+        Produto p = null;
+        try {
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Categoria c = Persistence.getPersistence(JDBC).getCategoriaDAO().pesquisar(rs.getInt(5));
+                p = new Produto(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getDouble(4), rs.getDouble(5), c);
+                lista.add(p);
+            }
+            stmt.close();
+            Conexao.fechar();
+            return lista;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

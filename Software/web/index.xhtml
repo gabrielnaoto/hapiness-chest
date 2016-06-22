@@ -24,6 +24,9 @@
 
         <!-- Main css -->
         <link rel="stylesheet" href="css/style.css"/>
+        
+        <!-- Google Maps -->
+        <script src="http://maps.google.com/maps/api/js?key=AIzaSyA-anpZjdAwBjXHZcLrb-eNvh4zPQCCYpA" type="text/javascript"></script>
 
         <!-- Google Font -->
         <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600' rel='stylesheet' type='text/css'/>
@@ -63,7 +66,7 @@
                         <li><a href="#overview" class="smoothScroll">Sobre</a></li>
                         <li><a href="#newsletter" class="smoothScroll">Entrar</a></li>
                         <li><a href="#blog" class="smoothScroll">Cadastro</a></li>
-                        
+
                         <!--<li><a href="#price" class="smoothScroll">Prices</a></li>-->
                         <!--<li><a href="#testimonial" class="smoothScroll">Testimonials</a></li>-->
                     </ul>
@@ -101,7 +104,7 @@
 
                     <div class="col-md-6 col-sm-12">
                         <img src="images/overview-img.jpg" class="img-responsive" alt="Overview"/>
-                            <blockquote class="wow fadeInUp" data-wow-delay="1.9s">O carnê do Baú da Felicidade está de volta, agora com a Abravañel LTDA!</blockquote>
+                        <blockquote class="wow fadeInUp" data-wow-delay="1.9s">O carnê do Baú da Felicidade está de volta, agora com a Abravañel LTDA!</blockquote>
                     </div>
 
                     <div class="col-md-1"></div>
@@ -125,20 +128,20 @@
         <!-- =========================
             TRAINER SECTION   
         ============================== -->
-<!--        <section id="trainer" class="parallax-section">
-            <div class="container">
-                <div class="row">
-
-                    <div class="wow fadeInUp col-md-12 col-sm-12" data-wow-delay="1.3s">
-                        <h2>Cadastro</h2>
-                        <p>Lorem ipsum dolor sit amet, maecenas eget vestibulum justo.</p>
+        <!--        <section id="trainer" class="parallax-section">
+                    <div class="container">
+                        <div class="row">
+        
+                            <div class="wow fadeInUp col-md-12 col-sm-12" data-wow-delay="1.3s">
+                                <h2>Cadastro</h2>
+                                <p>Lorem ipsum dolor sit amet, maecenas eget vestibulum justo.</p>
+                            </div>
+        
+                            
+        
+                        </div>
                     </div>
-
-                    
-
-                </div>
-            </div>
-        </section>-->
+                </section>-->
 
 
         <!-- =========================
@@ -155,14 +158,14 @@
                             <h:form  >
                                 <div class="col-md-6 col-sm-6">
                                     <p:inputText class="form-control" value="#{beanLogin.login}" placeholder="Usuario"></p:inputText>
-<!--                                    <input name="login" type="text" class="form-control" id="login" placeholder="Login"></input>-->
+                                    <!--                                    <input name="login" type="text" class="form-control" id="login" placeholder="Login"></input>-->
                                 </div>
                                 <div class="col-md-6 col-sm-6">
                                     <p:password class="form-control" value="#{beanLogin.password}" placeholder="Senha"/>
-<!--                                    <input name="password" type="password" class="form-control" id="password" placeholder="Senha"></input>-->
+                                    <!--                                    <input name="password" type="password" class="form-control" id="password" placeholder="Senha"></input>-->
                                 </div>
                                 <div class="col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8">
-                                    <p:commandButton action="#{beanLogin.login()}" value="Entrar"  ajax="false"></p:commandButton>
+                                    <p:commandButton action="#{beanLogin.login()}" value="Entrar" class="form-botao" ajax="false"></p:commandButton>
                                     <!--<input name="submit" type="submit" class="form-control" id="submit" value="Entrar"></input>-->
                                 </div>
                             </h:form>
@@ -177,156 +180,156 @@
         <!-- =========================
             BLOG SECTION   
         ============================== -->
-<!--        <section id="blog" class="parallax-section">
-            <div class="container">
-                <div class="row">
-
-                    <div class="col-md-12 col-sm-12 text-center">
-                        <h2>Fitness Blog</h2>
-                        <p>Lorem ipsum dolor sit amet, maecenas eget vestibulum justo.</p>
-                    </div>
-
-                    <div class="wow fadeInUp col-md-6 col-sm-12" data-wow-delay="0.9s">
-                        <div class="blog-thumb">
-                            <span class="blog-date">Body Fitness / July 2, 2016</span>
-                            <h3 class="blog-title"><a href="blog-single.html">How to get a fitness model body?</a></h3>
-                            <h5 id="blog-author">by David Walker</h5>
+        <!--        <section id="blog" class="parallax-section">
+                    <div class="container">
+                        <div class="row">
+        
+                            <div class="col-md-12 col-sm-12 text-center">
+                                <h2>Fitness Blog</h2>
+                                <p>Lorem ipsum dolor sit amet, maecenas eget vestibulum justo.</p>
+                            </div>
+        
+                            <div class="wow fadeInUp col-md-6 col-sm-12" data-wow-delay="0.9s">
+                                <div class="blog-thumb">
+                                    <span class="blog-date">Body Fitness / July 2, 2016</span>
+                                    <h3 class="blog-title"><a href="blog-single.html">How to get a fitness model body?</a></h3>
+                                    <h5 id="blog-author">by David Walker</h5>
+                                </div>
+                            </div>
+        
+                            <div class="wow fadeInUp col-md-6 col-sm-12" data-wow-delay="1.3s">
+                                <div class="blog-thumb">
+                                    <span class="blog-date">Healthy Fit / June 8, 2016</span>
+                                    <h3 class="blog-title"><a href="blog-single.html">Personal Fitness Tips</a></h3>
+                                    <h5 id="blog-author">by George</h5>
+                                </div>
+                            </div>
+        
+                            <div class="wow fadeInUp col-md-6 col-sm-12" data-wow-delay="1.6s">
+                                <div class="blog-thumb">
+                                    <span class="blog-date">Gym Services / May 9, 2016</span>
+                                    <h3 class="blog-title"><a href="blog-single.html">Efficient Workout Plans</a></h3>
+                                    <h5 id="blog-author">by Mary Louis</h5>
+                                </div>
+                            </div>
+        
+                            <div class="wow fadeInUp col-md-6 col-sm-12" data-wow-delay="1.9s">
+                                <div class="blog-thumb">
+                                    <span class="blog-date">Practice Aerobics / April 18, 2016</span>
+                                    <h3 class="blog-title"><a href="blog-single.html">How to practice Aerobics?</a></h3>
+                                    <h5 id="blog-author">by Michael Fit</h5>
+                                </div>
+                            </div>
+        
                         </div>
                     </div>
-
-                    <div class="wow fadeInUp col-md-6 col-sm-12" data-wow-delay="1.3s">
-                        <div class="blog-thumb">
-                            <span class="blog-date">Healthy Fit / June 8, 2016</span>
-                            <h3 class="blog-title"><a href="blog-single.html">Personal Fitness Tips</a></h3>
-                            <h5 id="blog-author">by George</h5>
-                        </div>
-                    </div>
-
-                    <div class="wow fadeInUp col-md-6 col-sm-12" data-wow-delay="1.6s">
-                        <div class="blog-thumb">
-                            <span class="blog-date">Gym Services / May 9, 2016</span>
-                            <h3 class="blog-title"><a href="blog-single.html">Efficient Workout Plans</a></h3>
-                            <h5 id="blog-author">by Mary Louis</h5>
-                        </div>
-                    </div>
-
-                    <div class="wow fadeInUp col-md-6 col-sm-12" data-wow-delay="1.9s">
-                        <div class="blog-thumb">
-                            <span class="blog-date">Practice Aerobics / April 18, 2016</span>
-                            <h3 class="blog-title"><a href="blog-single.html">How to practice Aerobics?</a></h3>
-                            <h5 id="blog-author">by Michael Fit</h5>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>-->
+                </section>-->
 
 
         <!-- =========================
             PRICE SECTION   
         ============================== -->
-<!--        <section id="price" class="parallax-section">
-            <div class="container">
-                <div class="row">
-
-                    <div class="wow fadeInUp col-md-12 col-sm-12" data-wow-delay="0.9s">
-                        <h2>Our Prices</h2>
-                        <p>Lorem ipsum dolor sit amet, maecenas eget vestibulum justo.</p>
-                    </div>
-
-                    <div class="wow fadeInUp col-md-4 col-sm-6" data-wow-delay="1s">
-                        <div class="pricing__item">
-                            <h3 class="pricing__title">Healthy</h3>
-                            <div class="pricing__price"><span class="pricing__currency">$</span>350</div>
-                            <ul class="pricing__feature-list">
-                                <li class="pricing__feature">One General Trainer</li>
-                                <li class="pricing__feature">Gym Services</li>
-                                <li class="pricing__feature">5 Yoga Courses</li>
-                                <li class="pricing__feature">10 Thai Massages</li>
-                                <li class="pricing__feature">15 Aerobics</li>
-                            </ul>
-                            <button class="pricing__action">Sign Up Now</button>
+        <!--        <section id="price" class="parallax-section">
+                    <div class="container">
+                        <div class="row">
+        
+                            <div class="wow fadeInUp col-md-12 col-sm-12" data-wow-delay="0.9s">
+                                <h2>Our Prices</h2>
+                                <p>Lorem ipsum dolor sit amet, maecenas eget vestibulum justo.</p>
+                            </div>
+        
+                            <div class="wow fadeInUp col-md-4 col-sm-6" data-wow-delay="1s">
+                                <div class="pricing__item">
+                                    <h3 class="pricing__title">Healthy</h3>
+                                    <div class="pricing__price"><span class="pricing__currency">$</span>350</div>
+                                    <ul class="pricing__feature-list">
+                                        <li class="pricing__feature">One General Trainer</li>
+                                        <li class="pricing__feature">Gym Services</li>
+                                        <li class="pricing__feature">5 Yoga Courses</li>
+                                        <li class="pricing__feature">10 Thai Massages</li>
+                                        <li class="pricing__feature">15 Aerobics</li>
+                                    </ul>
+                                    <button class="pricing__action">Sign Up Now</button>
+                                </div>
+                            </div>
+        
+                            <div class="wow fadeInUp col-md-4 col-sm-6" data-wow-delay="1.3s">
+                                <div class="pricing__item">
+                                    <h3 class="pricing__title">Best Fit</h3>
+                                    <div class="pricing__price"><span class="pricing__currency">$</span>550</div>                  
+                                    <ul class="pricing__feature-list">
+                                        <li class="pricing__feature">Two General Trainers</li>
+                                        <li class="pricing__feature">Gym Services</li>
+                                        <li class="pricing__feature">10 Yoga Courses</li>
+                                        <li class="pricing__feature">20 Thai Massages</li>
+                                        <li class="pricing__feature">25 Aerobics</li>
+                                    </ul>
+                                    <button class="pricing__action">Sign Up Now</button>
+                                </div>
+                            </div>
+        
+                            <div class="wow fadeInUp col-md-4 col-sm-6" data-wow-delay="1.6s">
+                                <div class="pricing__item">
+                                    <h3 class="pricing__title">Rigid Body</h3>
+                                    <div class="pricing__price"><span class="pricing__currency">$</span>750</div> 
+                                    <ul class="pricing__feature-list">
+                                        <li class="pricing__feature">Three Personal Trainers</li>
+                                        <li class="pricing__feature">Gym Services</li>
+                                        <li class="pricing__feature">15 Yoga Courses</li>
+                                        <li class="pricing__feature">20 Thai Massages</li>
+                                        <li class="pricing__feature">35 Aerobics</li>
+                                    </ul>
+                                    <button class="pricing__action">Sign Up Now</button>
+                                </div>
+                            </div>
+        
                         </div>
                     </div>
-
-                    <div class="wow fadeInUp col-md-4 col-sm-6" data-wow-delay="1.3s">
-                        <div class="pricing__item">
-                            <h3 class="pricing__title">Best Fit</h3>
-                            <div class="pricing__price"><span class="pricing__currency">$</span>550</div>                  
-                            <ul class="pricing__feature-list">
-                                <li class="pricing__feature">Two General Trainers</li>
-                                <li class="pricing__feature">Gym Services</li>
-                                <li class="pricing__feature">10 Yoga Courses</li>
-                                <li class="pricing__feature">20 Thai Massages</li>
-                                <li class="pricing__feature">25 Aerobics</li>
-                            </ul>
-                            <button class="pricing__action">Sign Up Now</button>
-                        </div>
-                    </div>
-
-                    <div class="wow fadeInUp col-md-4 col-sm-6" data-wow-delay="1.6s">
-                        <div class="pricing__item">
-                            <h3 class="pricing__title">Rigid Body</h3>
-                            <div class="pricing__price"><span class="pricing__currency">$</span>750</div> 
-                            <ul class="pricing__feature-list">
-                                <li class="pricing__feature">Three Personal Trainers</li>
-                                <li class="pricing__feature">Gym Services</li>
-                                <li class="pricing__feature">15 Yoga Courses</li>
-                                <li class="pricing__feature">20 Thai Massages</li>
-                                <li class="pricing__feature">35 Aerobics</li>
-                            </ul>
-                            <button class="pricing__action">Sign Up Now</button>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>-->
+                </section>-->
 
 
         <!-- =========================
             TESTIMONIAL SECTION   
         ============================== -->
-<!--        <section id="testimonial" class="parallax-section">
-            <div class="container">
-                <div class="row">
-
-                     Testimonial Owl Carousel section
-                    ================================================== 
-                    <div id="owl-testimonial" class="owl-carousel">
-
-                        <div class="item col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 wow fadeInUp" data-wow-delay="0.6s">
-                            <i class="fa fa-quote-left"></i>
-                            <h3>Lorem ipsum dolor sit amet, maecenas eget vestibulum justo imperdiet, wisi risus purus augue vulputate.</h3>
-                            <h4>Sandar ( Fashion Designer )</h4>
+        <!--        <section id="testimonial" class="parallax-section">
+                    <div class="container">
+                        <div class="row">
+        
+                             Testimonial Owl Carousel section
+                            ================================================== 
+                            <div id="owl-testimonial" class="owl-carousel">
+        
+                                <div class="item col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 wow fadeInUp" data-wow-delay="0.6s">
+                                    <i class="fa fa-quote-left"></i>
+                                    <h3>Lorem ipsum dolor sit amet, maecenas eget vestibulum justo imperdiet, wisi risus purus augue vulputate.</h3>
+                                    <h4>Sandar ( Fashion Designer )</h4>
+                                </div>
+        
+                                <div class="item col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 wow fadeInUp" data-wow-delay="0.6s">
+                                    <i class="fa fa-quote-left"></i>
+                                    <h3>Yes! Lorem ipsum dolor sit amet, maecenas eget vestibulum justo imperdiet, wisi risus purus augue.</h3>
+                                    <h4>James Job ( Social Assistant )</h4>
+                                </div>
+        
+                                <div class="item col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 wow fadeInUp" data-wow-delay="0.6s">
+                                    <i class="fa fa-quote-left"></i>
+                                    <h3>Sed dapibus rutrum lobortis. Sed nec interdum nunc, quis sodales ante. Maecenas volutpat congue.</h3>
+                                    <h4>Mark Otto ( New Cyclist )</h4>
+                                </div>
+        
+                                <div class="item col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 wow fadeInUp" data-wow-delay="0.6s">
+                                    <i class="fa fa-quote-left"></i>
+                                    <h3>Lorem ipsum dolor sit amet, maecenas eget vestibulum justo imperdiet, wisi risus purus.</h3>
+                                    <h4>David Moore ( Pro Boxer )</h4>
+                                </div>
+        
+                            </div>
+        
                         </div>
-
-                        <div class="item col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 wow fadeInUp" data-wow-delay="0.6s">
-                            <i class="fa fa-quote-left"></i>
-                            <h3>Yes! Lorem ipsum dolor sit amet, maecenas eget vestibulum justo imperdiet, wisi risus purus augue.</h3>
-                            <h4>James Job ( Social Assistant )</h4>
-                        </div>
-
-                        <div class="item col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 wow fadeInUp" data-wow-delay="0.6s">
-                            <i class="fa fa-quote-left"></i>
-                            <h3>Sed dapibus rutrum lobortis. Sed nec interdum nunc, quis sodales ante. Maecenas volutpat congue.</h3>
-                            <h4>Mark Otto ( New Cyclist )</h4>
-                        </div>
-
-                        <div class="item col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 wow fadeInUp" data-wow-delay="0.6s">
-                            <i class="fa fa-quote-left"></i>
-                            <h3>Lorem ipsum dolor sit amet, maecenas eget vestibulum justo imperdiet, wisi risus purus.</h3>
-                            <h4>David Moore ( Pro Boxer )</h4>
-                        </div>
-
                     </div>
+                </section>-->
 
-                </div>
-            </div>
-        </section>-->
-
-<section id="blog" class="parallax-section">
+        <section id="blog" class="parallax-section">
             <div class="container">
                 <div class="row">
 
@@ -340,45 +343,74 @@
                             <h3>Cadastre-se aqui!</h3>
 
                             <div class="blog-clear"></div>
-                            <h:form>
-                                <p:growl id="messages"></p:growl>
-                                <h:panelGrid columns="2" styleClass="tabela">
-                                    
-                                    <p:outputLabel value="Título:"/>
-                                    <p:inputText id="input-titulo" value="#{livroBean.livro.titulo}" 	required="true"
-                                                 requiredMessage="É necessário informar um título"/>
+                            <p:growl id="messages" autoUpdate="true"></p:growl>
+                            <p:tabView dynamic="true" cache="true" style="border-style: none" id="cadastro">
+                                <p:tab title="Cliente">
+                                    <h3>Quero ser Cliente...</h3>
+                                    <h:form id="frm-cliente">
+                                        <p:growl id="growl-cliente" showDetail="true" sticky="true" />
+                                        <p:panelGrid style="border-style: none">
+                                            <h:inputHidden id="latitude" value="#{beanCliente.entity.endereco.latitude}" />
+                                            <h:inputHidden id="longitude" value="#{beanCliente.entity.endereco.longitude}" />
 
+                                            <p:row style="border-style: none;">
+                                                <p:column style="border-style: none; text-align: right;"><h:outputText value="Login:" /></p:column>
+                                                <p:column style="border-style: none" colspan="2"><p:inputText class="ui-state-disabled" id="login-cliente" value="#{beanCliente.entity.usuario.login}" placeholder="Usuario"/></p:column>
+                                            </p:row>
 
-                                    <p:outputLabel value="Ano:"/>
-                                    <p:inputText id="input-ano" value="#{livroBean.livro.ano}" 	required="true"
-                                                 requiredMessage="É necessário informar um ano"  validatorMessage="Ano inválido">
-                                        <f:validateDoubleRange minimum="1500" maximum="2016"/>
-                                    </p:inputText>
-                                    
+                                            <p:row style="border-style: none;">
+                                                <p:column style="border-style: none; text-align: right;"><h:outputText value="Senha:" /></p:column>
+                                                <p:column style="border-style: none" colspan="2"><p:password class="ui-state-disabled" id="senha-cliente" value="#{beanCliente.entity.usuario.senha}" placeholder="Senha"/></p:column>
+                                            </p:row>
 
+                                            <p:row style="border-style: none;">
+                                                <p:column style="border-style: none; text-align: right;"><h:outputText value="Nome:" /></p:column>
+                                                <p:column style="border-style: none" colspan="2"><p:inputText required="true" requiredMessage="Campo Nome é Obrigatório!" id="nome-cliente" value="#{beanCliente.entity.nome}" /></p:column>
+                                            </p:row>
 
-                                    <p:outputLabel value="Autores:"/>
-                                    <p:inputText id="input-autores" value="#{livroBean.livro.autores}" 	required="true"
-                                                 requiredMessage="É necessário informar pelo menos um autor">
-                                    </p:inputText>
-                                    
+                                            <p:row style="border-style: none;">
+                                                <p:column style="border-style: none; text-align: right;"><h:outputText value="Endereço:" /></p:column>
+                                                <p:column style="border-style: none"><p:inputText required="true" requiredMessage="Campo Endereço é Obrigatório!" id="endereco" value="#{beanCliente.entity.endereco.descricao}" /></p:column>
+                                                <p:column style="border-style: none"><p:commandButton value="Buscar" icon="ui-icon-search" onclick="geocode()" type="button" /></p:column>
+                                            </p:row>
 
-                                    <p:outputLabel value="Editora:"/>
-                                    <p:inputText id="input-editora" value="#{livroBean.livro.editora}" 	required="true"
-                                                 requiredMessage="É necessário informar uma editora"/>
-                                    
+                                        </p:panelGrid>
+                                        <script type="text/javascript">
+                                            function geocode() {
+                                                PF('geoMap').geocode(document.getElementById('cadastro:frm-cliente:endereco').value);
+                                            }
+                                        </script>
+                                        <p:gmap id="geoGmap" widgetVar="geoMap" zoom="16" center="#{beanCliente.centroMapa}" type="ROADMAP" model="#{beanCliente.geoModel}" style="width:500px; height:300px">
+                                            <p:ajax event="pointSelect" listener="#{beanCliente.onPointSelect}" update="geoGmap latitude longitude endereco" />
+                                            <p:ajax event="geocode" listener="#{beanCliente.onGeocode}" update="geoGmap latitude longitude endereco" />
+                                        </p:gmap>
+                                        <p:commandButton id="cadastrar" class="form-botao" value="Cadastrar" action="#{beanCliente.cadastrar()}" update="growl-cliente"/>
+                                    </h:form>
+                                </p:tab>
+                                <p:tab title="Fornecedor">
+                                    <h3>Quero ser Fornecedor...</h3>
+                                    <h:form id="frm-fornecedor">
+                                        <p:growl id="growl-fornecedor" showDetail="true" sticky="true" />
+                                        <p:panelGrid style="border-style: none">
+                                            <p:row style="border-style: none;">
+                                                <p:column style="border-style: none; text-align: right;"><h:outputText value="Login:" /></p:column>
+                                                <p:column style="border-style: none" colspan="2"><p:inputText class="ui-state-disabled" id="login_fornecedor" value="#{beanFornecedor.entity.usuario.login}" placeholder="Usuário"/></p:column>
+                                            </p:row>
 
-                                    <p:outputLabel value="Edição:"/>
-                                    <p:inputText id="input-edicao" value="#{livroBean.livro.edicao}" 	required="true"
-                                                 requiredMessage="É necessário informar uma edição" validatorMessage="Valor inválido">
-                                        <f:validateDoubleRange minimum="1" maximum="999"/>
-                                    </p:inputText>
-                                    
+                                            <p:row style="border-style: none;">
+                                                <p:column style="border-style: none; text-align: right;"><h:outputText value="Senha:" /></p:column>
+                                                <p:column style="border-style: none" colspan="2"><p:password class="ui-state-disabled" id="senha_fornecedor" value="#{beanFornecedor.entity.usuario.senha}" placeholder="Senha"/></p:column>
+                                            </p:row>
 
-                                    
-                                </h:panelGrid>
-                                <p:commandButton id="cadastrar" class="form-botao" value="Cadastrar" action="#{livroBean.cadastrar()}"/>
-                            </h:form>
+                                            <p:row style="border-style: none;">
+                                                <p:column style="border-style: none; text-align: right;"><h:outputText value="Nome" /></p:column>
+                                                <p:column style="border-style: none" colspan="2"><p:inputText class="ui-state-disabled" id="nome_fornecedor" value="#{beanFornecedor.entity.nome}" /></p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                        <p:commandButton id="cadastrar" class="form-botao" value="Cadastrar" action="#{beanFornecedor.cadastrar()}" update="growl-fornecedor"/>
+                                    </h:form>
+                                </p:tab>
+                            </p:tabView>
                         </div>
 
 
@@ -469,23 +501,23 @@
                         </div>
                     </div>
 
-<!--                    <div class="wow fadeInUp col-md-3 col-sm-4" data-wow-delay="1s">
-                        <h2>Follow us</h2>
-                        <ul class="social-icon">
-                            <li><a href="#" class="fa fa-facebook wow fadeIn" data-wow-delay="1s"></a></li>
-                            <li><a href="#" class="fa fa-twitter wow fadeInUp" data-wow-delay="1.3s"></a></li>
-                            <li><a href="#" class="fa fa-dribbble wow fadeIn" data-wow-delay="1.6s"></a></li>
-                            <li><a href="#" class="fa fa-behance wow fadeInUp" data-wow-delay="1.9s"></a></li>
-                            <li><a href="#" class="fa fa-google-plus wow fadeIn" data-wow-delay="2s"></a></li>
-                        </ul>
-                    </div>-->
+                    <!--                    <div class="wow fadeInUp col-md-3 col-sm-4" data-wow-delay="1s">
+                                            <h2>Follow us</h2>
+                                            <ul class="social-icon">
+                                                <li><a href="#" class="fa fa-facebook wow fadeIn" data-wow-delay="1s"></a></li>
+                                                <li><a href="#" class="fa fa-twitter wow fadeInUp" data-wow-delay="1.3s"></a></li>
+                                                <li><a href="#" class="fa fa-dribbble wow fadeIn" data-wow-delay="1.6s"></a></li>
+                                                <li><a href="#" class="fa fa-behance wow fadeInUp" data-wow-delay="1.9s"></a></li>
+                                                <li><a href="#" class="fa fa-google-plus wow fadeIn" data-wow-delay="2s"></a></li>
+                                            </ul>
+                                        </div>-->
 
                     <div class="clearfix"></div>
 
                     <div class="col-md-12 col-sm-12">
                         <p class="copyright-text">Copyright &copy; 2016 Engenharia de Software 2014/1</p>
 
-<!--                            | Design: <a rel="nofollow" href="http://www.templatemo.com/page/1" target="_parent">Templatemo</a></p>-->
+                        <!--                            | Design: <a rel="nofollow" href="http://www.templatemo.com/page/1" target="_parent">Templatemo</a></p>-->
                     </div>
 
                 </div>

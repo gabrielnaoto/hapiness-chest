@@ -16,52 +16,53 @@
                 Bem-vindo!
             </ui:define>
             <ui:define name="conteudo">
-                <h:form id="frm-cesta">
-                    <p:growl id="formMessage" autoUpdate="true" />
+                <h:form id="frm-oferecer">
+                    <p:growl id="growl" autoUpdate="true" />
                     <p:commandButton value="Incluir"  oncomplete="PF('dlg').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" class="padding-bottom-style" />
-                    <p:dialog id="dlg" widgetVar="dlg" header="Criar cesta" modal="true" closable="true" showEffect="fade" hideEffect="fade" >
-                        <h:panelGrid columns="2">
-                            <!--                            <h:outputText value="ID:" />
-                                                        <p:inputText class="ui-state-disabled" id="id" value="" />-->
-                            <p:outputLabel value="Tema:"/>
-                            <p:inputText id="input-tema" value="" 	required="true"
-                                         requiredMessage="É necessário informar um tema"/>
-                            <p:outputLabel for="event" value="Data de início:" />
-                            <p:calendar id="event" value="#{calendarView.date4}">
-                                <p:ajax event="dateSelect" listener="#{calendarView.onDateSelect}" update="formMessage" />
-                            </p:calendar>
-                            <p:outputLabel value="Valor máximo:"/>
-                            <p:inputText id="input-valor" value="" 	required="true"
-                                         requiredMessage="É necessário informar um valor"  validatorMessage="Valor inválido">
-                                <f:validateDoubleRange minimum="0" maximum="999999"/>
-                            </p:inputText>
-                        </h:panelGrid>
-                        <hr />
-                        <h:panelGrid columns="2">
-                            <p:commandButton value="Salvar"  resetValues="true"   icon="ui-icon-check" />
-                            <p:commandButton onclick="dlg.hide()" process="@none" value="Fechar" icon="ui-icon-close" />
-                        </h:panelGrid>
-                    </p:dialog>
                     <h:form> 
-                        <p:dataTable var="car" value="#{dtBasicView.cars}">
-                            <p:column headerText="Id">
-                                <h:outputText value="#{car.id}" />
+                        <p:dataTable var="produto" value="#{oferecerBean.produtos}">
+                            <p:column headerText="Descricao:">
+                                <h:outputText value="#{produto.descricao}" />
                             </p:column>
 
-                            <p:column headerText="Year">
-                                <h:outputText value="#{car.year}" />
+                            <p:column headerText="Categoria:">
+                                <h:outputText value="#{produto.categoria}" />
                             </p:column>
 
-                            <p:column headerText="Brand">
-                                <h:outputText value="#{car.brand}" />
-                            </p:column>
-
-                            <p:column headerText="Color">
-                                <h:outputText value="#{car.color}" />
+                            <p:column headerText="Valor:">
+                                <h:outputText value="#{produto.valor}" />
                             </p:column>
                         </p:dataTable>
                     </h:form>
                 </h:form>
+                <p:dialog id="dialog" widgetVar="dlg" header="Cadastrar produto" modal="true" closable="false" showEffect="fade" hideEffect="fade" dynamic="true" appendTo="@(body)">
+                    <h:form id="frm-dlg" prependId="true">
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Salvar" id="save" action="#{oferecerBean.salvar()}" ajax="false" icon="ui-icon-check"  update="@all growl" />
+                            <p:commandButton value="Fechar" action="#{oferecerBean.cancelar()}" ajax="false" icon="ui-icon-close"  update="@all growl" immediate="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" id="input">
+                            <p:outputLabel for="cats" value="Categoria: " />
+                            <p:selectOneMenu id="cats" value="#{oferecerBean.cadastrando.categoria}" converter="categoriac">
+                                <f:selectItem itemLabel="Selecione um" itemValue="" />
+                                <f:selectItems var="cat" value="#{oferecerBean.categoriasAtuais}"  itemValue="#{cat}" />
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Descrição:"/>
+                            <p:inputText id="input-descricao" value="#{oferecerBean.cadastrando.descricao}" 	required="true"
+                                         requiredMessage="É necessário informar uma descricao" />
+                            <p:outputLabel value="Peso:"/>
+                            <p:inputText id="input-peso" value="#{oferecerBean.cadastrando.peso}" 	required="true"
+                                         requiredMessage="É necessário informar um peso">
+                                <f:validateLongRange minimum="0" maximum="2147483647"/>
+                            </p:inputText>
+                            <p:outputLabel value="Valor:"/>
+                            <p:inputText id="input-valor" value="#{oferecerBean.cadastrando.valor}" 	required="true"
+                                         requiredMessage="É necessário informar um valor">
+                                <f:validateDoubleRange minimum="0" maximum="2147483647"/>
+                            </p:inputText>
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
             </ui:define>
         </ui:composition>
     </h:body>

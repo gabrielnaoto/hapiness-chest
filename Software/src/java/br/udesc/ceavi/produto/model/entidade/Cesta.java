@@ -5,6 +5,7 @@ package br.udesc.ceavi.produto.model.entidade;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  *
  * @author ignoi
  */
-public class Cesta {
+public class Cesta implements Serializable, SampleEntity {
 
     private int id;
     private Date data;
@@ -52,6 +53,11 @@ public class Cesta {
 
     public void addCategoria(Categoria c) {
         categorias.add(c);
+    }
+
+    @Override
+    public Integer getCodigo() {
+        return id;
     }
 
     public int getId() {

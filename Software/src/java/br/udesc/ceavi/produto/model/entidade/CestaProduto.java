@@ -19,6 +19,12 @@ public class CestaProduto {
     public CestaProduto() {
     }
 
+    public CestaProduto(Cesta cesta, Produto produto, double valor) {
+        this.cesta = cesta;
+        this.produto = produto;
+        this.valor = valor;
+    }
+
     public CestaProduto(int id, Cesta cesta, Produto produto, double valor) {
         this.id = id;
         this.cesta = cesta;
