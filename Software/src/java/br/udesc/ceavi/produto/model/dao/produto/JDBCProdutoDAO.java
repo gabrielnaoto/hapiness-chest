@@ -217,39 +217,46 @@ public class JDBCProdutoDAO implements ProdutoDAO {
         }
     }
 
-    public List<Produto> listarPorCliente(int id, int id2) {
+    public List<Produto> listarPorCliente(int id) {
         PreparedStatement stmt = null;
-        //p.id = 1, p.descricao = 2, valor = 3, peso = 4, c.id = 5, c.descricao = 6, cp.cliente_id = 7, satisfacao = 8
-        String sql = "select p.id, p.descricao, valor, peso, c.id, c.descricao, cp.cliente_id, satisfacao, cc.cesta_id\n"
-                + "from produto.produto p join produto.categoria c on p.categoria_id = c.id left outer join produto.cliente_produto cp on cp.produto_id = p.id join produto.cesta_produto cc on p.id = cc.produto_id\n"
-                + "where cesta_id = ?\n"
-                + "and cliente_id = ?\n"
+        //p.id = 1, p.descricao = 2, valor = 3, peso = 4, c.id = 5, satisfacao = 6
+        String sql = "select  produto_id, feaa.descricao, feaa.valor, feaa.peso, feaa.categoria_id, satisfacao\n"
+                + "from produto.usuario pu join produto.cliente_produto pcp on pu.id = pcp.cliente_id join produto.produto pp on pp.id = pcp.produto_id join produto.produto feaa on pcp.produto_id = feaa.id\n"
+                + "where cliente_id = ?\n"
                 + "\n"
-                + "UNION (\n"
+                + "UNION\n"
                 + "\n"
-                + "select p.id, p.descricao, valor, peso, c.id, c.descricao, cp.cliente_id, satisfacao, cc.cesta_id\n"
-                + "from produto.produto p join produto.categoria c on p.categoria_id = c.id full outer join produto.cliente_produto cp on cp.produto_id = p.id join produto.cesta_produto cc on p.id = cc.produto_id\n"
-                + "where cesta_id = ?\n"
+                + "(\n"
                 + "\n"
-                + "EXCEPT\n"
                 + "\n"
-                + "select p.id, p.descricao, valor, peso, c.id, c.descricao, cp.cliente_id, satisfacao, cc.cesta_id\n"
-                + "from produto.produto p join produto.categoria c on p.categoria_id = c.id left outer join produto.cliente_produto cp on cp.produto_id = p.id  join produto.cesta_produto cc on p.id = cc.produto_id\n"
-                + "where cesta_id = ?\n"
-                + "and cliente_id = ?)";
+                + "\n"
+                + "\n"
+                + "select  pp.id as produto_id, descricao, valor, pp.peso, categoria_id, null as satisfacao\n"
+                + "from produto.produto pp join produto.cesta_produto pcp on pcp.produto_id = pp.id join produto.cesta pc on pc.id = pcp.cesta_id\n"
+                + "where pc.data is null\n"
+                + "\n"
+                + "and pp.id not in (\n"
+                + "\n"
+                + "\n"
+                + "select  produto_id\n"
+                + "from produto.usuario pu join produto.cliente_produto pcp on pu.id = pcp.cliente_id join produto.produto pp on pp.id = pcp.produto_id join produto.produto feaa on pcp.produto_id = feaa.id\n"
+                + "where cliente_id = ?\n"
+                + "\n"
+                + "\n"
+                + "\n"
+                + "))";
         ArrayList<Produto> lista = new ArrayList<>();
         Produto p = null;
         try {
             stmt = Conexao.getConexao(1).prepareStatement(sql);
-            stmt.setInt(1, id2);
+            stmt.setInt(1, id);
             stmt.setInt(2, id);
-            stmt.setInt(3, id2);
-            stmt.setInt(4, id2);
-            stmt.setInt(5, id);
             ResultSet rs = stmt.executeQuery();
+            //p.id = 1, p.descricao = 2, valor = 3, peso = 4, c.id = 5, satisfacao = 6
+            //Produto(int id, String descricao, double peso, double valor, int satisfacao, Categoria categoria
             while (rs.next()) {
                 Categoria c = Persistence.getPersistence(JDBC).getCategoriaDAO().pesquisar(rs.getInt(5));
-                p = new Produto(rs.getInt(1), rs.getString(2), (int) rs.getDouble(4), (int) rs.getDouble(3), rs.getInt(8), c);
+                p = new Produto(rs.getInt(1), rs.getString(2), (int) rs.getDouble(4), (int) rs.getDouble(3), (int) rs.getDouble(6), c);
                 lista.add(p);
             }
             stmt.close();

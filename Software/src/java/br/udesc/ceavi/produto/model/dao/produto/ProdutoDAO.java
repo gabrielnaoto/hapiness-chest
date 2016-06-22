@@ -30,6 +30,6 @@ public interface ProdutoDAO {
 
     public List<Produto> listarPorFornecedor(int id);
 
-    public List<Produto> listarPorCliente(int id, int id2);
+    public List<Produto> listarPorCliente(int id);
 
 }

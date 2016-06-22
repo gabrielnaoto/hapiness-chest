@@ -36,7 +36,7 @@ public class AvaliarProdutoUC {
     }
     
     public List<Produto> obterProdutos(int id){
-        return pdao.listarPorCliente(id, cdao.getAtual().getId());
+        return pdao.listarPorCliente(id);
     }
     
     public boolean avaliar(Produto p, Usuario u, int satisfacao){
