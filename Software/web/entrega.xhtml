@@ -7,6 +7,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Entrega</title>
+<!--        <h:outputScript library="js" name="mapa.js"/>-->
     </h:head>
     <h:body>
         <ui:composition template="template.xhtml">
@@ -24,7 +25,7 @@
 
                 <h:form id="frm-entrega">
                     <p:growl id="formMessage" showDetail="true" autoUpdate="true" />
-                    <p:commandButton value="Inluir" action="#{beanEntrega.insert()}" update="frm-entrega" oncomplete="PF('dlg').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" />
+                    <p:commandButton value="Incluir" action="#{beanEntrega.insert()}" update="frm-entrega" oncomplete="PF('dlg').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" />
                     <p:dialog id="dlg" widgetVar="dlg" focus="veiculo" header="Entrega" modal="true" closable="false" showEffect="fade" hideEffect="fade" width="500" >
     <!--                            <h:outputText value="Data:" />
                             <p:calendar pattern="dd/MM/yyyy" required="true" requiredMessage="Campo Data é Obrigatório!" id="data" value="#{beanEntrega.entity.data}" converterMessage="Data inválida!" />-->
@@ -50,7 +51,7 @@
                         <hr />
                         <h:panelGrid columns="2">
                             <p:commandButton value="Salvar" action="#{beanEntrega.save()}" resetValues="true" update="gridEntrega" icon="ui-icon-check" />
-                            <p:commandButton value="Fechar" action="#{beanEntrega.setEntity(null)}" resetValues="true" update="frm-entrega" partialSubmit="true" process="" icon="ui-icon-close" ignoreAutoUpdate="true" />
+                            <p:commandButton value="Fechar" action="#{beanEntrega.setEntity(null)}" oncomplete="PF('dlg').hide();" resetValues="true" update="frm-entrega" partialSubmit="true" process="" icon="ui-icon-close" ignoreAutoUpdate="true" />
                         </h:panelGrid>
                     </p:dialog>
                 </h:form>

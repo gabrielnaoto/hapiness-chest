@@ -13,4 +13,6 @@ public interface iDaoEntrega extends Persistible<Entrega> {
 
     public String getTrajeto(Entrega entrega);
 
+    public int getQtdeIteracao(Entrega entrega);
+
 }
