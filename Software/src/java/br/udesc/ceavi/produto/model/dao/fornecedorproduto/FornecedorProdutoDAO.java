@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.udesc.ceavi.produto.model.fornecedorproduto;
+package br.udesc.ceavi.produto.model.dao.fornecedorproduto;
 
 import br.udesc.ceavi.produto.model.entidade.FornecedorProduto;
 import java.util.List;
