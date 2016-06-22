@@ -42,7 +42,13 @@ public class FilterLogin implements Filter {
                 redirect("home.jsf", response);
             }
             if (userLogged) {
-                if ((user).getTipo() == 3 && (requisition.getRequestURI().endsWith("cesta.jsf"))) {
+                if ((user).getTipo() == 3 && ((requisition.getRequestURI().endsWith("cesta.jsf")) || 
+                        (requisition.getRequestURI().endsWith("cadastro.jsf")) || 
+                        (requisition.getRequestURI().endsWith("veiculo.jsf")) || 
+                        (requisition.getRequestURI().endsWith("fornecedor.jsf")) || 
+                        (requisition.getRequestURI().endsWith("entrega.jsf")) ||  
+                        (requisition.getRequestURI().endsWith("centro_distribuicao.jsf"))   
+                        )) {
                     redirect("home.jsf", response);
                 }
             }
