@@ -69,9 +69,9 @@ public class MenuBean {
         cadastros.addElement(fornecedor);
 
         DefaultMenuItem editar = new DefaultMenuItem("Editar", "ui-icon-close", "#");
-        DefaultMenuItem sair = new DefaultMenuItem("Sair", "ui-icon-close", "index.jsf");
+        DefaultMenuItem sair = new DefaultMenuItem("Sair", "ui-icon-close");
         sair.setAjax(false);
-        sair.setCommand("#{beanLogin.logout}");
+        sair.setCommand("#{beanLogin.logout()}");
 
         DefaultSubMenu conta = new DefaultSubMenu("Conta");
         conta.addElement(editar);

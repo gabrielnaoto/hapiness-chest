@@ -3,23 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/web/home.xhtml</file>
+            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/core/java_ee/bean/BeanLogin.java</file>
             <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/caixeiro/bean/FilterLogin.java</file>
-            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/core/java_ee/bean/FilterLogin.java</file>
-            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/core/model/dao/JDBC/JDBCFactory.java</file>
-            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/caixeiro/model/dao/JDBC/JDBCDAOUsuario.java</file>
-            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/caixeiro/model/dao/iDaoFornecedor.java</file>
-            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/caixeiro/bean/BeanLogin.java</file>
-            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/core/persistence/Persistence.java</file>
             <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/web/template.xhtml</file>
-            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/caixeiro/model/Fornecedor.java</file>
-            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/caixeiro/model/Usuario.java</file>
             <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/core/java_ee/bean/MenuBean.java</file>
-            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/produto/model/entidade/SampleEntity.java</file>
             <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/web/index.xhtml</file>
-            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/core/persistence/Persistible.java</file>
-            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/caixeiro/model/dao/JDBC/JDBCDAOEntrega.java</file>
-            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/caixeiro/model/dao/JDBC/JDBCDAOFornecedor.java</file>
+            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/core/java_ee/bean/util/SessionUtils.java</file>
+            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/caixeiro/bean/BeanLogin.java</file>
         </group>
     </open-files>
 </project-private>
