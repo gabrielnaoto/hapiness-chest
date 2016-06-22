@@ -20,6 +20,9 @@ import javax.servlet.http.HttpSession;
 @WebFilter(servletNames = {"Faces Servlet"})
 public class FilterLogin implements Filter {
 
+    //tipo 1 = Administrador
+    //tipo 2 = Fornecedor
+    //tipo 3 = Cliente
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
@@ -37,6 +40,11 @@ public class FilterLogin implements Filter {
         if (userLogged || requestEndsWithIndex || requestContainsResource) {
             if ((session.getAttribute("usuario") != null) && (requisition.getRequestURI().endsWith("index.jsf"))) {
                 redirect("home.jsf", response);
+            }
+            if (userLogged) {
+                if ((user).getTipo() == 3 && (requisition.getRequestURI().endsWith("cesta.jsf"))) {
+                    redirect("home.jsf", response);
+                }
             }
             chain.doFilter(request, response);
         } else {

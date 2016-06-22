@@ -3,11 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ignoi/Documents/GitHub/bau_felicidade/Software/src/java/br/udesc/ceavi/produto/model/entidade/FornecedorProduto.java</file>
-            <file>file:/C:/Users/ignoi/Documents/GitHub/bau_felicidade/Software/src/java/br/udesc/ceavi/produto/uc/OferecerProdutoUC.java</file>
-            <file>file:/C:/Users/ignoi/Documents/GitHub/bau_felicidade/Software/src/java/br/udesc/ceavi/produto/model/dao/fornecedorproduto/JDBCFornecedorProdutoDAO.java</file>
-            <file>file:/C:/Users/ignoi/Documents/GitHub/bau_felicidade/Software/src/java/br/udesc/ceavi/produto/model/dao/fornecedorproduto/FornecedorProdutoDAO.java</file>
-            <file>file:/C:/Users/ignoi/Documents/GitHub/bau_felicidade/Software/src/java/br/udesc/ceavi/produto/bean/OferecerBean.java</file>
+            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/web/oferecer.xhtml</file>
+            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/produto/model/dao/produto/JDBCProdutoDAO.java</file>
+            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/produto/uc/OferecerProdutoUC.java</file>
+            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/produto/model/entidade/Categoria.java</file>
+            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/produto/bean/OferecerBean.java</file>
+            <file>file:/home/camargo/Documentos/Bau%20da%20Felicidade/Naoto/bau_felicidade/Software/src/java/br/udesc/ceavi/produto/model/dao/produto/ProdutoDAO.java</file>
         </group>
     </open-files>
 </project-private>
