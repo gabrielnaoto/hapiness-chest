@@ -17,13 +17,21 @@ public class Produto {
     private String descricao;
     private double peso;
     private double valor;
-    private double satisfacao;
+    private int satisfacao;
     private Categoria categoria;
 
     public Produto() {
     }
 
-    public Produto(int id, String descricao, double peso, double valor, double satisfacao, Categoria categoria) {
+    public Produto(int id, String descricao, double peso, double valor, Categoria categoria) {
+        this.id = id;
+        this.descricao = descricao;
+        this.peso = peso;
+        this.valor = valor;
+        this.categoria = categoria;
+    }
+
+    public Produto(int id, String descricao, double peso, double valor, int satisfacao, Categoria categoria) {
         this.id = id;
         this.descricao = descricao;
         this.peso = peso;
@@ -32,7 +40,7 @@ public class Produto {
         this.categoria = categoria;
     }
 
-    public Produto(int id, double valor, double satisfacao, Categoria categoria) {
+    public Produto(int id, double valor, int satisfacao, Categoria categoria) {
         this.id = id;
         this.valor = valor;
         this.satisfacao = satisfacao;
@@ -71,11 +79,11 @@ public class Produto {
         this.valor = valor;
     }
 
-    public double getSatisfacao() {
+    public int getSatisfacao() {
         return satisfacao;
     }
 
-    public void setSatisfacao(double satisfacao) {
+    public void setSatisfacao(int satisfacao) {
         this.satisfacao = satisfacao;
     }
 

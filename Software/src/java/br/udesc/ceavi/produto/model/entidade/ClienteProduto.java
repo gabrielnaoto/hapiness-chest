@@ -6,6 +6,7 @@
 package br.udesc.ceavi.produto.model.entidade;
 
 import br.udesc.ceavi.caixeiro.model.Cliente;
+import br.udesc.ceavi.caixeiro.model.Usuario;
 
 /**
  *
@@ -14,16 +15,22 @@ import br.udesc.ceavi.caixeiro.model.Cliente;
 public class ClienteProduto {
 
     private int id;
-    private Cliente cliente;
+    private Usuario usuario;
     private Produto produto;
     private int satisfacao;
 
     public ClienteProduto() {
     }
 
-    public ClienteProduto(int id, Cliente cliente, Produto produto, int satisfacao) {
+    public ClienteProduto(Usuario usuario, Produto produto, int satisfacao) {
+        this.usuario = usuario;
+        this.produto = produto;
+        this.satisfacao = satisfacao;
+    }
+
+    public ClienteProduto(int id, Usuario usuario, Produto produto, int satisfacao) {
         this.id = id;
-        this.cliente = cliente;
+        this.usuario = usuario;
         this.produto = produto;
         this.satisfacao = satisfacao;
     }
@@ -36,12 +43,12 @@ public class ClienteProduto {
         this.id = id;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public Produto getProduto() {

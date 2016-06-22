@@ -6,7 +6,9 @@
 package br.udesc.ceavi.produto.model.dao.clienteproduto;
 
 import br.udesc.ceavi.caixeiro.model.Cliente;
+import br.udesc.ceavi.caixeiro.model.Usuario;
 import br.udesc.ceavi.caixeiro.model.dao.iDaoCliente;
+import br.udesc.ceavi.caixeiro.model.dao.iDaoUsuario;
 import br.udesc.ceavi.core.model.dao.JDBC.JDBCFactory;
 import br.udesc.ceavi.core.persistence.Persistence;
 import static br.udesc.ceavi.core.persistence.PersistenceType.JDBC;
@@ -28,14 +30,13 @@ public class JDBCClienteProdutoDAO implements ClienteProdutoDAO {
     public boolean inserir(ClienteProduto c) {
         PreparedStatement stmt = null;
         String sql = "INSERT INTO produto.cliente_produto(\n"
-                + "            id, cliente_id, produto_id, satisfacao)\n"
-                + "    VALUES (?, ?, ?, ?);";
+                + "            cliente_id, produto_id, satisfacao)\n"
+                + "    VALUES (?, ?, ?);";
         try {
             stmt = Conexao.getConexao(1).prepareStatement(sql);
-            stmt.setInt(1, c.getId());
-            stmt.setInt(2, c.getCliente().getId());
-            stmt.setInt(3, c.getProduto().getId());
-            stmt.setInt(4, c.getSatisfacao());
+            stmt.setInt(1, c.getUsuario().getId());
+            stmt.setInt(2, c.getProduto().getId());
+            stmt.setInt(3, c.getSatisfacao());
             stmt.executeUpdate();
             stmt.close();
             return true;
@@ -73,7 +74,7 @@ public class JDBCClienteProdutoDAO implements ClienteProdutoDAO {
         try {
             stmt = Conexao.getConexao(1).prepareStatement(sql);
             stmt.setInt(1, c.getId());
-            stmt.setInt(2, c.getCliente().getId());
+            stmt.setInt(2, c.getUsuario().getId());
             stmt.setInt(3, c.getProduto().getId());
             stmt.setInt(4, c.getSatisfacao());
             stmt.setInt(5, c.getId());
@@ -100,12 +101,12 @@ public class JDBCClienteProdutoDAO implements ClienteProdutoDAO {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             rs.next();
-            iDaoCliente dao = JDBCFactory.getDaoCliente();
-            Cliente rc = new Cliente();
-            rc.setId(id);
-            Cliente cliente = dao.findOne(rc);
+            iDaoUsuario dao = JDBCFactory.getDaoUsuario();
+            Usuario rc = new Usuario();
+            rc.setId(rs.getInt(2));
+            Usuario usuario = dao.findOne(rc);
             Produto produto = Persistence.getPersistence(JDBC).getProdutoDAO().pesquisar(rs.getInt(3));
-            c = new ClienteProduto(rs.getInt(1), cliente, produto, rs.getInt(4));
+            c = new ClienteProduto(rs.getInt(1), usuario, produto, rs.getInt(4));
             stmt.close();
             return c;
         } catch (Exception e) {
@@ -128,12 +129,12 @@ public class JDBCClienteProdutoDAO implements ClienteProdutoDAO {
             ResultSet rs = stmt.executeQuery();
             ClienteProduto cat = null;
             while (rs.next()) {
-                iDaoCliente dao = JDBCFactory.getDaoCliente();
-                Cliente rc = new Cliente();
+                iDaoUsuario dao = JDBCFactory.getDaoUsuario();
+                Usuario rc = new Usuario();
                 rc.setId(rs.getInt(2));
-                Cliente cliente = dao.findOne(rc);
+                Usuario usuario = dao.findOne(rc);
                 Produto produto = Persistence.getPersistence(JDBC).getProdutoDAO().pesquisar(rs.getInt(3));
-                cat = new ClienteProduto(rs.getInt(1), cliente, produto, rs.getInt(4));
+                cat = new ClienteProduto(rs.getInt(1), usuario, produto, rs.getInt(4));
                 lista.add(cat);
             }
             stmt.close();
@@ -141,7 +142,6 @@ public class JDBCClienteProdutoDAO implements ClienteProdutoDAO {
 
         } catch (Exception e) {
             System.out.println(e);
-            ;
 
         }
         System.out.println("ClienteProdutos listadas com sucesso!");

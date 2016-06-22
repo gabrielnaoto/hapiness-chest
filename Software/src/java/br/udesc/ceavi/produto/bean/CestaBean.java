@@ -118,7 +118,7 @@ public class CestaBean implements Serializable {
     public void atualizarCategoriasCesta() {
         facesContext = FacesContext.getCurrentInstance();
         if (gcuc.atualizar(atual)) {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Cesta adicionada com sucesso!"));
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Cesta atualizada com sucesso!"));
             atualizar();
             cesta = new Cesta();
         } else {

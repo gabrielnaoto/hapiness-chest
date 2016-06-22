@@ -27,7 +27,9 @@ public interface ProdutoDAO {
     public int getQuantidade();
 
     public List<Produto> listarPorCategoria();
-    
+
     public List<Produto> listarPorFornecedor(int id);
+
+    public List<Produto> listarPorCliente(int id, int id2);
 
 }

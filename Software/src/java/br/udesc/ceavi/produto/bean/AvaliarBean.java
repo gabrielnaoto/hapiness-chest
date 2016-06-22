@@ -5,57 +5,70 @@
  */
 package br.udesc.ceavi.produto.bean;
 
+import br.udesc.ceavi.caixeiro.model.Usuario;
+import br.udesc.ceavi.core.java_ee.bean.util.SessionUtils;
+import br.udesc.ceavi.produto.model.entidade.Produto;
+import br.udesc.ceavi.produto.uc.AvaliarProdutoUC;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import org.primefaces.event.RateEvent;
 
 /**
  *
  * @author ignoi
  */
 @ManagedBean
+@ViewScoped
 public class AvaliarBean {
 
-    private List<Car> cars;
-
-    private Car selectedCar;
-
-    @ManagedProperty("#{carService}")
-    private CarService service;
+    private List<Produto> produtos;
+    private Produto produtoSelecionado;
+    private AvaliarProdutoUC apuc;
 
     @PostConstruct
     public void init() {
-        cars = service.createCars(48);
+        apuc = new AvaliarProdutoUC();
+        produtos = apuc.obterProdutos(((Usuario) SessionUtils.getParam("user")).getId());
     }
 
-    public List<Car> getCars() {
-        return cars;
+    public List<Produto> getProdutos() {
+        return produtos;
     }
 
-    public void setService(CarService service) {
-        this.service = service;
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
     }
 
-    public Car getSelectedCar() {
-        return selectedCar;
+    public Produto getProdutoSelecionado() {
+        return produtoSelecionado;
     }
 
-    public void setSelectedCar(Car selectedCar) {
-        this.selectedCar = selectedCar;
+    public void setProdutoSelecionado(Produto produtoSelecionado) {
+        this.produtoSelecionado = produtoSelecionado;
     }
 
-    public void onrate(RateEvent rateEvent) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Rate Event", "You rated:" + ((Integer) rateEvent.getRating()).intValue());
-        FacesContext.getCurrentInstance().addMessage(null, message);
+    public void onrate() {
+        if (apuc.avaliar(produtoSelecionado, ((Usuario) SessionUtils.getParam("user")), produtoSelecionado.getSatisfacao())) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Sua nota foi registrada.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Houve um problema, tente novamente mais tarde.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
     }
 
     public void oncancel() {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cancel Event", "Rate Reset");
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        if (apuc.avaliar(produtoSelecionado, ((Usuario) SessionUtils.getParam("user")), 0)) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Você apagou sua avaliação.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Erro ao apagar avaliação");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+
     }
 
 }

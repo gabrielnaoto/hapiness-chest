@@ -106,7 +106,7 @@ public class JDBCProdutoDAO implements ProdutoDAO {
             ResultSet rs = stmt.executeQuery();
             rs.next();
             Categoria c = Persistence.getPersistence(JDBC).getCategoriaDAO().pesquisar(rs.getInt(5));
-            p = new Produto(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getDouble(4), rs.getDouble(5), c);
+            p = new Produto(rs.getInt(1), rs.getString(2), (int) rs.getDouble(3), (int) rs.getDouble(4), c);
             stmt.close();
             return p;
         } catch (Exception e) {
@@ -129,7 +129,7 @@ public class JDBCProdutoDAO implements ProdutoDAO {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Categoria c = Persistence.getPersistence(JDBC).getCategoriaDAO().pesquisar(rs.getInt(5));
-                p = new Produto(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getDouble(4), rs.getDouble(5), c);
+                p = new Produto(rs.getInt("id"), rs.getString("descricao"), (int) rs.getDouble("valor"), (int) rs.getDouble("peso"), c);
                 lista.add(p);
             }
             stmt.close();
@@ -173,7 +173,7 @@ public class JDBCProdutoDAO implements ProdutoDAO {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Categoria c = Persistence.getPersistence(JDBC).getCategoriaDAO().pesquisar(rs.getInt(2));
-                p = new Produto(rs.getInt(1), rs.getDouble(3), rs.getDouble(4), c);
+                p = new Produto(rs.getInt(1), rs.getDouble(3), (int) rs.getDouble(4), c);
                 lista.add(p);
             }
             stmt.close();
@@ -205,7 +205,51 @@ public class JDBCProdutoDAO implements ProdutoDAO {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Categoria c = Persistence.getPersistence(JDBC).getCategoriaDAO().pesquisar(rs.getInt(5));
-                p = new Produto(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getDouble(4), rs.getDouble(5), c);
+                p = new Produto(rs.getInt(1), rs.getString(2), (int) rs.getDouble(3), (int) rs.getDouble(4), c);
+                lista.add(p);
+            }
+            stmt.close();
+            Conexao.fechar();
+            return lista;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Produto> listarPorCliente(int id, int id2) {
+        PreparedStatement stmt = null;
+        //p.id = 1, p.descricao = 2, valor = 3, peso = 4, c.id = 5, c.descricao = 6, cp.cliente_id = 7, satisfacao = 8
+        String sql = "select p.id, p.descricao, valor, peso, c.id, c.descricao, cp.cliente_id, satisfacao, cc.cesta_id\n"
+                + "from produto.produto p join produto.categoria c on p.categoria_id = c.id left outer join produto.cliente_produto cp on cp.produto_id = p.id join produto.cesta_produto cc on p.id = cc.produto_id\n"
+                + "where cesta_id = ?\n"
+                + "and cliente_id = ?\n"
+                + "\n"
+                + "UNION (\n"
+                + "\n"
+                + "select p.id, p.descricao, valor, peso, c.id, c.descricao, cp.cliente_id, satisfacao, cc.cesta_id\n"
+                + "from produto.produto p join produto.categoria c on p.categoria_id = c.id full outer join produto.cliente_produto cp on cp.produto_id = p.id join produto.cesta_produto cc on p.id = cc.produto_id\n"
+                + "where cesta_id = ?\n"
+                + "\n"
+                + "EXCEPT\n"
+                + "\n"
+                + "select p.id, p.descricao, valor, peso, c.id, c.descricao, cp.cliente_id, satisfacao, cc.cesta_id\n"
+                + "from produto.produto p join produto.categoria c on p.categoria_id = c.id left outer join produto.cliente_produto cp on cp.produto_id = p.id  join produto.cesta_produto cc on p.id = cc.produto_id\n"
+                + "where cesta_id = ?\n"
+                + "and cliente_id = ?)";
+        ArrayList<Produto> lista = new ArrayList<>();
+        Produto p = null;
+        try {
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
+            stmt.setInt(1, id2);
+            stmt.setInt(2, id);
+            stmt.setInt(3, id2);
+            stmt.setInt(4, id2);
+            stmt.setInt(5, id);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Categoria c = Persistence.getPersistence(JDBC).getCategoriaDAO().pesquisar(rs.getInt(5));
+                p = new Produto(rs.getInt(1), rs.getString(2), (int) rs.getDouble(4), (int) rs.getDouble(3), rs.getInt(8), c);
                 lista.add(p);
             }
             stmt.close();

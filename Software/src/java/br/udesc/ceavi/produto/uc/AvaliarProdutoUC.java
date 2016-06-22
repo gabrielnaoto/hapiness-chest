@@ -5,6 +5,16 @@
  */
 package br.udesc.ceavi.produto.uc;
 
+import br.udesc.ceavi.caixeiro.model.Usuario;
+import br.udesc.ceavi.core.persistence.Persistence;
+import br.udesc.ceavi.core.persistence.PersistenceType;
+import br.udesc.ceavi.produto.model.dao.cesta.CestaDAO;
+import br.udesc.ceavi.produto.model.dao.clienteproduto.ClienteProdutoDAO;
+import br.udesc.ceavi.produto.model.dao.produto.ProdutoDAO;
+import br.udesc.ceavi.produto.model.entidade.ClienteProduto;
+import br.udesc.ceavi.produto.model.entidade.Produto;
+import java.util.List;
+
 /**
  *- Clientes podem avaliar produtos, fornecedores so podem se forem tambem clientes, caso contrario, nao.
 
@@ -15,8 +25,23 @@ package br.udesc.ceavi.produto.uc;
  */
 public class AvaliarProdutoUC {
     
-    public void avaliar(){
-        
+   private ProdutoDAO pdao;
+   private CestaDAO cdao;
+   private ClienteProdutoDAO cpdao;
+
+    public AvaliarProdutoUC() {
+        pdao = Persistence.getPersistence(PersistenceType.JDBC).getProdutoDAO();
+        cdao = Persistence.getPersistence(PersistenceType.JDBC).getCestaDAO();
+        cpdao = Persistence.getPersistence(PersistenceType.JDBC).getClienteProdutoDAO();
+    }
+    
+    public List<Produto> obterProdutos(int id){
+        return pdao.listarPorCliente(id, cdao.getAtual().getId());
+    }
+    
+    public boolean avaliar(Produto p, Usuario u, int satisfacao){
+        ClienteProduto cp = new ClienteProduto(u, p, satisfacao);
+        return cpdao.inserir(cp);
     }
     
 }

@@ -18,60 +18,47 @@
             <ui:define name="conteudo">
                 <p:growl id="messages"/>
                 <h:form id="form">
-                    <p:dataGrid var="car" value="#{avaliarBean.cars}" columns="3" layout="grid"
-                                rows="12" paginator="true" id="cars"
+                    <p:dataGrid var="produto" value="#{avaliarBean.produtos}" columns="3" layout="grid"
+                                rows="12" paginator="true" id="produtos"
                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                 rowsPerPageTemplate="6,12,16">
 
                         <f:facet name="header">
-                            Cars for Sale
+                            Produtos disponíveis
                         </f:facet>
 
-                        <p:panel header="#{car.id}" style="text-align:center">
+                        <p:panel header="#{produto.categoria}" style="text-align:center">
                             <h:panelGrid columns="1" style="width:100%">
-                                <h:outputText value="#{car.brand}" />
+                                <h:outputText value="#{produto.descricao}" />
+                                <h:outputText value="#{produto.peso}" />
+                                
+                                <p:rating value="#{produto.satisfacao}" stars="10"/>
+                                
+                                <p:commandButton value="Avaliar" update="form messages"  action="#{avaliarBean.onrate}" style="margin:5px">
+                                    <f:setPropertyActionListener value="#{produto}" target="#{avaliarBean.produtoSelecionado}"/>
+                                </p:commandButton>
 
-                                <h:outputText value="#{car.color}" />
-
-                                <h:outputText value="#{car.year}" />
-
-                                <h:outputText value="#{car.price}" />
-
-                                <p:rating value="#{car.avaliacao}" stars="10">
-                                    <p:ajax event="rate" listener="#{avaliarBean.onrate}" update="messages" />
-                                    <p:ajax event="cancel" listener="#{avaliarBean.oncancel}" update="messages" />
-                                </p:rating>
-
-                                <p:commandLink update=":form:carDetail" oncomplete="PF('carDialog').show()" title="View Detail">
-                                    <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
-                                    <f:setPropertyActionListener value="#{car}" target="#{dataGridView.selectedCar}" />
-                                </p:commandLink>
+                                <!--                                <p:commandLink update=":form:produtoDetail" oncomplete="PF('produtoDialog').show()" title="View Detail">
+                                                                    <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                                                                    <f:setPropertyActionListener value="# {produto}" target="# {avaliarBean.produtoSelecionado}" />
+                                                                </p:commandLink>-->
                             </h:panelGrid>
                         </p:panel>
 
                     </p:dataGrid>
 
-                    <p:dialog header="Car Info" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                        <p:outputPanel id="carDetail" style="text-align:center;">
-                            <p:panelGrid  columns="2" rendered="#{not empty dataGridView.selectedCar}" columnClasses="label,value">
-                                <f:facet name="header">
-                                    <p:graphicImage name="demo/images/car/#{dataGridView.selectedCar.brand}-big.gif"/> 
-                                </f:facet>
-
-                                <h:outputText value="Id:" />
-                                <h:outputText value="#{dataGridView.selectedCar.id}" />
-
-                                <h:outputText value="Year" />
-                                <h:outputText value="#{dataGridView.selectedCar.year}" />
-
-                                <h:outputText value="Color:" />
-                                <h:outputText value="#{dataGridView.selectedCar.color}" style="color:#{dataGridView.selectedCar.color}"/>
-
-                                <h:outputText value="Price" />
-                                <h:outputText value="$#{dataGridView.selectedCar.price}" />
-                            </p:panelGrid>
-                        </p:outputPanel>
-                    </p:dialog>
+                    <!--                    <p:dialog header="Informações do produto" widgetVar="produtoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                                            <p:outputPanel id="produtoDetail" style="text-align:center;">
+                                                <p:panelGrid  columns="2" rendered="#{not empty avaliarBean.produtoSelecionado}" columnClasses="label,value">
+                                                    <h:outputText value="Categoria:" />
+                                                    <h:outputText value="#{avaliarBean.produtoSelecionado.categoria}" />
+                    
+                                                    <h:outputText value="Descrição:" />
+                                                    <h:outputText value="#{avaliarBean.produtoSelecionado.descricao}" />
+                                                </p:panelGrid>
+                    
+                                            </p:outputPanel>
+                                        </p:dialog>-->
                 </h:form>
             </ui:define>
         </ui:composition>
