@@ -11,12 +11,12 @@ import br.udesc.ceavi.core.persistence.PersistenceType;
 import br.udesc.ceavi.produto.model.dao.categoria.CategoriaDAO;
 import br.udesc.ceavi.produto.model.dao.cesta.CestaDAO;
 import br.udesc.ceavi.produto.model.dao.cestaproduto.CestaProdutoDAO;
+import br.udesc.ceavi.produto.model.dao.fornecedorproduto.FornecedorProdutoDAO;
 import br.udesc.ceavi.produto.model.dao.produto.ProdutoDAO;
 import br.udesc.ceavi.produto.model.entidade.Categoria;
 import br.udesc.ceavi.produto.model.entidade.CestaProduto;
 import br.udesc.ceavi.produto.model.entidade.FornecedorProduto;
 import br.udesc.ceavi.produto.model.entidade.Produto;
-import br.udesc.ceavi.produto.model.fornecedorproduto.FornecedorProdutoDAO;
 import java.util.List;
 
 /**

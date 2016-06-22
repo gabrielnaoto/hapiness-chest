@@ -33,10 +33,10 @@ import br.udesc.ceavi.produto.model.dao.cestaproduto.CestaProdutoDAO;
 import br.udesc.ceavi.produto.model.dao.cestaproduto.JDBCCestaProdutoDAO;
 import br.udesc.ceavi.produto.model.dao.clienteproduto.ClienteProdutoDAO;
 import br.udesc.ceavi.produto.model.dao.clienteproduto.JDBCClienteProdutoDAO;
+import br.udesc.ceavi.produto.model.dao.fornecedorproduto.FornecedorProdutoDAO;
+import br.udesc.ceavi.produto.model.dao.fornecedorproduto.JDBCFornecedorProdutoDAO;
 import br.udesc.ceavi.produto.model.dao.produto.JDBCProdutoDAO;
 import br.udesc.ceavi.produto.model.dao.produto.ProdutoDAO;
-import br.udesc.ceavi.produto.model.fornecedorproduto.FornecedorProdutoDAO;
-import br.udesc.ceavi.produto.model.fornecedorproduto.JDBCFornecedorProdutoDAO;
 import java.util.HashMap;
 
 /**
