@@ -27,16 +27,21 @@ public class JDBCProdutoDAO implements ProdutoDAO {
     public boolean inserir(Produto p) {
         PreparedStatement stmt = null;
         String sql = "INSERT INTO produto.produto(\n"
-                + "id, descricao, valor, peso, categoria_id)\n"
-                + "VALUES (?, ?, ?, ?, ?);";
+                + "descricao, valor, peso, categoria_id)\n"
+                + "VALUES (?, ?, ?, ?);";
         try {
-            stmt = Conexao.getConexao(1).prepareStatement(sql);
-            stmt.setInt(1, p.getId());
-            stmt.setString(2, p.getDescricao());
-            stmt.setDouble(3, p.getValor());
-            stmt.setDouble(4, p.getPeso());
-            stmt.setInt(5, p.getCategoria().getId());
-            stmt.executeUpdate();
+            stmt = Conexao.getConexao(1).prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setString(1, p.getDescricao());
+            stmt.setDouble(2, p.getValor());
+            stmt.setDouble(3, p.getPeso());
+            stmt.setInt(4, p.getCategoria().getId());
+            if (stmt.executeUpdate() > 0) {
+                ResultSet result = stmt.getGeneratedKeys();
+                if (result.next()) {
+                    int chave = result.getInt(1);
+                    p.setId(chave);
+                }
+            }
             stmt.close();
             Conexao.fechar();
             return true;

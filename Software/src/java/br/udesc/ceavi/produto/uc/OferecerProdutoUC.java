@@ -54,13 +54,21 @@ public class OferecerProdutoUC {
         boolean c = cpdao.inserir(cp);
         return a && b && c;
     }
-    
-    public List<Produto> obterProdutos(Usuario u){
+
+    public List<Produto> obterProdutos(Usuario u) {
         return pdao.listarPorFornecedor(u.getId());
     }
-    
-    public List<Categoria> obterCategorias(){
-        return ctdao.getFromCesta(csdao.getAtual().getId());
+
+    public List<Categoria> obterCategorias() {
+        try {
+            return ctdao.getFromCesta(csdao.getAtual().getId());
+        } catch (NullPointerException n) {
+            return null;
+        }
+    }
+
+    public boolean temCestaEmAndamento() {
+        return csdao.getAtual() != null;
     }
 
 }

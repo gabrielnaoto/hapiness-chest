@@ -35,8 +35,6 @@ public class JDBCCategoriaDAO implements CategoriaDAO {
                     int chave = result.getInt(1);
                     c.setId(chave);
                 }
-            } else {
-                throw new Exception("Usuário não inserido");
             }
             stmt.close();
             return true;

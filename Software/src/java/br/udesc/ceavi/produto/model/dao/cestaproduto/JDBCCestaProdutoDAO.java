@@ -15,6 +15,8 @@ import java.util.List;
 import br.udesc.ceavi.produto.model.entidade.Cesta;
 import br.udesc.ceavi.produto.model.entidade.CestaProduto;
 import br.udesc.ceavi.produto.model.entidade.Produto;
+import java.sql.Statement;
+import java.util.Calendar;
 
 /**
  *
@@ -26,15 +28,20 @@ public class JDBCCestaProdutoDAO implements CestaProdutoDAO {
     public boolean inserir(CestaProduto c) {
         PreparedStatement stmt = null;
         String sql = "INSERT INTO produto.cesta_produto(\n"
-                + "            id, cesta_id, produto_id, data)\n"
-                + "    VALUES (?, ?, ?, ?);";
+                + "            cesta_id, produto_id, data)\n"
+                + "    VALUES (?, ?, ?);";
         try {
-            stmt = Conexao.getConexao(1).prepareStatement(sql);
-            stmt.setInt(1, c.getId());
-            stmt.setInt(2, c.getCesta().getId());
-            stmt.setInt(3, c.getProduto().getId());
-            stmt.setDate(4, new java.sql.Date(c.getCesta().getData().getTime()));
-            stmt.executeUpdate();
+            stmt = Conexao.getConexao(1).prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setInt(1, c.getCesta().getId());
+            stmt.setInt(2, c.getProduto().getId());
+            stmt.setDate(3, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+            if (stmt.executeUpdate() > 0) {
+                ResultSet result = stmt.getGeneratedKeys();
+                if (result.next()) {
+                    int chave = result.getInt(1);
+                    c.setId(chave);
+                }
+            }
             stmt.close();
             return true;
         } catch (Exception e) {

@@ -8,6 +8,7 @@ package br.udesc.ceavi.produto.model.dao.fornecedorproduto;
 import br.udesc.ceavi.produto.model.entidade.FornecedorProduto;
 import br.udesc.ceavi.produto.util.Conexao;
 import java.sql.PreparedStatement;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -18,26 +19,24 @@ public class JDBCFornecedorProdutoDAO implements FornecedorProdutoDAO {
 
     @Override
     public boolean inserir(FornecedorProduto c) {
-//         PreparedStatement stmt = null;
-//        String sql = "INSERT INTO produto.cesta_produto(\n"
-//                + "            id, cesta_id, produto_id, data)\n"
-//                + "    VALUES (?, ?, ?, ?);";
-//        try {
-//            stmt = Conexao.getConexao(1).prepareStatement(sql);
-//            stmt.setInt(1, c.getId());
-//            stmt.setInt(2, c.getCesta().getId());
-//            stmt.setInt(3, c.getProduto().getId());
-//            stmt.setDate(4, new java.sql.Date(c.getCesta().getData().getTime()));
-//            stmt.executeUpdate();
-//            stmt.close();
-//            return true;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return false;
-//        } finally {
-//            Conexao.fechar();
-//        }
-        return false;
+         PreparedStatement stmt = null;
+        String sql = "INSERT INTO produto.fornecedor_produto(\n"
+                + "            fornecedor_id, produto_id, valor)\n"
+                + "    VALUES (?, ?, ?);";
+        try {
+            stmt = Conexao.getConexao(1).prepareStatement(sql);
+            stmt.setInt(1, c.getUsuario().getId());
+            stmt.setInt(2, c.getProduto().getId());
+            stmt.setInt(3, c.getValor());
+            stmt.executeUpdate();
+            stmt.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            Conexao.fechar();
+        }
     }
 
     @Override

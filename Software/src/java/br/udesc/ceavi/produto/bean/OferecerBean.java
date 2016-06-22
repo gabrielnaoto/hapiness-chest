@@ -10,17 +10,23 @@ import br.udesc.ceavi.core.java_ee.bean.util.SessionUtils;
 import br.udesc.ceavi.produto.model.entidade.Categoria;
 import br.udesc.ceavi.produto.model.entidade.Produto;
 import br.udesc.ceavi.produto.uc.OferecerProdutoUC;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIOutput;
+import javax.faces.component.UISelectOne;
+import javax.faces.context.FacesContext;
 
 /**
  *
  * @author ignoi
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class OferecerBean {
 
     private List<Produto> produtos;
@@ -32,11 +38,39 @@ public class OferecerBean {
 
     @PostConstruct
     public void init() {
-        usuario = ((Usuario) SessionUtils.getParam("user"));
         opuc = new OferecerProdutoUC();
-        produtos = opuc.obterProdutos(usuario);
-        categoriasAtuais = opuc.obterCategorias();
         cadastrando = new Produto();
+        atualizar();
+    }
+
+    private UIOutput label;
+
+    public UIOutput getLabel() {
+        return this.label;
+    }
+
+    public void setLabel(UIOutput label) {
+        this.label = label;
+    }
+    
+    private UIComponent select;
+
+    public UIComponent getSelect() {
+        return this.select;
+    }
+
+    public void setSelect(UIComponent select) {
+        this.select = select;
+    }
+
+    private UIComponent form;
+
+    public UIComponent getForm() {
+        return this.form;
+    }
+
+    public void setForm(UIComponent form) {
+        this.form = form;
     }
 
     public Categoria getCate() {
@@ -68,8 +102,14 @@ public class OferecerBean {
     }
 
     public void salvar() {
-        opuc.oferecer(cadastrando, usuario, cadastrando.getValor());
-        produtos = opuc.obterProdutos(usuario);
+        FacesContext fc = FacesContext.getCurrentInstance();
+        if (opuc.oferecer(cadastrando, usuario, cadastrando.getValor())) {
+            produtos = opuc.obterProdutos(usuario);
+            fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Produto adicionado com sucesso!"));
+        } else {
+            fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Houve um problema ao adicionar."));
+        }
+        cadastrando = new Produto();
     }
 
     public void cancelar() {
@@ -90,6 +130,12 @@ public class OferecerBean {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    private void atualizar() {
+        usuario = ((Usuario) SessionUtils.getParam("user"));
+        produtos = opuc.obterProdutos(usuario);
+        categoriasAtuais = opuc.obterCategorias();
     }
 
 }
