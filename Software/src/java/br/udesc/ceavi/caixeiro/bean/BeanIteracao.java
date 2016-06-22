@@ -36,7 +36,7 @@ public class BeanIteracao extends BeanEntity<EntregaIteracao>  implements Serial
     private void createLineModels(Entrega entrega) {
         lineModel1 = initLinearModel(entrega);
         lineModel1.setTitle("Histórico Iteração");
-        lineModel1.setLegendPosition("e");
+        lineModel1.setLegendPosition("se");
         lineModel1.getAxes().put(AxisType.X, new CategoryAxis("Iteração (x100)"));
         Axis yAxis = lineModel1.getAxis(AxisType.Y);
         yAxis.setLabel("Tempo (Min)");
@@ -67,7 +67,7 @@ public class BeanIteracao extends BeanEntity<EntregaIteracao>  implements Serial
             }
         }
 
-        lineModel1.getAxis(AxisType.Y).setMax(max * 1.1);
+        lineModel1.getAxis(AxisType.Y).setMax(max * 1.01);
 
         model.addSeries(series1);
         model.addSeries(series2);

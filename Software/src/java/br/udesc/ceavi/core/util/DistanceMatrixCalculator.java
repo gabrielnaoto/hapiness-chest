@@ -29,8 +29,8 @@ public class DistanceMatrixCalculator {
 
     private String baseUrl            = "https://maps.googleapis.com/maps/api/distancematrix/xml?";
     private String lang               = "PT-br";
-    private final String key          = "AIzaSyD47B3DSRESznB3S37SmhnqFfNq8xMdEbM", //Ricardo
-                         assuranceKey = "AIzaSyA-anpZjdAwBjXHZcLrb-eNvh4zPQCCYpA"; // Samuel
+    private final String assurancekey = "AIzaSyD47B3DSRESznB3S37SmhnqFfNq8xMdEbM", //Ricardo
+                         key          = "AIzaSyA-anpZjdAwBjXHZcLrb-eNvh4zPQCCYpA"; // Samuel
 
     private String origin;
     private List<String> destinations = new ArrayList();

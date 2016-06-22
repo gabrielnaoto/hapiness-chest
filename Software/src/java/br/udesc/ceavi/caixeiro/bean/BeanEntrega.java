@@ -12,9 +12,12 @@ import br.udesc.ceavi.core.persistence.Persistible;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
@@ -31,6 +34,13 @@ public class BeanEntrega extends BeanEntity<Entrega> {
 
     protected MapModel modelMapa  = new DefaultMapModel();
 
+    @Override
+    public Entrega getEntity() {
+        if (entity == null) {
+            entity = new Entrega();
+        }
+        return super.getEntity(); //To change body of generated methods, choose Tools | Templates.
+    }
 
     /**
      *
@@ -57,10 +67,13 @@ public class BeanEntrega extends BeanEntity<Entrega> {
     }
 
     public MapModel getModelMapa() {
-        if (entity.getId() > 0) {
+        if (entity != null && entity.getId() > 0) {
             String trajeto = JDBCFactory.getDaoEntrega().getTrajeto(entity);
             Endereco e = new Endereco();
             LatLng posicao;
+
+            modelMapa.getMarkers().clear();
+            modelMapa.getPolylines().clear();
 
             Polyline polyline = new Polyline();
             polyline.setStrokeWeight(3);
@@ -79,15 +92,15 @@ public class BeanEntrega extends BeanEntity<Entrega> {
                 polyline.getPaths().add(posicao);
 
 
-
                 if (i == 1) {
-                    modelMapa.addOverlay(new Marker(posicao, "Posição" + i++, "Teste", "http://maps.google.com/mapfiles/ms/micons/yellow-dot.png"));
+                    modelMapa.addOverlay(new Marker(posicao, "#" + i++ + " " + e.getDescricao(), "Nada aqui!", "http://maps.google.com/mapfiles/ms/micons/yellow-dot.png"));
                 } else if (i != lista.length) {
-                    modelMapa.addOverlay(new Marker(posicao, "Posição" + i++));
+                    modelMapa.addOverlay(new Marker(posicao, "#" + i++ + " " + e.getDescricao()));
                 }
             }
-        }
 
+            entity = null;
+        }
         return modelMapa;
     }
 
@@ -149,6 +162,7 @@ public class BeanEntrega extends BeanEntity<Entrega> {
         entity.setData(new Date());
         super.save();
         closeDialog("dlg");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cálculo efetuado com sucesso!"));
     }
 
     @Override
