@@ -47,9 +47,21 @@ public class FilterLogin implements Filter {
                         (requisition.getRequestURI().endsWith("veiculo.jsf")) || 
                         (requisition.getRequestURI().endsWith("fornecedor.jsf")) || 
                         (requisition.getRequestURI().endsWith("entrega.jsf")) ||  
-                        (requisition.getRequestURI().endsWith("centro_distribuicao.jsf"))   
+                        (requisition.getRequestURI().endsWith("centro_distribuicao.jsf")) ||
+                        (requisition.getRequestURI().endsWith("oferecer.jsf")) ||
+                        (requisition.getRequestURI().endsWith("cliente.jsf"))
                         )) {
                     redirect("home.jsf", response);
+                }
+                if((user).getTipo() == 2 && ((requisition.getRequestURI().endsWith("cesta.jsf")) || 
+                        (requisition.getRequestURI().endsWith("cadastro.jsf")) || 
+                        (requisition.getRequestURI().endsWith("veiculo.jsf")) || 
+                        (requisition.getRequestURI().endsWith("fornecedor.jsf")) || 
+                        (requisition.getRequestURI().endsWith("entrega.jsf")) ||  
+                        (requisition.getRequestURI().endsWith("centro_distribuicao.jsf")) ||
+                        (requisition.getRequestURI().endsWith("cliente.jsf"))
+                        )){
+                  redirect("home.jsf", response);
                 }
             }
             chain.doFilter(request, response);
