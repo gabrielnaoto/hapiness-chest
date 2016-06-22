@@ -73,16 +73,16 @@ public class MenuBean {
         sair.setAjax(false);
         sair.setCommand("#{beanLogin.logout()}");
 
-        DefaultSubMenu conta = new DefaultSubMenu("Conta");
-        conta.addElement(editar);
-        conta.addElement(sair);
+        DefaultSubMenu home = new DefaultSubMenu("Home");
+//        conta.addElement(editar);
+//        conta.addElement(sair);
 
         DefaultMenuItem avaliarProdutos = new DefaultMenuItem("Avaliar produtos", "ui-icon-tag", "avaliar.jsf");
         DefaultMenuItem oferecerProdutos = new DefaultMenuItem("Oferecer produtos", "ui-icon-plusthick", "oferecer.jsf");
         DefaultMenuItem criarCesta = new DefaultMenuItem("Gerenciar cesta", "ui-icon-pencil", "cesta.jsf");
         DefaultMenuItem montarEntrega = new DefaultMenuItem("Montar entrega", "ui-icon-suitcase", "entrega.jsf");
 
-        this.menuItens.addElement(conta);
+//        this.menuItens.addElement(conta);
         this.menuItens.addElement(cadastros);
         this.menuItens.addElement(avaliarProdutos);
         this.menuItens.addElement(oferecerProdutos);
@@ -91,21 +91,22 @@ public class MenuBean {
     }
 
     private void carregaMenuFornecedor() {
-        DefaultMenuItem editar = new DefaultMenuItem("Editar", "ui-icon-close", "#");
-        DefaultMenuItem sair = new DefaultMenuItem("Sair", "ui-icon-close", "index.jsf");
-        sair.setAjax(false);
-        sair.setCommand("#{beanLogin.logout}");
+//        DefaultMenuItem editar = new DefaultMenuItem("Editar", "ui-icon-close", "#");
+//        DefaultMenuItem sair = new DefaultMenuItem("Sair", "ui-icon-close", "index.jsf");
+//        sair.setAjax(false);
+//        sair.setCommand("#{beanLogin.logout}");
 
-        DefaultSubMenu conta = new DefaultSubMenu("Conta");
-        conta.addElement(editar);
-        conta.addElement(sair);
+        DefaultMenuItem home = new DefaultMenuItem("Editar", "fa-home", "home.jsf");
+//        conta.addElement(editar);
+//        conta.addElement(sair);
 
         DefaultMenuItem avaliarProdutos = new DefaultMenuItem("Avaliar produtos", "ui-icon-tag", "avaliar.jsf");
         DefaultMenuItem oferecerProdutos = new DefaultMenuItem("Oferecer produtos", "ui-icon-plusthick", "oferecer.jsf");
 
-        this.menuItens.addElement(conta);
+//        this.menuItens.addElement(conta);
         this.menuItens.addElement(avaliarProdutos);
         this.menuItens.addElement(oferecerProdutos);
+        this.menuItens.addElement(home);
     }
 
     private void carregaMenuCliente() {
@@ -114,12 +115,12 @@ public class MenuBean {
         sair.setAjax(false);
         sair.setCommand("#{beanLogin.logout}");
 
-        DefaultSubMenu conta = new DefaultSubMenu("Conta");
-        conta.addElement(editar);
-        conta.addElement(sair);
+//        DefaultSubMenu conta = new DefaultSubMenu("Conta");
+//        conta.addElement(editar);
+//        conta.addElement(sair);
         DefaultMenuItem avaliarProdutos = new DefaultMenuItem("Avaliar produtos", "ui-icon-tag", "avaliar.jsf");
 
-        this.menuItens.addElement(conta);
+//        this.menuItens.addElement(conta);
         this.menuItens.addElement(avaliarProdutos);
     }
 
@@ -128,10 +129,10 @@ public class MenuBean {
         DefaultMenuItem sair = new DefaultMenuItem("Sair", "ui-icon-close", "index.jsf");
         sair.setAjax(false);
         sair.setCommand("#{beanLogin.logout}");
-        DefaultSubMenu conta = new DefaultSubMenu("Conta");
-        conta.addElement(editar);
-        conta.addElement(sair);
-        this.menuItens.addElement(conta);
+//        DefaultSubMenu conta = new DefaultSubMenu("Conta");
+//        conta.addElement(editar);
+//        conta.addElement(sair);
+//        this.menuItens.addElement(conta);
     }
 
     public MenuModel getMenuItens() {

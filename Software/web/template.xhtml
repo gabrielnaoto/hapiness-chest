@@ -22,7 +22,11 @@
                 <p id="title-header">Baú da Felicidade</p>
             </p:link>
             <div id="user-info">
-                <p:outputLabel value="Olá, #{beanLogin.login}!"></p:outputLabel>
+                <h:form>
+                    <p:splitButton value="Olá, #{beanLogin.login}!" icon="ui-icon-person">
+                        <p:menuitem value="Sair" action="#{beanLogin.logout}"  icon="ui-icon-extlink" />
+                    </p:splitButton>
+                </h:form>
             </div>
         </div>
         <div id="menu">
