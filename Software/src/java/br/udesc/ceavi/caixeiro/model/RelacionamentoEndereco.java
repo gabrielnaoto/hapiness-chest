@@ -33,6 +33,9 @@ public class RelacionamentoEndereco extends Entity {
     }
 
     public Endereco getEnderecoSaida() {
+        if (EnderecoSaida == null) {
+            EnderecoSaida = new Endereco();
+        }
         return EnderecoSaida;
     }
 
@@ -41,6 +44,9 @@ public class RelacionamentoEndereco extends Entity {
     }
 
     public Endereco getEnderecoChegada() {
+        if (EnderecoChegada == null) {
+            EnderecoChegada = new Endereco();
+        }
         return EnderecoChegada;
     }
 

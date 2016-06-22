@@ -24,10 +24,10 @@ public class JDBCDAOUsuario extends DAOGeneric<Usuario> implements iDaoUsuario {
     public Usuario getUsuario(String login, String senha) {
         StringBuilder query = new StringBuilder("SELECT *");
         query.append("\nFROM ")
-                .append(this.getTableNameComplete())
-                .append("\nWHERE TRUE")
-                .append("\nAND login " + OPERATOR_EQUAL + " ?")
-                .append("\nAND senha " + OPERATOR_EQUAL + " ?");
+             .append(this.getTableNameComplete())
+             .append("\nWHERE TRUE")
+             .append("\nAND login " + OPERATOR_EQUAL + " ?")
+             .append("\nAND senha " + OPERATOR_EQUAL + " ?");
 
         try {
             PreparedStatement statement = connection.getConnection().prepareStatement(query.toString());
@@ -36,16 +36,16 @@ public class JDBCDAOUsuario extends DAOGeneric<Usuario> implements iDaoUsuario {
             statement.setString(2, senha);
 
             ResultSet result = statement.executeQuery();
-            if (result.next()) {
+            if(result.next()) {
                 Usuario usuario = new Usuario();
 
-                for (Relation relation : getRelationships().getAllRelations()) {
+                for(Relation relation : getRelationships().getAllRelations()) {
                     BeanUtils.callSetter(usuario, relation.getModelName(), getValueFromStatement(result, relation));
                 }
                 return usuario;
             }
             return null;
-        } catch (SQLException exception) {
+        } catch(SQLException exception) {
             catchSQLException(exception);
             return null;
         }
@@ -55,9 +55,9 @@ public class JDBCDAOUsuario extends DAOGeneric<Usuario> implements iDaoUsuario {
     public boolean isLoginCadastrado(String login) {
         StringBuilder query = new StringBuilder("SELECT *");
         query.append("\nFROM ")
-                .append(this.getTableNameComplete())
-                .append("\nWHERE TRUE")
-                .append("\nAND login " + OPERATOR_EQUAL + " ?");
+             .append(this.getTableNameComplete())
+             .append("\nWHERE TRUE")
+             .append("\nAND login " + OPERATOR_EQUAL + " ?");
 
         try {
             PreparedStatement statement = connection.getConnection().prepareStatement(query.toString());
@@ -66,7 +66,7 @@ public class JDBCDAOUsuario extends DAOGeneric<Usuario> implements iDaoUsuario {
 
             ResultSet result = statement.executeQuery();
             return result.next();
-        } catch (SQLException exception) {
+        } catch(SQLException exception) {
             catchSQLException(exception);
             return false;
         }

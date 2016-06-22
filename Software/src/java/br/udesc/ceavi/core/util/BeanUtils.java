@@ -27,7 +27,12 @@ public class BeanUtils {
 
         if(matcher.length > 1) {
             Object association = callGetter(bean, matcher[0], throwException);
-            callSetter(association, matcher[1], value, throwException);
+            if (association == null && matcher.length > 2) {
+                association = callGetter(bean, matcher[0] + "_" + matcher[1], throwException);
+                callSetter(association, matcher[2], value, throwException);
+            } else {
+                callSetter(association, matcher[1], value, throwException);
+            }
             return;
         }
 
@@ -36,17 +41,16 @@ public class BeanUtils {
         while(possibleClassesIterator.hasNext()) {
             try {
                 String methodName = getSetterName(propertyName);
-                Method method     = bean.getClass().getMethod(methodName, possibleClassesIterator.next());
+                Class c = possibleClassesIterator.next();
+                //System.out.println(bean.getClass().getName() + "." + methodName + ": " + c.getName());
+                Method method     = bean.getClass().getMethod(methodName, c);
                 if(MethodUtils.isSetter(method)) {
                     method.invoke(bean, value);
                     return;
                 }
                 throw new RuntimeException("Invalid setter method");
+            } catch(java.lang.NoSuchMethodException exception) {
             } catch(Exception exception) {
-                if(exception instanceof java.lang.NoSuchMethodException) {
-                    continue;
-                }
-
                 throw new RuntimeException(exception.getMessage());
             }
         }
@@ -89,6 +93,7 @@ public class BeanUtils {
 
         try {
             String methodName = getGetterName(propertyName);
+//            System.out.println(bean.getClass().getName() + "." + methodName);
             Method method     = bean.getClass().getMethod(methodName);
             if(MethodUtils.isGetter(method)) {
                 return (Return) method.invoke(bean);
@@ -200,6 +205,12 @@ public class BeanUtils {
                 possibleClasses.add(aClass);
                 possibleClasses.add(double.class);
                 possibleClasses.add(Double.class);
+            break;
+
+            case "java.sql.Date":
+            case "java.util.Date":
+                possibleClasses.add(aClass);
+                possibleClasses.add(java.util.Date.class);
             break;
 
             default:

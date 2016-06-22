@@ -1,5 +1,6 @@
 package br.udesc.ceavi.caixeiro.model.dao;
 
+import br.udesc.ceavi.caixeiro.model.Entrega;
 import br.udesc.ceavi.caixeiro.model.RelacionamentoEndereco;
 import br.udesc.ceavi.core.persistence.Persistible;
 import java.sql.ResultSet;
@@ -16,6 +17,8 @@ import java.sql.ResultSet;
  */
 public interface iDaoRelacionamentoEndereco extends Persistible<RelacionamentoEndereco> {
 
-    public ResultSet getAllEnderecoEntrega();
+    public Iterable<RelacionamentoEndereco> getEnderecosEntrega(Entrega entrega);
+
+    public Integer getQuantidadeEntrega(Entrega entrega);
 
 }

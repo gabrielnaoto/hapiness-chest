@@ -14,6 +14,7 @@ public class Usuario extends Entity {
 
     private static final long serialVersionUID = 1L;
 
+
     @DataBaseInfo(key = true, columnName = "id", dataType = INT_INTEGER, sequential = true)
     private int id;
 
@@ -25,6 +26,7 @@ public class Usuario extends Entity {
 
     @DataBaseInfo(columnName = "tipo", dataType = INT_INTEGER)
     private TipoUsuario tipo;
+
 
     public int getId() {
         return id;

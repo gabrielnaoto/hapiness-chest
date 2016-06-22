@@ -1,10 +1,11 @@
 package br.udesc.ceavi.caixeiro.model;
 
 import br.udesc.ceavi.core.model.Entity;
+import br.udesc.ceavi.core.persistence.EntityDataBaseTypeRelation;
 import static br.udesc.ceavi.core.persistence.EntityDataBaseTypeRelation.INT_INTEGER;
-import static br.udesc.ceavi.core.persistence.EntityDataBaseTypeRelation.STRING_VARCHAR;
 import br.udesc.ceavi.core.persistence.annotation.DataBaseInfo;
 import br.udesc.ceavi.core.persistence.annotation.Table;
+import java.util.Date;
 
 /**
  * @author Ricardo
@@ -17,17 +18,17 @@ public class Entrega extends Entity {
     @DataBaseInfo(key = true, columnName = "id", dataType = INT_INTEGER, sequential = true)
     private int id;
 
-    @DataBaseInfo(columnName = "data", dataType = STRING_VARCHAR)
-    private String data;
+    @DataBaseInfo(columnName = "data", dataType = EntityDataBaseTypeRelation.DATE_DATE)
+    private Date data;
 
     @DataBaseInfo(columnName = "centrodistribuicao_id", dataType = INT_INTEGER)
     private CentroDistribuicao CentroDistribuicao;
 
     @DataBaseInfo(columnName = "cesta_id", dataType = INT_INTEGER)
-    private Cesta Cesta;
+    private Cesta cesta;
 
     @DataBaseInfo(columnName = "veiculo_id", dataType = INT_INTEGER)
-    private Veiculo Veiculo;
+    private Veiculo veiculo;
 
     public int getId() {
         return id;
@@ -37,19 +38,25 @@ public class Entrega extends Entity {
         this.id = id;
     }
 
-    public String getData() {
-        if(data == null) {
-            setData(new String());
+    public Date getData() {
+        if (data == null) {
+            data = new Date();
         }
-
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(Date data) {
+        this.data = data;
+    }
+
+    public void setData(java.sql.Date data) {
         this.data = data;
     }
 
     public CentroDistribuicao getCentroDistribuicao() {
+        if (CentroDistribuicao == null) {
+            CentroDistribuicao = new CentroDistribuicao();
+        }
         return CentroDistribuicao;
     }
 
@@ -57,20 +64,42 @@ public class Entrega extends Entity {
         this.CentroDistribuicao = CentroDistribuicao;
     }
 
-    public Cesta getCesta() {
-        return Cesta;
+    /**
+     * Mais um que vai pro inferno
+     * @return
+     */
+    public CentroDistribuicao getCentrodistribuicao() {
+        return getCentroDistribuicao();
     }
 
-    public void setCesta(Cesta Cesta) {
-        this.Cesta = Cesta;
+    /**
+     * E não tem volta
+     * @param CentroDistribuicao
+     */
+    public void setCentrodistribuicao(CentroDistribuicao CentroDistribuicao) {
+        setCentroDistribuicao(CentroDistribuicao);
+    }
+
+    public Cesta getCesta() {
+        if (cesta == null) {
+            cesta = new Cesta();
+        }
+        return cesta;
+    }
+
+    public void setCesta(Cesta cesta) {
+        this.cesta = cesta;
     }
 
     public Veiculo getVeiculo() {
-        return Veiculo;
+        if (veiculo == null) {
+            veiculo = new Veiculo();
+        }
+        return veiculo;
     }
 
-    public void setVeiculo(Veiculo Veiculo) {
-        this.Veiculo = Veiculo;
+    public void setVeiculo(Veiculo veiculo) {
+        this.veiculo = veiculo;
     }
 
 }//end Entrega

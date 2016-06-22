@@ -42,9 +42,7 @@ public class DistanceMatrixCalculator {
     public void addDestination(double latitude, double longitude) {
         String destination = latitude + "," + longitude;
 
-        if (!this.destinations.contains(destination)) {
-            this.destinations.add(destination);
-        }
+        this.destinations.add(destination);
     }
 
     public List<String> getResult() {

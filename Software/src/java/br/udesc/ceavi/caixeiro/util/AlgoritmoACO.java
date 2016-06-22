@@ -1,21 +1,20 @@
 package br.udesc.ceavi.caixeiro.util;
 
+import br.udesc.ceavi.caixeiro.model.Endereco;
+import br.udesc.ceavi.caixeiro.model.Entrega;
+import br.udesc.ceavi.caixeiro.model.EntregaIteracao;
+import br.udesc.ceavi.caixeiro.model.RelacionamentoEndereco;
 import br.udesc.ceavi.core.model.dao.JDBC.JDBCFactory;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class AlgoritmoACO {
-    /**
-     * Valor depositado
-     */
-    private double taxaFeromonio = 1.0;
+
+    private Entrega entrega;
+
+    private final EntregaIteracao iteracao = new EntregaIteracao();
+
+    private ArrayList<Endereco> enderecos = new ArrayList();
 
     /**
      * Probabilidade de usar caminhos com feromônios
@@ -60,116 +59,54 @@ public class AlgoritmoACO {
     public int[] melhorTrajeto;
     public double distanciaMelhorTrajeto;
 
-    /**
-     * Especificação da formiga
-     */
-    private class Formiga {
-        public int cidades[] = new int[matriz.length];
+    private void gravaIteracao(double media) {
+        iteracao.setDistancia(distanciaMelhorTrajeto - (numeroCidades + 1));
+        iteracao.setMedia(media);
+        iteracao.setTrajeto(escreveArray(melhorTrajeto));
 
-        /**
-         * Lista de cidades visitadas
-         */
-        public boolean trajeto[] = new boolean[matriz.length];
-
-        public void visitaCidade(int cidade) {
-            cidades[indice + 1] = cidade;
-            trajeto[cidade] = true;
-        }
-
-        public boolean getCidade(int i) {
-            return trajeto[i];
-        }
-
-        public double distancia() {
-            double length = matriz[cidades[numeroCidades - 1]][cidades[0]];
-            for (int i = 0; i < numeroCidades - 1; i++) {
-                length += matriz[cidades[i]][cidades[i + 1]];
-            }
-            return length;
-        }
-
-        public void limpa() {
-            for (int i = 0; i < numeroCidades; i++)
-                trajeto[i] = false;
-        }
-    }
-
-    /**
-     * Carrega as cidades a partir de arquivo
-     * @param path
-     * @throws IOException
-     */
-    public void readGraph(String path) throws IOException {
-        FileReader fr = new FileReader(path);
-        BufferedReader buf = new BufferedReader(fr);
-        String line;
-        int i = 0;
-
-        while ((line = buf.readLine()) != null) {
-            String splitA[] = line.split(" ");
-            LinkedList<String> split = new LinkedList<String>();
-            for (String s : splitA)
-                if (!s.isEmpty())
-                    split.add(s);
-
-            if (matriz == null)
-                matriz = new double[split.size()][split.size()];
-            int j = 0;
-
-            for (String s : split)
-                if (!s.isEmpty())
-                    matriz[i][j++] = Double.parseDouble(s) + 1; // +1 evita caminho zerado
-
-            i++;
-        }
-
-        numeroCidades = matriz.length;
-        numeroFormigas = (int) (numeroCidades * numAntFactor);
-
-        // criando vetores
-        trilhaFeromonio = new double[numeroCidades][numeroCidades];
-        probabilidade = new double[numeroCidades];
-        formigas = new Formiga[numeroFormigas];
-        for (int j = 0; j < numeroFormigas; j++)
-            formigas[j] = new Formiga();
+        // entrega, distanciaMelhorTrajeto, media, melhorTrajeto
+        JDBCFactory.getDaoEntregaIteracao().insert(iteracao);
     }
 
     /**
      * Carrega as cidades do banco de dados
      */
     public void buscaDados() {
-        try {
-            ResultSet result = JDBCFactory.getDaoRelacionamentoEndereco().getAllEnderecoEntrega();
+        numeroCidades  = JDBCFactory.getDaoRelacionamentoEndereco().getQuantidadeEntrega(entrega);
+        numeroFormigas = (int) (numeroCidades * numAntFactor);
 
-            while (result.next()) {
-//                String splitA[] = line.split(" ");
-//                LinkedList<String> split = new LinkedList<String>();
-//                for (String s : splitA)
-//                    if (!s.isEmpty())
-//                        split.add(s);
-//
-//                if (matriz == null)
-//                    matriz = new double[split.size()][split.size()];
-//                int j = 0;
-//
-//                for (String s : split)
-//                    if (!s.isEmpty())
-//                        matriz[i][j++] = Double.parseDouble(s) + 1; // +1 evita caminho zerado
-//
-//                i++;
+        // criando vetores
+        matriz   = new double[numeroCidades][numeroCidades];
+        formigas = new Formiga[numeroFormigas];
+
+        probabilidade   = new double[numeroCidades];
+        trilhaFeromonio = new double[numeroCidades][numeroCidades];
+
+        // prepara uma formiga com os atributos padrão
+        Formiga prototipo = new Formiga();
+        prototipo.cidades = new int[numeroCidades + 1];
+        prototipo.trajeto = new boolean[numeroCidades];
+        for (int j = 0; j < numeroFormigas; j++) {
+            formigas[j] = prototipo.clone();
+        }
+
+        // limpa as trilhas
+        for (int i = 0; i < numeroCidades; i++)
+            for (int j = 0; j < numeroCidades; j++)
+                trilhaFeromonio[i][j] = 1.0; // valor inicial
+
+
+        for (RelacionamentoEndereco r : JDBCFactory.getDaoRelacionamentoEndereco().getEnderecosEntrega(entrega)) {
+            if (!enderecos.contains(r.getEnderecoSaida())){
+                enderecos.add(r.getEnderecoSaida());
+            }
+            if (!enderecos.contains(r.getEnderecoChegada())){
+                enderecos.add(r.getEnderecoChegada());
             }
 
-            numeroCidades = matriz.length;
-            numeroFormigas = (int) (numeroCidades * numAntFactor);
-
-            // criando vetores
-            trilhaFeromonio = new double[numeroCidades][numeroCidades];
-            probabilidade = new double[numeroCidades];
-            formigas = new Formiga[numeroFormigas];
-            for (int j = 0; j < numeroFormigas; j++)
-                formigas[j] = new Formiga();
-        } catch (SQLException ex) {
-            Logger.getLogger(AlgoritmoACO.class.getName()).log(Level.SEVERE, null, ex);
+            int idSaida = enderecos.indexOf(r.getEnderecoSaida()),
+                idChegada = enderecos.indexOf(r.getEnderecoChegada());
+            matriz[idSaida][idChegada] = r.getDistancia() + 1;
         }
     }
 
@@ -267,50 +204,107 @@ public class AlgoritmoACO {
         indice = -1;
         for (int i = 0; i < numeroFormigas; i++) {
             formigas[i].limpa();
-            formigas[i].visitaCidade(aleatorio.nextInt(numeroCidades));
+            formigas[i].visitaCidade(0);
         }
         indice++;
 
     }
 
+    /**
+     * verifica e atualiza o trajeto mais curto (com menor tempo)
+     */
     private void atualizaMelhorTrajeto() {
         if (melhorTrajeto == null) {
             melhorTrajeto = formigas[0].cidades;
             distanciaMelhorTrajeto = formigas[0].distancia();
         }
+
+        double totalFormigas = 0;
+
         for (Formiga formiga : formigas) {
-            if (formiga.distancia() < distanciaMelhorTrajeto) {
-                distanciaMelhorTrajeto = formiga.distancia();
+            // e voltamos para o início
+            formiga.visitaCidade(0);
+            double distancia = formiga.distancia();
+            totalFormigas += distancia;
+
+            if (distancia < distanciaMelhorTrajeto || distanciaMelhorTrajeto == 0) {
+                distanciaMelhorTrajeto = distancia;
                 melhorTrajeto = formiga.cidades.clone();
             }
         }
+
+        gravaIteracao(totalFormigas / formigas.length);
     }
 
-    public static String escreveArray(int trajeto[]) {
+    private String escreveArray(int trajeto[]) {
         String retorno = new String();
-        for (int cidade : trajeto)
-            retorno = retorno + " " + cidade;
+        for (int cidade : trajeto) {
+            String id = String.valueOf(enderecos.get(cidade).getId());
+            retorno = retorno + " " + id;
+        }
         return retorno;
     }
 
-    public int[] resolver() {
-        // llimpaas trilhas
-        for (int i = 0; i < numeroCidades; i++)
-            for (int j = 0; j < numeroCidades; j++)
-                trilhaFeromonio[i][j] = taxaFeromonio;
+    public int[] calcula(Entrega entrega) {
+        this.entrega = entrega;
+        this.iteracao.setEntrega(entrega);
 
-        int iteracao = 0;
+        buscaDados();
+
+        int i = 0;
         // executa as iterações
-        while (iteracao < limiteIteracoes) {
+        while (i < limiteIteracoes) {
             preparaFormigas();
             moveFormigas();
             atualizaTrilhas();
             atualizaMelhorTrajeto();
-            iteracao++;
+            i++;
         }
+
         // Escreve o resultado
-        System.out.println("Menor distância: " + (distanciaMelhorTrajeto - numeroCidades));
+        System.out.println("Menor distância: " + (distanciaMelhorTrajeto - (numeroCidades + 1)));
         System.out.println("Caminho:" + escreveArray(melhorTrajeto));
         return melhorTrajeto.clone();
+    }
+
+    /**
+     * Especificação da formiga
+     */
+    private class Formiga {
+        public int cidades[];
+
+        /**
+         * Lista de cidades visitadas
+         */
+        public boolean trajeto[];
+
+        public void visitaCidade(int cidade) {
+            cidades[indice + 1] = cidade;
+            trajeto[cidade] = true;
+        }
+
+        public boolean getCidade(int i) {
+            return trajeto[i];
+        }
+
+        public double distancia() {
+            double length = matriz[cidades[numeroCidades - 1]][cidades[0]];
+            for (int i = 0; i < numeroCidades - 1; i++) {
+                length += matriz[cidades[i]][cidades[i + 1]];
+            }
+            return length;
+        }
+
+        public void limpa() {
+            for (int i = 0; i < numeroCidades; i++)
+                trajeto[i] = false;
+        }
+
+        protected Formiga clone() {
+            Formiga f = new Formiga();
+            f.cidades = cidades.clone();
+            f.trajeto = trajeto.clone();
+            return f;
+        }
     }
 }

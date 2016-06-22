@@ -34,11 +34,11 @@ import org.primefaces.model.map.Marker;
  */
 @SessionScoped
 @ManagedBean
-public class BeanCliente extends BeanEntity<Cliente> {
+public class BeanCliente  extends BeanEntity<Cliente> {
 
-    protected MapModel geoModel = new DefaultMapModel();
-    protected double latitude = Endereco.LATITUDE_UDESC,
-            longitude = Endereco.LONGITUDE_UDESC;
+    protected MapModel geoModel  = new DefaultMapModel();
+    protected double   latitude  = Endereco.LATITUDE_UDESC,
+                       longitude = Endereco.LONGITUDE_UDESC;
 
     @Override
     protected Persistible<Cliente> getDao() {
@@ -52,7 +52,8 @@ public class BeanCliente extends BeanEntity<Cliente> {
     public String getCentroMapa() {
         if (entity != null && entity.getEndereco().getLatitude() != 0) {
             return entity.getEndereco().getLatitude() + ", " + entity.getEndereco().getLongitude();
-        } else if (!geoModel.getMarkers().isEmpty()) {
+        }
+        else if (!geoModel.getMarkers().isEmpty()) {
             LatLng latlng = geoModel.getMarkers().get(0).getLatlng();
             return latlng.getLat() + ", " + latlng.getLng();
         }
@@ -70,6 +71,8 @@ public class BeanCliente extends BeanEntity<Cliente> {
         geoModel.addOverlay(new Marker(latlng, "Endereço"));
     }
 
+
+
     public MapModel getGeoModel() {
         return geoModel;
     }
@@ -83,7 +86,7 @@ public class BeanCliente extends BeanEntity<Cliente> {
         entity.getEndereco().setLatitude(latlng.getLat());
         entity.getEndereco().setLongitude(latlng.getLng());
 
-        latitude = latlng.getLat();
+        latitude  = latlng.getLat();
         longitude = latlng.getLng();
 
         DistanceMatrixCalculator calc = new DistanceMatrixCalculator();
@@ -96,11 +99,11 @@ public class BeanCliente extends BeanEntity<Cliente> {
         List<GeocodeResult> results = event.getResults();
         geoModel.getMarkers().clear();
 
-        if (results != null && !results.isEmpty()) {
+        if(results != null && !results.isEmpty()) {
 
             for (int i = 0; i < results.size(); i++) {
                 GeocodeResult result = results.get(i);
-                LatLng latlng = result.getLatLng();
+                LatLng        latlng = result.getLatLng();
 
                 this.entity.getEndereco().setLatitude(latlng.getLat());
                 this.entity.getEndereco().setLongitude(latlng.getLng());
@@ -121,7 +124,7 @@ public class BeanCliente extends BeanEntity<Cliente> {
 
         iDaoEndereco daoEndereco = JDBCFactory.getDaoEndereco();
 
-        if (!daoEndereco.exists(entity.getEndereco()) || entity.getEndereco().getId() == 0) {
+        if(!daoEndereco.exists(entity.getEndereco()) || entity.getEndereco().getId() == 0) {
             daoEndereco.insert(entity.getEndereco());
         } else {
             daoEndereco.update(entity.getEndereco());
@@ -131,7 +134,7 @@ public class BeanCliente extends BeanEntity<Cliente> {
         super.save();
         JDBCFactory.getDaoEndereco().limpaEnderecos();
 
-        latitude = Endereco.LATITUDE_UDESC;
+        latitude  = Endereco.LATITUDE_UDESC;
         longitude = Endereco.LONGITUDE_UDESC;
         geoModel.addOverlay(new Marker(new LatLng(latitude, longitude), "Endereço"));
     }
@@ -164,18 +167,18 @@ public class BeanCliente extends BeanEntity<Cliente> {
 
     public String cadastrar() {
         iDaoUsuario daoUsuario = JDBCFactory.getDaoUsuario();
-        if (daoUsuario.isLoginCadastrado(this.entity.getUsuario().getLogin())) {
+        if(daoUsuario.isLoginCadastrado(this.entity.getUsuario().getLogin())) {
             FacesContext context = FacesContext.getCurrentInstance();
 
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Inválido", "O login informado já está sendo utilizado!"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Inválido",  "O login informado já está sendo utilizado!"));
             return "index.jsf";
         }
 
         iDaoCliente daoCliente = (iDaoCliente) getDao();
-        if (daoCliente.isNomeCadastrado(entity.getNome())) {
+        if(daoCliente.isNomeCadastrado(entity.getNome())) {
             FacesContext context = FacesContext.getCurrentInstance();
 
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Nome Inválido", "O cliente informado já está cadastrado!"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Nome Inválido",  "O cliente informado já está cadastrado!"));
             return "index.jsf";
         }
 

@@ -7,6 +7,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -46,11 +47,12 @@ public abstract class BeanEntity<Entity extends br.udesc.ceavi.core.model.Entity
     public void save() {
         if(!getDao().exists(entity)) {
             getDao().insert(entity);
-            afterEntityInsert();
+            afterInsert();
         } else {
             getDao().update(entity);
+            afterUpdate();
         }
-        this.entity = null;
+        this.entity = getDao().getNewEntity();
     }
 
     public void change() {
@@ -79,6 +81,17 @@ public abstract class BeanEntity<Entity extends br.udesc.ceavi.core.model.Entity
         }
     }
 
-    protected void afterEntityInsert() {}
+    public void openDialog(String dialogName) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('" + dialogName + "').show();");
+    }
 
+    public void closeDialog(String dialogName) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('" + dialogName + "').hide();");
+    }
+
+    protected void afterInsert() {}
+
+    protected void afterUpdate() {}
 }

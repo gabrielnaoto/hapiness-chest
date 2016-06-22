@@ -2,36 +2,40 @@ package br.udesc.ceavi.caixeiro.bean;
 
 import br.udesc.ceavi.caixeiro.model.CentroDistribuicao;
 import br.udesc.ceavi.caixeiro.model.Cesta;
+import br.udesc.ceavi.caixeiro.model.Endereco;
 import br.udesc.ceavi.caixeiro.model.Entrega;
 import br.udesc.ceavi.caixeiro.model.Veiculo;
+import br.udesc.ceavi.caixeiro.util.AlgoritmoACO;
 import br.udesc.ceavi.core.java_ee.bean.BeanEntity;
 import br.udesc.ceavi.core.model.dao.JDBC.JDBCFactory;
 import br.udesc.ceavi.core.persistence.Persistible;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.model.DataModel;
-import org.primefaces.event.SelectEvent;
+import org.primefaces.model.map.DefaultMapModel;
+import org.primefaces.model.map.LatLng;
+import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Marker;
+import org.primefaces.model.map.Polyline;
 
 /**
  *
  * @author Ricardo Augusto Küstner
  */
-@RequestScoped
+@SessionScoped
 @ManagedBean
 public class BeanEntrega extends BeanEntity<Entrega> {
 
+    protected MapModel modelMapa  = new DefaultMapModel();
+
 
     /**
-     * Garanti minha vaga no inferno dos programadores fazendo isso
-     * Se + alguém usar isso dá uma passada lá na área VIP qnd chegar, vo tá lá fazendo um churrascão
+     *
+     * @return
      */
-    protected static Veiculo            veiculo;
-    protected static CentroDistribuicao centroDistribuicao;
-    protected static Cesta              cesta;
-
-
     @Override
     protected Persistible<Entrega> getDao() {
         return JDBCFactory.getDaoEntrega();
@@ -41,20 +45,69 @@ public class BeanEntrega extends BeanEntity<Entrega> {
         return this.getDataModelList();
     }
 
+    public String getCentroMapa() {
+        if (entity != null) {
+            getDao().persists(entity);
+            JDBCFactory.getDaoCentroDistribuicao().persists(entity.getCentroDistribuicao());
+            JDBCFactory.getDaoEndereco().persists(entity.getCentroDistribuicao().getEndereco());
+
+            return entity.getCentroDistribuicao().getEndereco().getLatitude() + ", " + entity.getCentroDistribuicao().getEndereco().getLongitude();
+        }
+        return null;
+    }
+
+    public MapModel getModelMapa() {
+        if (entity.getId() > 0) {
+            String trajeto = JDBCFactory.getDaoEntrega().getTrajeto(entity);
+            Endereco e = new Endereco();
+            LatLng posicao;
+
+            Polyline polyline = new Polyline();
+            polyline.setStrokeWeight(3);
+            polyline.setStrokeColor("#FF0000");
+            polyline.setStrokeOpacity(0.7);
+            modelMapa.addOverlay(polyline);
+
+            int i = 1;
+            String[] lista = trajeto.trim().split("\\s");
+            for (String id : lista) {
+                e.setId(Integer.parseInt(id));
+                JDBCFactory.getDaoEndereco().persists(e);
+
+                posicao = new LatLng(e.getLatitude(), e.getLongitude());
+
+                polyline.getPaths().add(posicao);
+
+
+
+                if (i == 1) {
+                    modelMapa.addOverlay(new Marker(posicao, "Posição" + i++, "Teste", "http://maps.google.com/mapfiles/ms/micons/yellow-dot.png"));
+                } else if (i != lista.length) {
+                    modelMapa.addOverlay(new Marker(posicao, "Posição" + i++));
+                }
+            }
+        }
+
+        return modelMapa;
+    }
+
+    public void mostraMapa() {
+        entity = dataModel.getRowData();
+        openDialog("dlgMapa");
+    }
+
     public List<Veiculo> listaVeiculo(String query) {
         List<Veiculo> results = new ArrayList<>();
 
         Iterable<Veiculo> it = JDBCFactory.getDaoVeiculo().getAll();
 
         for (Veiculo veiculo : it) {
-            results.add(veiculo);
+            if (veiculo.getDescricao().toLowerCase().contains(query.toLowerCase())) {
+                results.add(veiculo);
+            }
         }
 
         return results;
-    }
-
-    public void onSelectVeiculo(SelectEvent event) {
-        veiculo = (Veiculo) event.getObject();
     }
 
     public List<CentroDistribuicao> listaCentroDistribuicao(String query) {
@@ -68,36 +121,64 @@ public class BeanEntrega extends BeanEntity<Entrega> {
         return results;
     }
 
-    public void onSelectCentroDistribuicao(SelectEvent event) {
-        centroDistribuicao = (CentroDistribuicao) event.getObject();
-    }
+    public List<Cesta> listaCesta(String query) {
+        List<Cesta> results = new ArrayList<>();
 
-    public void onSelectCesta(SelectEvent event) {
-        cesta = (Cesta) event.getObject();
-    }
+        Iterable<Cesta> it = JDBCFactory.getDaoCesta().getAll();
 
-    @Override
-    public void insert() {
-        veiculo            = new Veiculo();
-        centroDistribuicao = new CentroDistribuicao();
-        this.entity.setData("15/06/2016");
-//        this.cesta = new Cesta();
-        super.insert();
-    }
+        for (Cesta cesta : it) {
+            results.add(cesta);
+        }
 
+        // chumbamento avançado
+        if (results.isEmpty()) {
+            Cesta c = new Cesta();
+            c.setTrimestre(2);
+            c.setAno(2016);
+            c.setPeso(2.5f);
+
+            JDBCFactory.getDaoCesta().insert(c);
+            results.add(c);
+        }
+
+        return results;
+    }
 
     @Override
     public void save() {
-        // Se uma coisa parece idiota, mas ela funciona, então ela não é idiota.
-        this.entity.setVeiculo(veiculo);
-        this.entity.setCentroDistribuicao(centroDistribuicao);
-
-        this.entity.setData("15/06/2016");
+        entity.setData(new Date());
         super.save();
-
-        veiculo            = new Veiculo();
-        centroDistribuicao = new CentroDistribuicao();
-//        this.cesta = new Cesta();
+        closeDialog("dlg");
     }
+
+    @Override
+    protected void afterInsert() {
+        JDBCFactory.getDaoEntrega().separaPagamentos(entity);
+        calculaACO();
+    }
+
+    @Override
+    protected void afterUpdate() {
+        JDBCFactory.getDaoEntrega().separaPagamentos(entity);
+        calculaACO();
+    }
+
+    @Override
+    public void change() {
+        super.change();
+
+        JDBCFactory.getDaoCesta().persists(entity.getCesta());
+        JDBCFactory.getDaoCentroDistribuicao().persists(entity.getCentroDistribuicao());
+        JDBCFactory.getDaoVeiculo().persists(entity.getVeiculo());
+
+        openDialog("dlg");
+    }
+
+    private void calculaACO() {
+        AlgoritmoACO aco = new AlgoritmoACO();
+        aco.calcula(entity);
+    }
+
+
 
 }

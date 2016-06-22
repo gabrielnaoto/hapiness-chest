@@ -19,22 +19,34 @@
                     <p:growl id="formMessage" showDetail="true" autoUpdate="true" />
                     <p:commandButton value="Inluir" action="#{beanCliente.insert()}" update="frm-cliente" oncomplete="PF('dlg').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" />
                     <p:dialog id="dlg" widgetVar="dlg" focus="nome" header="Cliente" modal="true" closable="false" showEffect="fade" hideEffect="fade" >
-                        <h:panelGrid columns="2">
+                        <p:panelGrid style="border-style: none">
                             <h:inputHidden id="latitude" value="#{beanCliente.entity.endereco.latitude}" />
                             <h:inputHidden id="longitude" value="#{beanCliente.entity.endereco.longitude}" />
 
-                            <h:outputText value="ID:" />
-                            <p:inputText class="ui-state-disabled" id="id" value="#{beanCliente.entity.id}" />
+                            <p:row style="border-style: none;">
+                                <p:column style="border-style: none; text-align: right;"><h:outputText value="ID:" /></p:column>
+                                <p:column style="border-style: none" colspan="2"><p:inputText class="ui-state-disabled" id="id" value="#{beanCliente.entity.id}" /></p:column>
+                            </p:row>
 
-                            <h:outputText value="Nome:" />
-                            <p:inputText required="true" requiredMessage="Campo Nome é Obrigatório!" id="nome" value="#{beanCliente.entity.nome}" />
+                            <p:row style="border-style: none;">
+                                <p:column style="border-style: none; text-align: right;"><h:outputText value="Nome:" /></p:column>
+                                <p:column style="border-style: none" colspan="2"><p:inputText required="true" requiredMessage="Campo Nome é Obrigatório!" id="nome" value="#{beanCliente.entity.nome}" /></p:column>
+                            </p:row>
 
-                            <h:outputText value="Endereço:" />
-                            <p:inputText required="true" requiredMessage="Campo Endereço é Obrigatório!" id="endereço" value="#{beanCliente.entity.endereco.descricao}" />
-
-                        </h:panelGrid>
+                            <p:row style="border-style: none;">
+                                <p:column style="border-style: none; text-align: right;"><h:outputText value="Endereço:" /></p:column>
+                                <p:column style="border-style: none"><p:inputText required="true" requiredMessage="Campo Endereço é Obrigatório!" id="endereco" value="#{beanCliente.entity.endereco.descricao}" /></p:column>
+                                <p:column style="border-style: none"><p:commandButton value="Buscar" icon="ui-icon-search" onclick="geocode()" type="button" /></p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        <script type="text/javascript">
+                            function geocode() {
+                                PF('geoMap').geocode(document.getElementById('frm-cliente:endereco').value);
+                            }
+                        </script>
                         <p:gmap id="geoGmap" widgetVar="geoMap" zoom="16" center="#{beanCliente.centroMapa}" type="ROADMAP" model="#{beanCliente.geoModel}" style="width:500px; height:300px">
-                            <p:ajax event="pointSelect" listener="#{beanCliente.onPointSelect}" update="formMessage geoGmap latitude longitude" />
+                            <p:ajax event="pointSelect" listener="#{beanCliente.onPointSelect}" update="formMessage geoGmap latitude longitude endereco" />
+                            <p:ajax event="geocode" listener="#{beanCliente.onGeocode}" update="formMessage geoGmap latitude longitude endereco" />
                         </p:gmap>
                         <hr />
                         <h:panelGrid columns="2">
@@ -54,6 +66,10 @@
                         <p:outputLabel value="#{cliente.nome}" />
                     </p:column>
                     <p:column>
+                        <f:facet name="header">Id Endereço</f:facet>
+                        <p:outputLabel value="#{cliente.endereco.id}" />
+                    </p:column>
+                    <p:column>
                         <f:facet name="header">Ações</f:facet>
                         <h:form>
                             <p:commandButton value="Editar" class="btn-editar" action="#{beanCliente.change()}" update="gridCliente frm-cliente frm-cliente:geoGmap" oncomplete="PF('dlg').show();"/>
@@ -65,4 +81,3 @@
         </ui:composition>
     </h:body>
 </html>
-

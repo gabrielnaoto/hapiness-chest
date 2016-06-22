@@ -28,9 +28,9 @@ public class JDBCDAOFornecedor extends DAOGeneric<Fornecedor> implements iDaoFor
     public boolean isNomeCadastrado(String nome) {
         StringBuilder query = new StringBuilder("SELECT *");
         query.append("\nFROM ")
-                .append(this.getTableNameComplete())
-                .append("\nWHERE TRUE")
-                .append("\nAND nome " + OPERATOR_EQUAL + " ?");
+             .append(this.getTableNameComplete())
+             .append("\nWHERE TRUE")
+             .append("\nAND nome " + OPERATOR_EQUAL + " ?");
 
         try {
             PreparedStatement statement = connection.getConnection().prepareStatement(query.toString());
@@ -39,7 +39,7 @@ public class JDBCDAOFornecedor extends DAOGeneric<Fornecedor> implements iDaoFor
 
             ResultSet result = statement.executeQuery();
             return result.next();
-        } catch (SQLException exception) {
+        } catch(SQLException exception) {
             catchSQLException(exception);
             return false;
         }

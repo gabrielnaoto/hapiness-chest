@@ -14,51 +14,64 @@
                 Entrega
             </ui:define>
             <ui:define name="conteudo">
+                <p:dialog id="dlgGrafico" widgetVar="dlgGrafico" header="Iterações" modal="true" showEffect="fade" hideEffect="fade" width="800" >
+                    <p:chart type="line" model="#{beanIteracao.lineModel1}" style="height:300px;" responsive="true"/>
+                </p:dialog>
+
+                <p:dialog id="dlgMapa" widgetVar="dlgMapa" header="Mapa" modal="true" showEffect="fade" hideEffect="fade" width="900" height="500" >
+                    <p:gmap id="geoGmap" widgetVar="geoMap" zoom="13" center="#{beanEntrega.centroMapa}" type="ROADMAP" model="#{beanEntrega.getModelMapa()}" style="width:100%; height:100%" />
+                </p:dialog>
+
                 <h:form id="frm-entrega">
                     <p:growl id="formMessage" showDetail="true" autoUpdate="true" />
                     <p:commandButton value="Inluir" action="#{beanEntrega.insert()}" update="frm-entrega" oncomplete="PF('dlg').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" />
-                    <p:dialog id="dlg" widgetVar="dlg" focus="data" header="Entrega" modal="true" closable="false" showEffect="fade" hideEffect="fade" >
+                    <p:dialog id="dlg" widgetVar="dlg" focus="veiculo" header="Entrega" modal="true" closable="false" showEffect="fade" hideEffect="fade" width="500" >
+    <!--                            <h:outputText value="Data:" />
+                            <p:calendar pattern="dd/MM/yyyy" required="true" requiredMessage="Campo Data é Obrigatório!" id="data" value="#{beanEntrega.entity.data}" converterMessage="Data inválida!" />-->
                         <h:panelGrid columns="2">
                             <h:outputText value="ID:" />
                             <p:inputText class="ui-state-disabled" id="id" value="#{beanEntrega.entity.id}" />
 
-                            <h:outputText value="Data:" />
-                            <p:inputText required="true" requiredMessage="Campo Data é Obrigatório!" id="data" value="#{beanEntrega.entity.data}" converterMessage="Data inválida!"/>
 
                             <h:outputText value="Veículo:" />
                             <p:autoComplete id="veiculo" forceSelection="true" value="#{beanEntrega.entity.veiculo}" completeMethod="#{beanEntrega.listaVeiculo}"
-                                            var="veic" itemLabel="#{veic.descricao}" itemValue="#{veic}" converter="conversor" >
-                                <p:ajax event="itemSelect" listener="#{beanEntrega.onSelectVeiculo}" update="formMessage"/>
-                            </p:autoComplete>
+                                            dropdown="true" var="veic" itemLabel="#{veic.descricao}" itemValue="#{veic}" converter="conversor" required="true" requiredMessage="Campo Veículo é Obrigatório!" />
 
                             <h:outputText value="Centro de Distribuição:" />
                             <p:autoComplete id="centro" forceSelection="true" value="#{beanEntrega.entity.centroDistribuicao}" completeMethod="#{beanEntrega.listaCentroDistribuicao}"
-                                            var="cent" itemLabel="#{cent.nome}" itemValue="#{cent}" converter="conversorCentroDistribuicao" >
-                                <p:ajax event="itemSelect" listener="#{beanEntrega.onSelectCentroDistribuicao}" update="formMessage"/>
-                            </p:autoComplete>
+                                            dropdown="true" var="cent" itemLabel="#{cent.nome}" itemValue="#{cent}" converter="conversorCentroDistribuicao"
+                                            required="true" requiredMessage="Campo Cento de Distribuição é Obrigatório!"/>
 
+                            <h:outputText value="Cesta:" />
+                            <p:autoComplete id="cesta" forceSelection="true" value="#{beanEntrega.entity.cesta}" completeMethod="#{beanEntrega.listaCesta(query)}"
+                                            dropdown="true" var="cesta" itemLabel="#{cesta.getDescricao()}" itemValue="#{cesta}" converter="conversorCesta"
+                                            required="true" requiredMessage="Campo Cesta é Obrigatório!"/>
                         </h:panelGrid>
                         <hr />
                         <h:panelGrid columns="2">
-                            <p:commandButton value="Salvar" action="#{beanEntrega.save()}" resetValues="true" update="gridEntrega" oncomplete="handleFormRequest(xhr, status, args)" icon="ui-icon-check" />
+                            <p:commandButton value="Salvar" action="#{beanEntrega.save()}" resetValues="true" update="gridEntrega" icon="ui-icon-check" />
                             <p:commandButton value="Fechar" action="#{beanEntrega.setEntity(null)}" resetValues="true" update="frm-entrega" partialSubmit="true" process="" icon="ui-icon-close" ignoreAutoUpdate="true" />
                         </h:panelGrid>
                     </p:dialog>
                 </h:form>
                 <script src="resources/js/core/dialog.js" type="text/javascript"></script>
-                <p:dataTable id="gridEntrega" value="#{beanEntrega.listaEntrega}" var="beanEntrega">
+                <p:dataTable id="gridEntrega" value="#{beanEntrega.listaEntrega}" var="entrega">
                     <p:column>
                         <f:facet name="header">Id</f:facet>
-                        <p:outputLabel value="#{beanEntrega.entity.id}" />
+                        <p:outputLabel value="#{entrega.id}" />
                     </p:column>
                     <p:column>
                         <f:facet name="header">Data</f:facet>
-                        <p:outputLabel value="#{beanEntrega.entity.data}" />
+                        <p:outputLabel value="#{entrega.data}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </p:outputLabel>
                     </p:column>
                     <p:column>
                         <f:facet name="header">Ações</f:facet>
                         <h:form>
                             <p:commandButton value="Editar" class="btn-editar" action="#{beanEntrega.change()}" update="gridEntrega frm-entrega"/>
+                            <p:commandButton value="Gráfico" icon="fa fa-fw fa-line-chart" action="#{beanIteracao.mostraGrafico(entrega)}" update="dlgGrafico" />
+                            <p:commandButton value="Mapa" icon="fa fa-fw fa-map-marker" action="#{beanEntrega.mostraMapa()}" update="dlgMapa" />
                             <script src="resources/js/core/editar.js" type="text/javascript"></script>
                             <p:commandButton value="Excluir" action="#{beanEntrega.delete()}" update="gridEntrega"/>
                         </h:form>

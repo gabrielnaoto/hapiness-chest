@@ -9,4 +9,8 @@ import br.udesc.ceavi.core.persistence.Persistible;
  */
 public interface iDaoEntrega extends Persistible<Entrega> {
 
+    public void separaPagamentos(Entrega entrega);
+
+    public String getTrajeto(Entrega entrega);
+
 }

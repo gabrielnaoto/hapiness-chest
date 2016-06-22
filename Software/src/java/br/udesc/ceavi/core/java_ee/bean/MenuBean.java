@@ -1,10 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and op9en the template in the editor.
- */
 package br.udesc.ceavi.core.java_ee.bean;
 
+import br.udesc.ceavi.caixeiro.model.Usuario;
+import br.udesc.ceavi.core.java_ee.bean.util.SessionUtils;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -25,6 +22,7 @@ public class MenuBean {
     private MenuModel menuItens = new DefaultMenuModel();
 
     public MenuBean() {
+        Usuario usuario = (Usuario) SessionUtils.getParam("user");
 
         // fazer um switch para os tipos de usuário
         carregaMenuAdmin();
@@ -40,32 +38,35 @@ public class MenuBean {
         centro.setUrl("centro_distribuicao.jsf");
 
         DefaultMenuItem cliente = new DefaultMenuItem("Cliente");
-        cliente.setStyleClass("fa fa-fw fa-align-left");
+        cliente.setIcon("ui-icon-contact");
         cliente.setUrl("cliente.jsf");
+
+        DefaultMenuItem fornecedor = new DefaultMenuItem("Fornecedor");
+        fornecedor.setIcon("ui-icon-clipboard");
+        fornecedor.setUrl("fornecedor.jsf");
 
         DefaultSubMenu cadastros = new DefaultSubMenu("Cadastros");
         cadastros.addElement(veiculo);
         cadastros.addElement(centro);
         cadastros.addElement(cliente);
+        cadastros.addElement(fornecedor);
 
         DefaultMenuItem editar = new DefaultMenuItem("Editar", "ui-icon-close", "#");
-        DefaultMenuItem sair = new DefaultMenuItem("Sair", "ui-icon-close", "index.jsf");
+        DefaultMenuItem sair   = new DefaultMenuItem("Sair"  , "ui-icon-close", "index.jsf");
         sair.setAjax(false);
-        sair.setCommand("#{loginBean.logout}");
+        sair.setCommand("#{beanLogin.logout}");
 
         DefaultSubMenu conta = new DefaultSubMenu("Conta");
         conta.addElement(editar);
         conta.addElement(sair);
 
-        DefaultMenuItem manterUsuarios = new DefaultMenuItem("Manter usuários", "ui-icon-contact", "#");
-        DefaultMenuItem avaliarProdutos = new DefaultMenuItem("Avaliar produtos", "ui-icon-tag", "avaliar.jsf");
-        DefaultMenuItem oferecerProdutos = new DefaultMenuItem("Oferecer produtos", "ui-icon-plusthick", "oferecer.jsf");
-        DefaultMenuItem criarCesta = new DefaultMenuItem("Gerenciar cestas", "ui-icon-pencil", "cesta.jsf");
-        DefaultMenuItem montarEntrega = new DefaultMenuItem("Montar entrega", "ui-icon-suitcase", "entrega.jsf");
+        DefaultMenuItem avaliarProdutos  = new DefaultMenuItem("Avaliar produtos" , "ui-icon-tag"      , "#");
+        DefaultMenuItem oferecerProdutos = new DefaultMenuItem("Oferecer produtos", "ui-icon-plusthick", "#");
+        DefaultMenuItem criarCesta       = new DefaultMenuItem("Criar cesta"      , "ui-icon-pencil"   , "#");
+        DefaultMenuItem montarEntrega    = new DefaultMenuItem("Montar entrega"   , "ui-icon-suitcase" , "entrega.jsf");
 
         this.menuItens.addElement(conta);
-        this.menuItens.addElement(cadastros );
-        this.menuItens.addElement(manterUsuarios);
+        this.menuItens.addElement(cadastros);
         this.menuItens.addElement(avaliarProdutos);
         this.menuItens.addElement(oferecerProdutos);
         this.menuItens.addElement(criarCesta);
@@ -84,4 +85,5 @@ public class MenuBean {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ajax Update"));
         return "";
     }
+
 }

@@ -23,8 +23,8 @@ public abstract class Entity implements java.io.Serializable, Cloneable {
 
         for(java.lang.reflect.Field field : this.getClass().getDeclaredFields()) {
             if(field.isAnnotationPresent(DataBaseInfo.class) &&
-               field.getAnnotation(DataBaseInfo.class).key()) {
-                long valor = BeanUtils.callGetter(this, field.getName());
+                field.getAnnotation(DataBaseInfo.class).key()) {
+                long valor = Long.parseLong(BeanUtils.callGetter(this, field.getName()).toString());
                 hashCode  += valor;
             }
         }

@@ -6,6 +6,7 @@ import java.util.Iterator;
 /**
  *
  * @author Samuel Felício Adriano
+ * @param <Entity>
  */
 public class EntityIterable<Entity extends br.udesc.ceavi.core.model.Entity> implements Iterable<Entity> {
 
