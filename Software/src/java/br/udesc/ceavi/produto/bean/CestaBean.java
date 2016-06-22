@@ -155,6 +155,7 @@ public class CestaBean implements Serializable {
             atual.setPeso(peso);
             facesContext = FacesContext.getCurrentInstance();
             if (gcuc.finalizar(atual)) {
+                atual.finalizarCesta();
                 facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Cesta encerrada!"));
                 atualizar();
             } else {
