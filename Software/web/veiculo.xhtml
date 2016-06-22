@@ -17,7 +17,7 @@
             <ui:define name="conteudo">
                 <h:form id="frm-veiculo">
                     <p:growl id="formMessage" autoUpdate="true" />
-                    <p:commandButton value="Inluir" action="#{beanVeiculo.insert()}" update="frm-veiculo" oncomplete="PF('dlg').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" />
+                    <p:commandButton value="Incluir" action="#{beanVeiculo.insert()}" update="frm-veiculo" oncomplete="PF('dlg').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" />
                     <p:dialog id="dlg" widgetVar="dlg" focus="descricao" header="Veículo" modal="true" closable="false" showEffect="fade" hideEffect="fade" >
                         <h:panelGrid columns="2">
                             <h:outputText value="ID:" />

@@ -34,7 +34,7 @@ public class FilterLogin implements Filter {
                 requestContainsResource = requisition.getRequestURI().contains("javax.faces.resource/");
 
         if(userLogged || requestEndsWithIndex || requestContainsResource) {
-            if((session.getAttribute("usuario") != null) && (requisition.getRequestURI().endsWith("index.jsf"))){
+            if((session.getAttribute("user") != null) && (requisition.getRequestURI().endsWith("index.jsf"))){
                 redirect("home.jsf", response);
             }
             chain.doFilter(request, response);

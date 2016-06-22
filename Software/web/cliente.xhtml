@@ -17,7 +17,7 @@
             <ui:define name="conteudo">
                 <h:form id="frm-cliente">
                     <p:growl id="formMessage" showDetail="true" autoUpdate="true" />
-                    <p:commandButton value="Inluir" action="#{beanCliente.insert()}" update="frm-cliente" oncomplete="PF('dlg').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" />
+                    <p:commandButton value="Incluir" action="#{beanCliente.insert()}" update="frm-cliente" oncomplete="PF('dlg').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" />
                     <p:dialog id="dlg" widgetVar="dlg" focus="nome" header="Cliente" modal="true" closable="false" showEffect="fade" hideEffect="fade" >
                         <p:panelGrid style="border-style: none">
                             <h:inputHidden id="latitude" value="#{beanCliente.entity.endereco.latitude}" />
@@ -26,6 +26,16 @@
                             <p:row style="border-style: none;">
                                 <p:column style="border-style: none; text-align: right;"><h:outputText value="ID:" /></p:column>
                                 <p:column style="border-style: none" colspan="2"><p:inputText class="ui-state-disabled" id="id" value="#{beanCliente.entity.id}" /></p:column>
+                            </p:row>
+
+                            <p:row style="border-style: none;">
+                                <p:column style="border-style: none; text-align: right;"><h:outputText value="Login:" /></p:column>
+                                <p:column style="border-style: none" colspan="2"><p:inputText class="ui-state-disabled" id="login-cliente" value="#{beanCliente.entity.usuario.login}" placeholder="Usuario" required="true"/></p:column>
+                            </p:row>
+
+                            <p:row style="border-style: none;">
+                                <p:column style="border-style: none; text-align: right;"><h:outputText value="Senha:" /></p:column>
+                                <p:column style="border-style: none" colspan="2"><p:password class="ui-state-disabled" id="senha-cliente" value="#{beanCliente.entity.usuario.senha}" placeholder="Senha" required="true"/></p:column>
                             </p:row>
 
                             <p:row style="border-style: none;">

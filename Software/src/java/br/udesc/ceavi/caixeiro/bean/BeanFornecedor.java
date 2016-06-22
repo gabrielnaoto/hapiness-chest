@@ -58,4 +58,14 @@ public class BeanFornecedor extends BeanEntity<Fornecedor> {
         return "home.jsf";
     }
 
+    @Override
+    public void save() {
+        iDaoUsuario daoUsuario = JDBCFactory.getDaoUsuario();
+        entity.getUsuario().setLogin(entity.getUsuario().getLogin().trim());
+        entity.getUsuario().setSenha(Md5Utils.toMd5(entity.getUsuario().getSenha()));
+        entity.getUsuario().setTipo(br.udesc.ceavi.caixeiro.model.TipoUsuario.FORNECEDOR.getTipo());
+        daoUsuario.insert(this.entity.getUsuario());
+        super.save(); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

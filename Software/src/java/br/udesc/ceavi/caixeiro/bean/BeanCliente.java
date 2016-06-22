@@ -122,6 +122,11 @@ public class BeanCliente  extends BeanEntity<Cliente> {
         this.entity.getEndereco().setLatitude(latitude);
         this.entity.getEndereco().setLongitude(longitude);
 
+        iDaoUsuario daoUsuario = JDBCFactory.getDaoUsuario();
+        entity.getUsuario().setLogin(entity.getUsuario().getLogin().trim());
+        entity.getUsuario().setSenha(Md5Utils.toMd5(entity.getUsuario().getSenha()));
+        entity.getUsuario().setTipo(br.udesc.ceavi.caixeiro.model.TipoUsuario.CLIENTE.getTipo());
+        daoUsuario.insert(this.entity.getUsuario());
         iDaoEndereco daoEndereco = JDBCFactory.getDaoEndereco();
 
         if(!daoEndereco.exists(entity.getEndereco()) || entity.getEndereco().getId() == 0) {

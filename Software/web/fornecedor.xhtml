@@ -17,16 +17,30 @@
             <ui:define name="conteudo">
                 <h:form id="frm-fornecedor">
                     <p:growl id="formMessage" autoUpdate="true" />
-                    <p:commandButton value="Inluir" action="#{beanFornecedor.insert()}" update="frm-fornecedor" oncomplete="PF('dlg').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" />
+                    <p:commandButton value="Incluir" action="#{beanFornecedor.insert()}" update="frm-fornecedor" oncomplete="PF('dlg').show();" icon="ui-icon-extlink" ignoreAutoUpdate="true" />
                     <p:dialog id="dlg" widgetVar="dlg" focus="nome" header="Veículo" modal="true" closable="false" showEffect="fade" hideEffect="fade" >
-                        <h:panelGrid columns="2">
-                            <h:outputText value="ID:" />
-                            <p:inputText class="ui-state-disabled" id="id" value="#{beanFornecedor.entity.id}" />
+                        <p:panelGrid style="border-style: none">
+                            <p:row style="border-style: none;">
+                                <p:column style="border-style: none; text-align: right;"><h:outputText value="ID:" /></p:column>
+                                <p:column style="border-style: none" colspan="2"><p:inputText class="ui-state-disabled" id="id" value="#{beanFornecedor.entity.id}" /></p:column>
+                            </p:row>
 
-                            <h:outputText value="Nome:" />
-                            <p:inputText required="true" requiredMessage="Campo Nome é Obrigatório!" id="nome" value="#{beanFornecedor.entity.nome}" />
+                            <p:row style="border-style: none;">
+                                <p:column style="border-style: none; text-align: right;"><h:outputText value="Login:" /></p:column>
+                                <p:column style="border-style: none" colspan="2"><p:inputText class="ui-state-disabled" id="login_fornecedor" value="#{beanFornecedor.entity.usuario.login}" placeholder="Usuário"/></p:column>
+                            </p:row>
+
+                            <p:row style="border-style: none;">
+                                <p:column style="border-style: none; text-align: right;"><h:outputText value="Senha:" /></p:column>
+                                <p:column style="border-style: none" colspan="2"><p:password class="ui-state-disabled" id="senha_fornecedor" value="#{beanFornecedor.entity.usuario.senha}" placeholder="Senha"/></p:column>
+                            </p:row>
+
+                            <p:row style="border-style: none;">
+                                <p:column style="border-style: none; text-align: right;"><h:outputText value="Nome:" /></p:column>
+                                <p:column style="border-style: none" colspan="2"><p:inputText required="true" requiredMessage="Campo Nome é Obrigatório!" id="nome" value="#{beanFornecedor.entity.nome}" /></p:column>
+                            </p:row>
                             
-                        </h:panelGrid>
+                        </p:panelGrid>
                         <hr />
                         <h:panelGrid columns="2">
                             <p:commandButton value="Salvar" action="#{beanFornecedor.save()}" resetValues="true" update="gridFornecedor" oncomplete="handleFormRequest(xhr, status, args)" icon="ui-icon-check" />
