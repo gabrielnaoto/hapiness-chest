@@ -5,6 +5,8 @@ package br.udesc.ceavi.produto.model.entidade;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import br.udesc.ceavi.produto.model.entidade.state.CestaEmAndamento;
+import br.udesc.ceavi.produto.model.entidade.state.CestaState;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,10 +25,12 @@ public class Cesta implements Serializable, SampleEntity {
     private int peso;
     private List<Categoria> categorias;
     private List<Produto> produtos;
+    protected CestaState estadoAtual = new CestaEmAndamento();;
 
     public Cesta() {
         produtos = new ArrayList<Produto>();
         categorias = new ArrayList<Categoria>();
+        estadoAtual = new CestaEmAndamento();
     }
 
     public Cesta(Date data, String tema, double valorMaximo) {
@@ -110,6 +114,11 @@ public class Cesta implements Serializable, SampleEntity {
 
     public void addProduto(Produto p) {
         produtos.add(p);
+    }
+
+    public void finalizarCesta() {
+        estadoAtual = estadoAtual.trocaEstado();
+        estadoAtual.verificaEstado();
     }
 
 }
