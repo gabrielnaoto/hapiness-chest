@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.udesc.ceavi.produto.uc;
 
 import br.udesc.ceavi.core.persistence.Persistence;
@@ -24,7 +19,6 @@ import java.util.List;
  * - Administrador deve informar um lucro para a cesta, assim, deve ser feito o
  * calculo: [(pagantes x (valorCarne x 3)) * (1 - lucro)] / pagantes.
  *
- * @author ignoi
  */
 public class GerenciarCestaUC {
 
