@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.udesc.ceavi.produto.model.dao.fornecedorproduto;
 
 import br.udesc.ceavi.produto.model.entidade.FornecedorProduto;
@@ -11,10 +6,6 @@ import java.sql.PreparedStatement;
 import java.util.Calendar;
 import java.util.List;
 
-/**
- *
- * @author Sila Siebert
- */
 public class JDBCFornecedorProdutoDAO implements FornecedorProdutoDAO {
 
     @Override
