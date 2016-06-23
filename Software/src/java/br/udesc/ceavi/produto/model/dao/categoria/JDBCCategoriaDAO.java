@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.udesc.ceavi.produto.model.dao.categoria;
 
 import br.udesc.ceavi.produto.util.Conexao;
@@ -14,10 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Sila Siebert
- */
 public class JDBCCategoriaDAO implements CategoriaDAO {
 
     @Override
